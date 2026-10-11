@@ -1,0 +1,74 @@
+{
+  "_nota": "Lista ORIGINAL de la checklist de salida. Desde la app puedes editarla (tu versión se guarda en el dispositivo); el botón «Restaurar lista original» vuelve a esta. Cada elemento: id único, texto y una nota opcional.",
+  "grupos": [
+    {
+      "id": "casa",
+      "titulo": "Antes de salir",
+      "items": [
+        { "id": "prevision", "texto": "Mirar la previsión: nubes por capas, humedad y seeing", "nota": "Clear Outside y Meteoblue (pestaña Enlaces)." },
+        { "id": "plan", "texto": "Revisar la Luna y los objetos de la noche", "nota": "Pestaña Cielo, con el lugar al que vas." },
+        { "id": "carga-tele", "texto": "Cargar el telescopio al 100 %" },
+        { "id": "carga-bateria", "texto": "Cargar la batería externa USB-C PD" },
+        { "id": "carga-movil", "texto": "Cargar el móvil o el iPad" },
+        { "id": "actualizar", "texto": "Actualizar la app y el firmware con la wifi de casa", "nota": "En el campo no habrá cobertura para hacerlo." },
+        { "id": "espacio", "texto": "Comprobar el espacio libre del telescopio", "nota": "Guardar las subexposiciones ocupa mucho." },
+        { "id": "mapas", "texto": "Descargar el mapa sin conexión del sitio" },
+        { "id": "avisar", "texto": "Decir a alguien adónde vas y a qué hora vuelves" }
+      ]
+    },
+    {
+      "id": "equipo",
+      "titulo": "Equipo",
+      "items": [
+        { "id": "telescopio", "texto": "Telescopio en su maleta" },
+        { "id": "tripode", "texto": "Trípode" },
+        { "id": "rotula", "texto": "Rótula TH10 y placa 3/8″ (para el modo EQ)" },
+        { "id": "filtro-solar", "texto": "Filtro solar en su funda", "nota": "Solo se usa de día. Nunca apuntes al Sol sin él." },
+        { "id": "bateria", "texto": "Batería externa y cable USB-C" },
+        { "id": "nivel", "texto": "Base niveladora o nivel de burbuja" },
+        { "id": "microfibra", "texto": "Paño de microfibra", "nota": "Nada de dedos ni pañuelos en la lente." },
+        { "id": "linterna", "texto": "Linterna frontal de luz roja y pilas de repuesto" }
+      ]
+    },
+    {
+      "id": "personal",
+      "titulo": "Para ti",
+      "items": [
+        { "id": "capas", "texto": "Ropa de abrigo por capas", "nota": "Térmica, forro polar y plumífero: de noche en el campo hace mucho más frío que en Córdoba." },
+        { "id": "gorro", "texto": "Gorro, guantes finos (para el móvil) y gruesos" },
+        { "id": "calcetines", "texto": "Calcetines de lana y calzado cerrado" },
+        { "id": "silla", "texto": "Silla plegable y una mesita" },
+        { "id": "termo", "texto": "Termo con algo caliente, agua y comida" },
+        { "id": "manta", "texto": "Esterilla o manta", "nota": "El frío sube del suelo." },
+        { "id": "mosquitos", "texto": "Repelente de mosquitos (en verano)" },
+        { "id": "botiquin", "texto": "Botiquín básico" }
+      ]
+    },
+    {
+      "id": "sitio",
+      "titulo": "Al llegar al sitio",
+      "items": [
+        { "id": "faros", "texto": "Llegar con las luces cortas y apagarlas pronto", "nota": "Cortesía con otros observadores." },
+        { "id": "suelo", "texto": "Suelo firme, lejos de farolas y de la cúpula de luz de la ciudad" },
+        { "id": "nivelar", "texto": "Nivelar el trípode con la burbuja" },
+        { "id": "eq", "texto": "Modo EQ: inclinar a la latitud del lugar y orientar al norte", "nota": "En Córdoba, unos 37,9°; en otro sitio, mira su latitud en la pestaña Cielo." },
+        { "id": "pantalla", "texto": "Brillo de la pantalla al mínimo y modo noche en AstroKit" },
+        { "id": "aclimatar", "texto": "Dejar que el telescopio se aclimate 15–20 minutos" },
+        { "id": "rocio", "texto": "Activar el calentador antirrocío" },
+        { "id": "subs", "texto": "Comprobar que «guardar subexposiciones» está activado" },
+        { "id": "ojos", "texto": "20–30 minutos sin luz blanca para adaptar la vista" }
+      ]
+    },
+    {
+      "id": "fin",
+      "titulo": "Al terminar",
+      "items": [
+        { "id": "apagar", "texto": "Apagar el telescopio desde la app (que se pliegue solo)" },
+        { "id": "secar", "texto": "Si hay rocío, dejar que se seque antes de cerrar la maleta" },
+        { "id": "basura", "texto": "Recoger todo: que no quede ni rastro" },
+        { "id": "anotar", "texto": "Anotar la sesión en el Cuaderno" },
+        { "id": "fits", "texto": "Pasar los FITS al Mac al llegar a casa" }
+      ]
+    }
+  ]
+}

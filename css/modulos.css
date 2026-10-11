@@ -595,3 +595,74 @@ mark {
 
 .otros { margin-top: 18px; }
 .otros summary { cursor: pointer; font-size: 15px; color: var(--tinta-2); padding: 8px 0; }
+
+/* ==========================================================================
+   CHECKLIST
+   ========================================================================== */
+.checklist__cabecera { display: grid; gap: 20px; align-items: end; }
+@media (min-width: 720px) { .checklist__cabecera { grid-template-columns: 1fr 240px; } }
+.checklist__barra { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 22px; }
+.boton-sec--activo { background: var(--acento); border-color: var(--acento); color: var(--acento-texto); }
+
+.enhorabuena {
+  text-align: center; padding: 22px 16px; margin-bottom: 22px;
+  border: 1px solid var(--filete); border-radius: var(--radio-g);
+  background: color-mix(in srgb, var(--b7) 10%, var(--superficie));
+}
+.enhorabuena__titulo { font-family: var(--f-titular); font-size: 40px; line-height: 1; color: var(--b7); margin-bottom: 6px; }
+:root[data-noche="si"] .enhorabuena__titulo { color: var(--acento); }
+
+.grupos { display: grid; gap: 22px; }
+@media (min-width: 1000px) { .grupos { grid-template-columns: 1fr 1fr; align-items: start; } }
+.grupo {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio-g);
+  box-shadow: var(--sombra); overflow: hidden;
+}
+.grupo__cabecera {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 14px 16px 12px 18px; border-bottom: 1px solid var(--borde);
+  position: relative;
+}
+.grupo__cabecera::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--color); }
+.grupo__titulo { font-family: var(--f-titular); font-weight: 400; font-size: 26px; line-height: 1.1; }
+.grupo__cuenta { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--tinta-3); }
+.app .grupo__cuenta svg { width: 16px; height: 16px; }
+.grupo.esta-listo .grupo__cuenta { color: var(--color); }
+
+.tareas { list-style: none; }
+.tareas li + li { border-top: 1px solid var(--borde); }
+.tarea {
+  width: 100%; min-height: 56px;          /* objetivo táctil grande: se acierta con guantes */
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 16px 10px 18px; text-align: left;
+  transition: background var(--t-rapida);
+}
+.tarea:hover { background: var(--fondo-2); }
+.tarea__casilla {
+  flex-shrink: 0; display: grid; place-items: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--tinta-3); color: transparent;
+  transition: background var(--t-rapida), border-color var(--t-rapida), color var(--t-rapida);
+}
+.app .tarea__casilla svg { width: 30px; height: 30px; }
+.tarea__texto { display: flex; flex-direction: column; gap: 2px; font-size: 16px; line-height: 1.4; }
+.tarea__texto small { font-size: 13px; color: var(--tinta-3); }
+.tarea.esta-hecha .tarea__casilla { background: var(--color); border-color: var(--color); color: var(--superficie); }
+.tarea.esta-hecha .tarea__texto > span { text-decoration: line-through; text-decoration-color: var(--tinta-3); color: var(--tinta-3); }
+
+/* Modo edición */
+.editable {
+  width: 100%; min-width: 0; height: 40px; padding: 0 10px;
+  font-size: 16px; color: var(--tinta);
+  background: var(--fondo); border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.editable:focus { outline: none; border-color: var(--acento); }
+.editable--titulo { font-family: var(--f-titular); font-size: 22px; }
+.editable--nota { height: 34px; font-size: 14px; color: var(--tinta-2); }
+.tarea-editable { display: flex; align-items: center; gap: 8px; padding: 8px 10px 8px 18px; }
+.tarea-editable__campos { flex: 1; min-width: 0; display: grid; gap: 4px; }
+.botonera { display: flex; flex-shrink: 0; }
+.botonera .boton-icono { width: 34px; height: 34px; }
+.boton-icono--peligro:hover { color: var(--b5); }
+.anadir { display: flex; gap: 8px; padding: 10px 12px 14px 18px; border-top: 1px dashed var(--borde); }
+.checklist__pie { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 8px; }

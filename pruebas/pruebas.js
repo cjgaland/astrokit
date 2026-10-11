@@ -13,6 +13,7 @@
 import { normalizar, resaltar, mdLigero, sinMarcas } from '../js/util.js';
 import * as O from '../js/calculos/optica.js';
 import * as A from '../js/calculos/astro.js';
+import { progreso, mover } from '../js/modulos/checklist.js';
 
 const grupos = [];
 function grupo(nombre) { grupos.push({ nombre, pruebas: [] }); }
@@ -185,6 +186,37 @@ prueba('La culminación coincide con la altura máxima calculada', () => {
 prueba('Fase: Luna llena iluminada > 99 % y nueva < 1 %', () => {
   cierto(A.faseLunar(A.proximaFase(U(2026, 0, 1), 180)).iluminada > 0.99);
   cierto(A.faseLunar(A.proximaFase(U(2026, 0, 1), 0)).iluminada < 0.01);
+});
+
+/* ---------- Checklist ---------- */
+grupo('Checklist (data/checklist.json y js/modulos/checklist.js)');
+const checklist = await fetch('../data/checklist.json').then((r) => r.json());
+
+prueba('los identificadores de toda la lista no se repiten', () => {
+  const ids = checklist.grupos.flatMap((g) => g.items.map((i) => i.id));
+  igual(new Set(ids).size, ids.length);
+});
+prueba('ningún grupo vacío y todos los elementos con texto', () => {
+  for (const g of checklist.grupos) {
+    cierto(g.items.length > 0, `grupo ${g.id} vacío`);
+    for (const i of g.items) cierto(i.texto && i.texto.trim(), `${i.id} sin texto`);
+  }
+});
+prueba('incluye lo que pediste: batería, filtro solar, linterna roja, abrigo y nivelar', () => {
+  const texto = normalizar(JSON.stringify(checklist));
+  for (const p of ['bateria', 'filtro solar', 'luz roja', 'abrigo', 'nivelar']) cierto(texto.includes(p), `falta «${p}»`);
+});
+prueba('progreso cuenta solo lo marcado', () => {
+  const items = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+  const p = progreso(items, new Set(['a', 'c', 'x']));
+  igual(p.hechos, 2); igual(p.total, 3);
+});
+prueba('mover sube y baja sin salirse de la lista ni modificar el original', () => {
+  const l = ['a', 'b', 'c'];
+  igual(mover(l, 1, -1).join(''), 'bac');
+  igual(mover(l, 1, 1).join(''), 'acb');
+  igual(mover(l, 0, -1).join(''), 'abc');
+  igual(l.join(''), 'abc');
 });
 
 /* ---------- Ejecutar y pintar ---------- */

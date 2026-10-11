@@ -18,7 +18,7 @@
      así el navegador detecta un service worker nuevo y renueva la caché.
    ========================================================================== */
 
-const VERSION = 'astrokit-v3';
+const VERSION = 'astrokit-v4';
 
 // Archivos que forman la app (rutas relativas a esta carpeta)
 const ARCHIVOS = [
@@ -36,6 +36,8 @@ const ARCHIVOS = [
   'js/calculos/optica.js',
   'js/modulos/cielo.js',
   'js/calculos/astro.js',
+  'js/modulos/checklist.js',
+  'data/checklist.json',
   'data/glosario.json',
   'data/equipos.json',
   'data/objetos.json',
