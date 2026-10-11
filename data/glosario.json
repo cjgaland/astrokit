@@ -58,7 +58,13 @@
       "alias": "DSO, *Deep Sky Object*",
       "definicion": "Todo lo que está fuera del Sistema Solar: nebulosas, galaxias y cúmulos. Es el terreno natural de los telescopios inteligentes.",
       "analogia": "si la Luna y los planetas son \"vecinos del barrio\", los DSO son \"ciudades en otros continentes\": tenues, lejanas y que necesitan mucho tiempo de exposición.",
-      "equipo": "ambos están diseñados sobre todo para esto."
+      "equipo": "ambos están diseñados sobre todo para esto.",
+      "relacionados": [
+        "nebulosa",
+        "galaxia",
+        "cumulo-abierto-cumulo-globular",
+        "catalogos-messier-m-ngc-ic-caldwell-c-sharpless-sh2"
+      ]
     },
     {
       "id": "nebulosa",
@@ -79,6 +85,13 @@
           "nombre": "Planetaria y remanente de supernova",
           "texto": "capas expulsadas por una estrella al morir (Anillo M57, Velo, Cangrejo M1)."
         }
+      ],
+      "relacionados": [
+        "las-lineas-clave",
+        "filtro-de-banda-dual",
+        "espectro-continuo-frente-a-lineas-de-emision",
+        "cielo-profundo",
+        "catalogos-messier-m-ngc-ic-caldwell-c-sharpless-sh2"
       ]
     },
     {
@@ -86,21 +99,39 @@
       "bloque": 1,
       "termino": "Galaxia",
       "alias": "",
-      "definicion": "Conjunto de cientos de miles de millones de estrellas, como la nuestra. Andrómeda (M31) es la más grande del cielo; el Triángulo (M33) o Bode (M81) son más pequeñas. Emiten luz de todos los colores (espectro continuo), así que necesitan cielo oscuro más que filtros."
+      "definicion": "Conjunto de cientos de miles de millones de estrellas, como la nuestra. Andrómeda (M31) es la más grande del cielo; el Triángulo (M33) o Bode (M81) son más pequeñas. Emiten luz de todos los colores (espectro continuo), así que necesitan cielo oscuro más que filtros.",
+      "relacionados": [
+        "filtro-de-banda-ancha-uv-ir-cut",
+        "brillo-superficial",
+        "escala-de-bortle",
+        "via-lactea",
+        "espectro-continuo-frente-a-lineas-de-emision"
+      ]
     },
     {
       "id": "cumulo-abierto-cumulo-globular",
       "bloque": 1,
       "termino": "Cúmulo abierto / cúmulo globular",
       "alias": "",
-      "definicion": "Abierto: grupo joven y disperso de estrellas (Pléyades). Globular: bola compacta y antiquísima de cientos de miles de estrellas (Hércules M13). Son agradecidos incluso desde la ciudad."
+      "definicion": "Abierto: grupo joven y disperso de estrellas (Pléyades). Globular: bola compacta y antiquísima de cientos de miles de estrellas (Hércules M13). Son agradecidos incluso desde la ciudad.",
+      "relacionados": [
+        "cielo-profundo",
+        "catalogos-messier-m-ngc-ic-caldwell-c-sharpless-sh2",
+        "contaminacion-luminica"
+      ]
     },
     {
       "id": "catalogos-messier-m-ngc-ic-caldwell-c-sharpless-sh2",
       "bloque": 1,
       "termino": "Catálogos: Messier (M), NGC, IC, Caldwell (C), Sharpless (Sh2)",
       "alias": "",
-      "definicion": "Son \"números de historia clínica\" de los objetos. Messier tiene 110 objetos brillantes, ideal para empezar. NGC e IC suman unos 13.000. Sharpless agrupa nebulosas de hidrógeno tenues, un reto para la versión SHO del Draco."
+      "definicion": "Son \"números de historia clínica\" de los objetos. Messier tiene 110 objetos brillantes, ideal para empezar. NGC e IC suman unos 13.000. Sharpless agrupa nebulosas de hidrógeno tenues, un reto para la versión SHO del Draco.",
+      "relacionados": [
+        "cielo-profundo",
+        "nebulosa",
+        "galaxia",
+        "paleta-sho-o-paleta-hubble"
+      ]
     },
     {
       "id": "magnitud-aparente",
@@ -109,7 +140,11 @@
       "alias": "",
       "definicion": "Brillo de un objeto visto desde la Tierra. La escala es inversa y logarítmica: cuanto **menor** el número, más brillante.",
       "cuenta": "5 magnitudes de diferencia equivalen a un factor 100 de brillo, así que 1 magnitud ≈ 2,512 veces. Sirio está en −1,5; el límite del ojo en cielo oscuro ronda la 6. Un objeto \"de magnitud 10\" es 100 veces más débil que uno de magnitud 5.",
-      "cuentaEtiqueta": "La cuenta"
+      "cuentaEtiqueta": "La cuenta",
+      "relacionados": [
+        "brillo-superficial",
+        "sqm-sky-quality-meter-y-mag-arcsec"
+      ]
     },
     {
       "id": "brillo-superficial",
@@ -117,35 +152,67 @@
       "termino": "Brillo superficial",
       "alias": "",
       "definicion": "Magnitud repartida por unidad de superficie (mag/arcsec²). Es más útil que la magnitud total: una galaxia grande y difusa puede tener buena magnitud total y ser dificilísima porque su luz está \"untada\" sobre mucha superficie.",
-      "analogia": "la misma cantidad de mantequilla en una tostada o en una mesa entera."
+      "analogia": "la misma cantidad de mantequilla en una tostada o en una mesa entera.",
+      "relacionados": [
+        "magnitud-aparente",
+        "sqm-sky-quality-meter-y-mag-arcsec",
+        "galaxia"
+      ]
     },
     {
       "id": "tamano-angular-grado-minuto-y-segundo-de-arco",
       "bloque": 1,
       "termino": "Tamaño angular: grado (°), minuto (′) y segundo de arco (″)",
       "alias": "",
-      "definicion": "Como no podemos medir distancias en el cielo, medimos ángulos. 1° = 60′ y 1′ = 60″. La Luna llena mide unos 0,5° (30′). Andrómeda ocupa unos 3° de largo, seis lunas en fila. Júpiter mide unos 40–45″."
+      "definicion": "Como no podemos medir distancias en el cielo, medimos ángulos. 1° = 60′ y 1′ = 60″. La Luna llena mide unos 0,5° (30′). Andrómeda ocupa unos 3° de largo, seis lunas en fila. Júpiter mide unos 40–45″.",
+      "relacionados": [
+        "campo-de-vision",
+        "escala-de-placa",
+        "poder-resolutivo",
+        "seeing",
+        "sqm-sky-quality-meter-y-mag-arcsec"
+      ]
     },
     {
       "id": "coordenadas-ascension-recta-ar-y-declinacion-dec",
       "bloque": 1,
       "termino": "Coordenadas: ascensión recta (AR) y declinación (Dec)",
       "alias": "",
-      "definicion": "El \"GPS\" del cielo. La declinación es como la latitud (de +90° en el polo norte celeste a −90°). La ascensión recta es como la longitud, medida en horas (0h a 24h) porque el cielo da una vuelta en un día. Plate solving y GoTo trabajan con estas coordenadas."
+      "definicion": "El \"GPS\" del cielo. La declinación es como la latitud (de +90° en el polo norte celeste a −90°). La ascensión recta es como la longitud, medida en horas (0h a 24h) porque el cielo da una vuelta en un día. Plate solving y GoTo trabajan con estas coordenadas.",
+      "relacionados": [
+        "polo-norte-celeste",
+        "goto",
+        "plate-solving",
+        "cenit-horizonte-altitud-y-acimut",
+        "latitud",
+        "fits-fit"
+      ]
     },
     {
       "id": "polo-norte-celeste",
       "bloque": 1,
       "termino": "Polo norte celeste",
       "alias": "",
-      "definicion": "Punto alrededor del que parece girar todo el cielo, a pocos minutos de arco de la estrella Polar. Su altura sobre el horizonte es igual a tu latitud: en Córdoba, unos 37,9°."
+      "definicion": "Punto alrededor del que parece girar todo el cielo, a pocos minutos de arco de la estrella Polar. Su altura sobre el horizonte es igual a tu latitud: en Córdoba, unos 37,9°.",
+      "relacionados": [
+        "latitud",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec"
+      ]
     },
     {
       "id": "cenit-horizonte-altitud-y-acimut",
       "bloque": 1,
       "termino": "Cenit, horizonte, altitud y acimut",
       "alias": "",
-      "definicion": "Cenit: el punto justo sobre tu cabeza. Altitud: ángulo de un objeto sobre el horizonte (0° a 90°). Acimut: dirección en la que mirar (0° norte, 90° este, 180° sur, 270° oeste). Son las coordenadas \"locales\" que usa una montura altazimutal."
+      "definicion": "Cenit: el punto justo sobre tu cabeza. Altitud: ángulo de un objeto sobre el horizonte (0° a 90°). Acimut: dirección en la que mirar (0° norte, 90° este, 180° sur, 270° oeste). Son las coordenadas \"locales\" que usa una montura altazimutal.",
+      "relacionados": [
+        "montura-altazimutal",
+        "culminacion",
+        "masa-de-aire-y-la-regla-de-los-30",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec",
+        "meridiano",
+        "rotacion-de-campo"
+      ]
     },
     {
       "id": "masa-de-aire-y-la-regla-de-los-30",
@@ -154,28 +221,51 @@
       "alias": "",
       "definicion": "Cuanto más bajo está un objeto, más atmósfera atraviesa su luz: más turbulencia, más contaminación lumínica y más absorción. Por debajo de 30° de altitud la calidad cae mucho.",
       "regla": "fotografía cada objeto cuando esté alto.",
-      "reglaEtiqueta": "Regla práctica"
+      "reglaEtiqueta": "Regla práctica",
+      "relacionados": [
+        "culminacion",
+        "seeing",
+        "transparencia",
+        "cupula-de-luz",
+        "cenit-horizonte-altitud-y-acimut",
+        "contaminacion-luminica"
+      ]
     },
     {
       "id": "culminacion",
       "bloque": 1,
       "termino": "Culminación",
       "alias": "o tránsito",
-      "definicion": "Momento en que un objeto alcanza su máxima altura al cruzar el meridiano sur. Es su mejor momento para fotografiarlo. Las apps de planificación lo indican."
+      "definicion": "Momento en que un objeto alcanza su máxima altura al cruzar el meridiano sur. Es su mejor momento para fotografiarlo. Las apps de planificación lo indican.",
+      "relacionados": [
+        "meridiano",
+        "masa-de-aire-y-la-regla-de-los-30",
+        "cenit-horizonte-altitud-y-acimut"
+      ]
     },
     {
       "id": "meridiano",
       "bloque": 1,
       "termino": "Meridiano",
       "alias": "",
-      "definicion": "Línea imaginaria que va del norte al sur pasando por el cenit. Importa en las monturas ecuatoriales, que a veces tienen que \"voltear\" el telescopio al cruzarlo (*meridian flip*)."
+      "definicion": "Línea imaginaria que va del norte al sur pasando por el cenit. Importa en las monturas ecuatoriales, que a veces tienen que \"voltear\" el telescopio al cruzarlo (*meridian flip*).",
+      "relacionados": [
+        "meridian-flip",
+        "cenit-horizonte-altitud-y-acimut",
+        "culminacion"
+      ]
     },
     {
       "id": "ecliptica",
       "bloque": 1,
       "termino": "Eclíptica",
       "alias": "",
-      "definicion": "Camino aparente del Sol por el cielo a lo largo del año; la Luna y los planetas andan cerca de ella. En invierno la Luna llena va alta y en verano baja."
+      "definicion": "Camino aparente del Sol por el cielo a lo largo del año; la Luna y los planetas andan cerca de ella. En invierno la Luna llena va alta y en verano baja.",
+      "relacionados": [
+        "fase-lunar-y-luna-nueva",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec",
+        "via-lactea"
+      ]
     },
     {
       "id": "fase-lunar-y-luna-nueva",
@@ -184,21 +274,38 @@
       "alias": "",
       "definicion": "La Luna es la mayor contaminación lumínica natural. Una Luna llena convierte un cielo Bortle 3 en algo parecido a un Bortle 7.",
       "regla": "galaxias y nebulosas tenues en la semana de Luna nueva; con Luna, nebulosas de emisión con filtro de banda estrecha, o la propia Luna.",
-      "reglaEtiqueta": "Regla práctica"
+      "reglaEtiqueta": "Regla práctica",
+      "relacionados": [
+        "noche-astronomica",
+        "contaminacion-luminica",
+        "filtro-de-banda-dual",
+        "ecliptica",
+        "filtro-de-banda-estrecha"
+      ]
     },
     {
       "id": "noche-astronomica",
       "bloque": 1,
       "termino": "Noche astronómica",
       "alias": "crepúsculo astronómico",
-      "definicion": "El cielo solo está realmente oscuro cuando el Sol baja más de 18° bajo el horizonte. En diciembre en Córdoba eso ocurre hacia las 19:30; en junio, después de las 23:00."
+      "definicion": "El cielo solo está realmente oscuro cuando el Sol baja más de 18° bajo el horizonte. En diciembre en Córdoba eso ocurre hacia las 19:30; en junio, después de las 23:00.",
+      "relacionados": [
+        "fase-lunar-y-luna-nueva",
+        "escala-de-bortle",
+        "contaminacion-luminica"
+      ]
     },
     {
       "id": "via-lactea",
       "bloque": 1,
       "termino": "Vía Láctea",
       "alias": "",
-      "definicion": "Nuestra galaxia vista de canto, desde dentro. Su núcleo, en Sagitario, se ve en España de marzo a octubre. En invierno solo se ve su parte exterior, más tenue, por Orión, Géminis y Casiopea."
+      "definicion": "Nuestra galaxia vista de canto, desde dentro. Su núcleo, en Sagitario, se ve en España de marzo a octubre. En invierno solo se ve su parte exterior, más tenue, por Orión, Géminis y Casiopea.",
+      "relacionados": [
+        "galaxia",
+        "nebulosa",
+        "ecliptica"
+      ]
     },
     {
       "id": "apertura",
@@ -208,7 +315,14 @@
       "definicion": "Diámetro de la lente o espejo principal, en mm. Es el parámetro rey: decide cuánta luz entra y cuánto detalle se puede resolver.",
       "analogia": "un cubo bajo la lluvia; uno más ancho recoge más agua en el mismo tiempo.",
       "cuenta": "la luz recogida es proporcional al área, es decir, a D². Por eso (90/50)² ≈ 3,2: el Draco recoge unas 3,2 veces más luz que el Seestar S50 Pro.",
-      "cuentaEtiqueta": "La cuenta"
+      "cuentaEtiqueta": "La cuenta",
+      "relacionados": [
+        "relacion-focal",
+        "poder-resolutivo",
+        "distancia-focal",
+        "relacion-senal-ruido",
+        "reflector"
+      ]
     },
     {
       "id": "distancia-focal",
@@ -216,7 +330,13 @@
       "termino": "Distancia focal",
       "alias": "F",
       "definicion": "Distancia desde la óptica hasta el punto donde se forma la imagen, en mm. Cuanto mayor, más \"aumento\" y menos cielo cabe.",
-      "equipo": "260 mm en el S50 Pro y 340 mm en el Draco. Son focales cortas, de \"gran angular astronómico\", ideales para nebulosas extensas y galaxias grandes; para galaxias pequeñas o planetas se quedan cortas."
+      "equipo": "260 mm en el S50 Pro y 340 mm en el Draco. Son focales cortas, de \"gran angular astronómico\", ideales para nebulosas extensas y galaxias grandes; para galaxias pequeñas o planetas se quedan cortas.",
+      "relacionados": [
+        "campo-de-vision",
+        "escala-de-placa",
+        "relacion-focal",
+        "apertura"
+      ]
     },
     {
       "id": "relacion-focal",
@@ -227,7 +347,12 @@
       "analogia": "es el mismo número f que el de un objetivo fotográfico.",
       "equipo": "S50 Pro f/5,2; Draco f/3,8.",
       "cuenta": "el tiempo necesario escala aproximadamente con (f/)², así que (5,2/3,8)² ≈ 1,9: a igualdad de sensor, el Draco llega al mismo nivel de señal en la mitad de tiempo.",
-      "cuentaEtiqueta": "La cuenta"
+      "cuentaEtiqueta": "La cuenta",
+      "relacionados": [
+        "apertura",
+        "distancia-focal",
+        "tiempo-de-integracion"
+      ]
     },
     {
       "id": "campo-de-vision",
@@ -237,7 +362,13 @@
       "definicion": "Trozo de cielo que cabe en la foto, en grados. Depende de la focal y del tamaño del sensor.",
       "cuenta": "FOV (°) ≈ 57,3 × tamaño del sensor (mm) ÷ focal (mm).",
       "cuentaEtiqueta": "La cuenta",
-      "equipo": "el S50 Pro cubre unos 2,8° en diagonal (Andrómeda entera cabe holgada); el Draco, alrededor de 1,65° en el lado largo, más \"apretado\" pero con más detalle."
+      "equipo": "el S50 Pro cubre unos 2,8° en diagonal (Andrómeda entera cabe holgada); el Draco, alrededor de 1,65° en el lado largo, más \"apretado\" pero con más detalle.",
+      "relacionados": [
+        "distancia-focal",
+        "formato-del-sensor",
+        "mosaico",
+        "tamano-angular-grado-minuto-y-segundo-de-arco"
+      ]
     },
     {
       "id": "poder-resolutivo",
@@ -246,21 +377,41 @@
       "alias": "límite de Dawes",
       "definicion": "Separación mínima entre dos estrellas que la óptica puede distinguir.",
       "cuenta": "≈ 116 ÷ D(mm) segundos de arco. Unos 2,3″ para 50 mm y 1,3″ para 90 mm. En la práctica la atmósfera (el *seeing*) suele limitar antes.",
-      "cuentaEtiqueta": "La cuenta"
+      "cuentaEtiqueta": "La cuenta",
+      "relacionados": [
+        "apertura",
+        "seeing",
+        "escala-de-placa",
+        "tamano-angular-grado-minuto-y-segundo-de-arco"
+      ]
     },
     {
       "id": "refractor",
       "bloque": 2,
       "termino": "Refractor",
       "alias": "",
-      "definicion": "Telescopio de lentes, como un catalejo. Imagen limpia, sin obstrucción central y sin mantenimiento."
+      "definicion": "Telescopio de lentes, como un catalejo. Imagen limpia, sin obstrucción central y sin mantenimiento.",
+      "relacionados": [
+        "acromatico-apocromatico",
+        "aberracion-cromatica",
+        "reflector",
+        "catadioptrico",
+        "obstruccion-central"
+      ]
     },
     {
       "id": "reflector",
       "bloque": 2,
       "termino": "Reflector",
       "alias": "",
-      "definicion": "Telescopio de espejos (Newton, Ritchey-Chrétien). Más apertura por euro, pero el espejo secundario tapa parte de la luz y suele necesitar colimación."
+      "definicion": "Telescopio de espejos (Newton, Ritchey-Chrétien). Más apertura por euro, pero el espejo secundario tapa parte de la luz y suele necesitar colimación.",
+      "relacionados": [
+        "obstruccion-central",
+        "colimacion",
+        "refractor",
+        "catadioptrico",
+        "apertura"
+      ]
     },
     {
       "id": "catadioptrico",
@@ -268,14 +419,26 @@
       "termino": "Catadióptrico",
       "alias": "",
       "definicion": "Combina lentes y espejos (Schmidt-Cassegrain, Maksutov, RASA). Permite \"plegar\" una focal larga en un tubo corto.",
-      "equipo": "el Draco usa un diseño catadióptrico plegado; según el fabricante, no requiere colimación."
+      "equipo": "el Draco usa un diseño catadióptrico plegado; según el fabricante, no requiere colimación.",
+      "relacionados": [
+        "diseno-plegado",
+        "obstruccion-central",
+        "reflector",
+        "refractor",
+        "colimacion"
+      ]
     },
     {
       "id": "diseno-plegado",
       "bloque": 2,
       "termino": "Diseño plegado",
       "alias": "*folded*",
-      "definicion": "Un espejo dobla el camino de la luz para que el aparato sea compacto. El S50 Pro también usa un espejo de plegado tras sus lentes."
+      "definicion": "Un espejo dobla el camino de la luz para que el aparato sea compacto. El S50 Pro también usa un espejo de plegado tras sus lentes.",
+      "relacionados": [
+        "catadioptrico",
+        "refractor",
+        "distancia-focal"
+      ]
     },
     {
       "id": "aberracion-cromatica",
@@ -283,7 +446,12 @@
       "termino": "Aberración cromática",
       "alias": "",
       "definicion": "Una lente simple desvía cada color con un ángulo distinto (dispersión), así que el azul, el verde y el rojo no enfocan en el mismo punto. Se ve como halos violetas alrededor de las estrellas brillantes.",
-      "analogia": "el prisma de Newton, pero dentro de tu objetivo."
+      "analogia": "el prisma de Newton, pero dentro de tu objetivo.",
+      "relacionados": [
+        "acromatico-apocromatico",
+        "vidrio-ed-extra-low-dispersion-y-fluorita",
+        "refractor"
+      ]
     },
     {
       "id": "acromatico-apocromatico",
@@ -291,14 +459,22 @@
       "termino": "Acromático / apocromático",
       "alias": "APO",
       "definicion": "Un acromático junta dos colores en el mismo foco; un APO junta tres, normalmente con vidrios especiales. El resultado del APO son estrellas sin halos de color.",
-      "equipo": "el S50 Pro es un APO de cuatro elementos."
+      "equipo": "el S50 Pro es un APO de cuatro elementos.",
+      "relacionados": [
+        "aberracion-cromatica",
+        "vidrio-ed-extra-low-dispersion-y-fluorita",
+        "refractor"
+      ]
     },
     {
       "id": "vidrio-ed-extra-low-dispersion-y-fluorita",
       "bloque": 2,
       "termino": "Vidrio ED (*Extra-low Dispersion*) y fluorita",
       "alias": "",
-      "definicion": "Materiales que dispersan muy poco los colores; son la base de los APO."
+      "definicion": "Materiales que dispersan muy poco los colores; son la base de los APO.",
+      "relacionados": [
+        "acromatico-apocromatico"
+      ]
     },
     {
       "id": "cuadruplete-aplanador-de-campo-corrector",
@@ -306,35 +482,58 @@
       "termino": "Cuadruplete / aplanador de campo / corrector",
       "alias": "",
       "definicion": "Las ópticas simples enfocan sobre una superficie curva y el sensor es plano, así que las estrellas de las esquinas salen alargadas. Un aplanador o un cuadruplete corrige esa curvatura.",
-      "analogia": "proyectar una diapositiva sobre una pared cóncava frente a una plana."
+      "analogia": "proyectar una diapositiva sobre una pared cóncava frente a una plana.",
+      "relacionados": [
+        "coma-astigmatismo-curvatura-de-campo-vineteo",
+        "acromatico-apocromatico",
+        "refractor"
+      ]
     },
     {
       "id": "coma-astigmatismo-curvatura-de-campo-vineteo",
       "bloque": 2,
       "termino": "Coma, astigmatismo, curvatura de campo, viñeteo",
       "alias": "",
-      "definicion": "Defectos ópticos típicos. Coma: estrellas como cometas en los bordes. Astigmatismo: estrellas en forma de cruz o elipse. Viñeteo: esquinas más oscuras que el centro (se corrige con *flats*, ver bloque 5)."
+      "definicion": "Defectos ópticos típicos. Coma: estrellas como cometas en los bordes. Astigmatismo: estrellas en forma de cruz o elipse. Viñeteo: esquinas más oscuras que el centro (se corrige con *flats*, ver bloque 5).",
+      "relacionados": [
+        "cuadruplete-aplanador-de-campo-corrector",
+        "frames-de-calibracion",
+        "colimacion",
+        "eliminacion-de-gradientes"
+      ]
     },
     {
       "id": "obstruccion-central",
       "bloque": 2,
       "termino": "Obstrucción central",
       "alias": "",
-      "definicion": "Sombra del espejo secundario en reflectores y catadióptricos. Resta un poco de luz y de contraste y produce las \"cruces\" de difracción en algunos diseños."
+      "definicion": "Sombra del espejo secundario en reflectores y catadióptricos. Resta un poco de luz y de contraste y produce las \"cruces\" de difracción en algunos diseños.",
+      "relacionados": [
+        "refractor"
+      ]
     },
     {
       "id": "colimacion",
       "bloque": 2,
       "termino": "Colimación",
       "alias": "",
-      "definicion": "Alinear los espejos entre sí. Los telescopios inteligentes vienen sellados y no la necesitan."
+      "definicion": "Alinear los espejos entre sí. Los telescopios inteligentes vienen sellados y no la necesitan.",
+      "relacionados": [
+        "reflector",
+        "catadioptrico"
+      ]
     },
     {
       "id": "enfoque",
       "bloque": 2,
       "termino": "Enfoque",
       "alias": "autofocus",
-      "definicion": "Ajustar la distancia para que las estrellas sean lo más pequeñas posible. Los aparatos inteligentes miden el tamaño de las estrellas (HFD o FWHM) y se reenfocan solos, porque el frío de la noche contrae los materiales y desplaza el foco."
+      "definicion": "Ajustar la distancia para que las estrellas sean lo más pequeñas posible. Los aparatos inteligentes miden el tamaño de las estrellas (HFD o FWHM) y se reenfocan solos, porque el frío de la noche contrae los materiales y desplaza el foco.",
+      "relacionados": [
+        "hfd-fwhm",
+        "seeing",
+        "rocio-dew-y-calentador-antirrocio"
+      ]
     },
     {
       "id": "hfd-fwhm",
@@ -343,21 +542,37 @@
       "alias": "",
       "definicion": "Medidas del tamaño de una estrella en la imagen, en píxeles o segundos de arco. Cuanto menor, más nítida la toma.",
       "cuenta": "la FWHM es la \"anchura a media altura\" de una curva gaussiana, la misma definición que en cualquier pico.",
-      "cuentaEtiqueta": "Para el amante de las matemáticas"
+      "cuentaEtiqueta": "Para el amante de las matemáticas",
+      "relacionados": [
+        "enfoque",
+        "muestreo-submuestreo-y-sobremuestreo"
+      ]
     },
     {
       "id": "seeing",
       "bloque": 2,
       "termino": "Seeing",
       "alias": "",
-      "definicion": "Turbulencia atmosférica que hace \"titilar\" las estrellas y emborrona el detalle. Se mide en segundos de arco: 1–2″ es excelente, 3–4″ es lo habitual. Afecta sobre todo a planetas y Luna."
+      "definicion": "Turbulencia atmosférica que hace \"titilar\" las estrellas y emborrona el detalle. Se mide en segundos de arco: 1–2″ es excelente, 3–4″ es lo habitual. Afecta sobre todo a planetas y Luna.",
+      "relacionados": [
+        "transparencia",
+        "hfd-fwhm",
+        "lucky-imaging",
+        "poder-resolutivo",
+        "escala-de-placa"
+      ]
     },
     {
       "id": "transparencia",
       "bloque": 2,
       "termino": "Transparencia",
       "alias": "",
-      "definicion": "Lo limpia que está la atmósfera (polvo, humedad, calima sahariana). Afecta más al cielo profundo que el seeing. Una noche puede tener buen seeing y mala transparencia, y viceversa."
+      "definicion": "Lo limpia que está la atmósfera (polvo, humedad, calima sahariana). Afecta más al cielo profundo que el seeing. Una noche puede tener buen seeing y mala transparencia, y viceversa.",
+      "relacionados": [
+        "seeing",
+        "masa-de-aire-y-la-regla-de-los-30",
+        "contaminacion-luminica"
+      ]
     },
     {
       "id": "rocio-dew-y-calentador-antirrocio",
@@ -365,7 +580,12 @@
       "termino": "Rocío (*dew*) y calentador antirrocío",
       "alias": "",
       "definicion": "Al enfriarse la óptica por debajo del punto de rocío, se empaña y la imagen muere.",
-      "equipo": "ambos traen calefacción antirrocío; el Draco aprovecha el calor de su refrigeración del sensor."
+      "equipo": "ambos traen calefacción antirrocío; el Draco aprovecha el calor de su refrigeración del sensor.",
+      "relacionados": [
+        "refrigeracion-activa",
+        "enfoque",
+        "transparencia"
+      ]
     },
     {
       "id": "sensor-cmos",
@@ -374,7 +594,14 @@
       "alias": "",
       "definicion": "Chip de silicio que convierte la luz en electricidad y luego en números. Cada píxel es un pequeño \"cubo\" que acumula electrones mientras dura la exposición. Al final se cuenta cuántos hay.",
       "cuenta": "es el efecto fotoeléctrico, el que le valió el Nobel a Einstein.",
-      "cuentaEtiqueta": "La física"
+      "cuentaEtiqueta": "La física",
+      "relacionados": [
+        "pixel-y-tamano-de-pixel",
+        "eficiencia-cuantica",
+        "ruido",
+        "matriz-de-bayer-y-camara-en-color",
+        "desrotador-de-campo"
+      ]
     },
     {
       "id": "pixel-y-tamano-de-pixel",
@@ -382,21 +609,37 @@
       "termino": "Píxel y tamaño de píxel",
       "alias": "µm",
       "definicion": "Cada celda del sensor, medida en micras. Píxeles grandes recogen más luz cada uno; píxeles pequeños registran detalle más fino si la óptica y la atmósfera lo permiten.",
-      "equipo": "S50 Pro 2,9 µm; Draco 1,2 µm nativos, agrupados a 2,4 µm para cielo profundo."
+      "equipo": "S50 Pro 2,9 µm; Draco 1,2 µm nativos, agrupados a 2,4 µm para cielo profundo.",
+      "relacionados": [
+        "escala-de-placa",
+        "binning",
+        "megapixeles-mp-y-resolucion",
+        "formato-del-sensor"
+      ]
     },
     {
       "id": "formato-del-sensor",
       "bloque": 3,
       "termino": "Formato del sensor",
       "alias": "1/1,2″, 1/1,3″, APS-C...",
-      "definicion": "Tamaño físico del chip. Las fracciones de pulgada son una herencia de los tubos de vídeo antiguos y no corresponden a ninguna medida real: un \"1/1,2″\" mide unos 11 × 6 mm. Un sensor mayor, con la misma focal, abarca más cielo."
+      "definicion": "Tamaño físico del chip. Las fracciones de pulgada son una herencia de los tubos de vídeo antiguos y no corresponden a ninguna medida real: un \"1/1,2″\" mide unos 11 × 6 mm. Un sensor mayor, con la misma focal, abarca más cielo.",
+      "relacionados": [
+        "campo-de-vision",
+        "pixel-y-tamano-de-pixel",
+        "megapixeles-mp-y-resolucion"
+      ]
     },
     {
       "id": "megapixeles-mp-y-resolucion",
       "bloque": 3,
       "termino": "Megapíxeles (MP) y resolución",
       "alias": "",
-      "definicion": "Número total de píxeles. Más megapíxeles no significa automáticamente más detalle: si los píxeles son muy pequeños para la óptica, solo se \"amplía el emborronado\"."
+      "definicion": "Número total de píxeles. Más megapíxeles no significa automáticamente más detalle: si los píxeles son muy pequeños para la óptica, solo se \"amplía el emborronado\".",
+      "relacionados": [
+        "pixel-y-tamano-de-pixel",
+        "muestreo-submuestreo-y-sobremuestreo",
+        "binning"
+      ]
     },
     {
       "id": "escala-de-placa",
@@ -406,7 +649,13 @@
       "definicion": "Cuánto cielo ve cada píxel. Es el puente entre óptica y sensor y el número más útil para saber si un equipo está bien \"emparejado\".",
       "cuenta": "escala = 206,265 × píxel (µm) ÷ focal (mm).",
       "cuentaEtiqueta": "La cuenta",
-      "equipo": "S50 Pro ≈ 2,3″/px; Draco en cielo profundo ≈ 1,5″/px. Con un seeing típico de 2–4″, entre 1 y 2,5″/px es un rango cómodo."
+      "equipo": "S50 Pro ≈ 2,3″/px; Draco en cielo profundo ≈ 1,5″/px. Con un seeing típico de 2–4″, entre 1 y 2,5″/px es un rango cómodo.",
+      "relacionados": [
+        "muestreo-submuestreo-y-sobremuestreo",
+        "pixel-y-tamano-de-pixel",
+        "seeing",
+        "distancia-focal"
+      ]
     },
     {
       "id": "muestreo-submuestreo-y-sobremuestreo",
@@ -415,7 +664,13 @@
       "alias": "",
       "definicion": "Si cada píxel cubre demasiado cielo, las estrellas salen \"cuadradas\" (submuestreo). Si cubre demasiado poco, se desperdicia luz en detalle que la atmósfera ya ha borrado (sobremuestreo).",
       "cuenta": "es el teorema de muestreo de Nyquist aplicado a una imagen; la regla práctica es que una estrella ocupe unos 2–3 píxeles de FWHM.",
-      "cuentaEtiqueta": "La matemática"
+      "cuentaEtiqueta": "La matemática",
+      "relacionados": [
+        "escala-de-placa",
+        "seeing",
+        "hfd-fwhm",
+        "binning"
+      ]
     },
     {
       "id": "binning",
@@ -423,14 +678,25 @@
       "termino": "Binning",
       "alias": "agrupación de píxeles",
       "definicion": "Sumar los píxeles en bloques de 2×2 para formar uno mayor. Se pierde resolución pero se gana señal por píxel y se reduce el ruido relativo.",
-      "equipo": "el Draco usa sus 50 MP completos para Luna y planetas y los agrupa 2×2 (≈12 MP) para nebulosas y galaxias."
+      "equipo": "el Draco usa sus 50 MP completos para Luna y planetas y los agrupa 2×2 (≈12 MP) para nebulosas y galaxias.",
+      "relacionados": [
+        "pixel-y-tamano-de-pixel",
+        "muestreo-submuestreo-y-sobremuestreo",
+        "relacion-senal-ruido",
+        "megapixeles-mp-y-resolucion"
+      ]
     },
     {
       "id": "eficiencia-cuantica",
       "bloque": 3,
       "termino": "Eficiencia cuántica",
       "alias": "QE",
-      "definicion": "Porcentaje de fotones que el sensor convierte de verdad en electrones. Los sensores modernos rondan el 70–90 % en su mejor color."
+      "definicion": "Porcentaje de fotones que el sensor convierte de verdad en electrones. Los sensores modernos rondan el 70–90 % en su mejor color.",
+      "relacionados": [
+        "sensor-cmos",
+        "relacion-senal-ruido",
+        "camara-monocroma"
+      ]
     },
     {
       "id": "matriz-de-bayer-y-camara-en-color",
@@ -438,14 +704,24 @@
       "termino": "Matriz de Bayer y cámara en color",
       "alias": "OSC",
       "definicion": "Un sensor solo cuenta luz, no ve colores. Para obtener color se pone encima un mosaico de filtros rojo, verde y azul (patrón RGGB): cada píxel ve un solo color y el color completo se reconstruye después (*debayering*). OSC significa *One Shot Color*, color en una sola toma.",
-      "equipo": "ambos son OSC."
+      "equipo": "ambos son OSC.",
+      "relacionados": [
+        "camara-monocroma",
+        "reduccion-del-verde",
+        "filtro-de-banda-dual"
+      ]
     },
     {
       "id": "camara-monocroma",
       "bloque": 3,
       "termino": "Cámara monocroma",
       "alias": "",
-      "definicion": "Sin matriz de Bayer: cada píxel recoge toda la luz y el color se obtiene con filtros intercambiables (rojo, verde, azul, Hα...). Es más sensible y precisa, pero más laboriosa. Es el camino de la astrofotografía \"clásica\" avanzada."
+      "definicion": "Sin matriz de Bayer: cada píxel recoge toda la luz y el color se obtiene con filtros intercambiables (rojo, verde, azul, Hα...). Es más sensible y precisa, pero más laboriosa. Es el camino de la astrofotografía \"clásica\" avanzada.",
+      "relacionados": [
+        "matriz-de-bayer-y-camara-en-color",
+        "filtro-de-banda-estrecha",
+        "combinacion-de-canales"
+      ]
     },
     {
       "id": "ruido",
@@ -474,6 +750,12 @@
           "nombre": "Ruido de patrón fijo / *amp glow",
           "texto": "*: bandas o resplandores que el sensor genera siempre en el mismo sitio."
         }
+      ],
+      "relacionados": [
+        "relacion-senal-ruido",
+        "frames-de-calibracion",
+        "refrigeracion-activa",
+        "dithering"
       ]
     },
     {
@@ -483,35 +765,63 @@
       "alias": "SNR",
       "definicion": "El cociente que de verdad importa: cuánta señal útil hay frente al ruido. Una foto bonita es una foto con SNR alta.",
       "cuenta": "al sumar N tomas, la señal crece como N y el ruido aleatorio como √N, así que la SNR mejora como √N. Para duplicar la SNR necesitas **cuatro veces** más tiempo total. Es la ley más importante de la astrofotografía.",
-      "cuentaEtiqueta": "La matemática"
+      "cuentaEtiqueta": "La matemática",
+      "relacionados": [
+        "ruido",
+        "apilado",
+        "tiempo-de-integracion",
+        "subexposicion"
+      ]
     },
     {
       "id": "ganancia-gain-e-iso",
       "bloque": 3,
       "termino": "Ganancia (gain) e ISO",
       "alias": "",
-      "definicion": "Amplificación de la señal antes de digitalizarla. No crea luz: más ganancia hace la imagen más brillante pero reduce el rango dinámico. Los aparatos inteligentes la eligen solos; en modo Pro puedes tocarla."
+      "definicion": "Amplificación de la señal antes de digitalizarla. No crea luz: más ganancia hace la imagen más brillante pero reduce el rango dinámico. Los aparatos inteligentes la eligen solos; en modo Pro puedes tocarla.",
+      "relacionados": [
+        "rango-dinamico",
+        "ruido",
+        "saturacion",
+        "frames-de-calibracion"
+      ]
     },
     {
       "id": "rango-dinamico",
       "bloque": 3,
       "termino": "Rango dinámico",
       "alias": "",
-      "definicion": "Diferencia entre lo más tenue y lo más brillante que el sensor registra a la vez sin quemar ni perder. El núcleo de Orión frente a sus nubes exteriores es la prueba de fuego."
+      "definicion": "Diferencia entre lo más tenue y lo más brillante que el sensor registra a la vez sin quemar ni perder. El núcleo de Orión frente a sus nubes exteriores es la prueba de fuego.",
+      "relacionados": [
+        "ganancia-gain-e-iso",
+        "saturacion",
+        "profundidad-de-bits",
+        "histograma"
+      ]
     },
     {
       "id": "profundidad-de-bits",
       "bloque": 3,
       "termino": "Profundidad de bits",
       "alias": "12, 14, 16 bits",
-      "definicion": "Cuántos niveles de gris distingue cada píxel: 12 bits = 4.096 niveles; 16 bits = 65.536. Por eso se procesa en FITS o TIFF de 16 bits y no en JPEG de 8."
+      "definicion": "Cuántos niveles de gris distingue cada píxel: 12 bits = 4.096 niveles; 16 bits = 65.536. Por eso se procesa en FITS o TIFF de 16 bits y no en JPEG de 8.",
+      "relacionados": [
+        "fits-fit",
+        "tiff-png-jpeg",
+        "rango-dinamico"
+      ]
     },
     {
       "id": "saturacion",
       "bloque": 3,
       "termino": "Saturación",
       "alias": "*full well*",
-      "definicion": "Cuando el \"cubo\" de un píxel se llena, se desborda y la estrella queda blanca, sin color. Las exposiciones cortas protegen las estrellas brillantes."
+      "definicion": "Cuando el \"cubo\" de un píxel se llena, se desborda y la estrella queda blanca, sin color. Las exposiciones cortas protegen las estrellas brillantes.",
+      "relacionados": [
+        "rango-dinamico",
+        "subexposicion",
+        "histograma"
+      ]
     },
     {
       "id": "refrigeracion-activa",
@@ -519,21 +829,37 @@
       "termino": "Refrigeración activa",
       "alias": "cámara refrigerada",
       "definicion": "Un elemento Peltier enfría el sensor varios grados por debajo del ambiente y lo mantiene a temperatura constante. Reduce mucho la corriente oscura y hace los *darks* reproducibles.",
-      "equipo": "el Draco la tiene; el S50 Pro no (compensa con *darks* automáticos)."
+      "equipo": "el Draco la tiene; el S50 Pro no (compensa con *darks* automáticos).",
+      "relacionados": [
+        "ruido",
+        "frames-de-calibracion",
+        "rocio-dew-y-calentador-antirrocio"
+      ]
     },
     {
       "id": "rotacion-terrestre-y-seguimiento-sidereo",
       "bloque": 4,
       "termino": "Rotación terrestre y seguimiento sidéreo",
       "alias": "",
-      "definicion": "La Tierra gira unos 15″ de arco por segundo de tiempo (360° en 23 h 56 min, el \"día sidéreo\"). Sin seguimiento, a 260 mm de focal una estrella se convierte en una raya en apenas un par de segundos. La montura mueve el telescopio para compensarlo."
+      "definicion": "La Tierra gira unos 15″ de arco por segundo de tiempo (360° en 23 h 56 min, el \"día sidéreo\"). Sin seguimiento, a 260 mm de focal una estrella se convierte en una raya en apenas un par de segundos. La montura mueve el telescopio para compensarlo.",
+      "relacionados": [
+        "montura",
+        "rotacion-de-campo",
+        "montura-ecuatorial"
+      ]
     },
     {
       "id": "montura",
       "bloque": 4,
       "termino": "Montura",
       "alias": "",
-      "definicion": "El soporte motorizado que apunta y sigue. En los telescopios inteligentes va integrada en el propio cuerpo: no tienes que comprar otra."
+      "definicion": "El soporte motorizado que apunta y sigue. En los telescopios inteligentes va integrada en el propio cuerpo: no tienes que comprar otra.",
+      "relacionados": [
+        "montura-altazimutal",
+        "montura-ecuatorial",
+        "goto",
+        "rotacion-terrestre-y-seguimiento-sidereo"
+      ]
     },
     {
       "id": "montura-altazimutal",
@@ -542,7 +868,14 @@
       "alias": "Alt-Az",
       "definicion": "Se mueve en dos ejes \"terrestres\": arriba-abajo (altitud) y giro horizontal (acimut). Es intuitiva y se monta en segundos.",
       "regla": "la rotación de campo.",
-      "reglaEtiqueta": "Su problema"
+      "reglaEtiqueta": "Su problema",
+      "relacionados": [
+        "rotacion-de-campo",
+        "montura-ecuatorial",
+        "cenit-horizonte-altitud-y-acimut",
+        "nivelacion",
+        "recorte"
+      ]
     },
     {
       "id": "rotacion-de-campo",
@@ -550,7 +883,15 @@
       "termino": "Rotación de campo",
       "alias": "",
       "definicion": "Con una montura Alt-Az la estrella se mantiene centrada, pero la imagen gira lentamente alrededor del centro, porque el cielo rota alrededor del polo y la montura no.",
-      "analogia": "sigues con el móvil a un tiovivo; la figura que miras sigue en el centro, pero el caballito va girando dentro del encuadre. Consecuencias: limita la duración de cada toma y deja bordes \"mordidos\" en el apilado que hay que recortar. Es máxima cerca del cenit y mínima hacia el este u oeste."
+      "analogia": "sigues con el móvil a un tiovivo; la figura que miras sigue en el centro, pero el caballito va girando dentro del encuadre. Consecuencias: limita la duración de cada toma y deja bordes \"mordidos\" en el apilado que hay que recortar. Es máxima cerca del cenit y mínima hacia el este u oeste.",
+      "relacionados": [
+        "montura-altazimutal",
+        "desrotador-de-campo",
+        "modo-eq-en-un-telescopio-inteligente-cuna-ecuatorial",
+        "recorte",
+        "cenit-horizonte-altitud-y-acimut",
+        "apilado"
+      ]
     },
     {
       "id": "desrotador-de-campo",
@@ -558,7 +899,13 @@
       "termino": "Desrotador de campo",
       "alias": "",
       "definicion": "Mecanismo que gira el sensor a la misma velocidad que rota la imagen, anulando la rotación de campo sin inclinar el telescopio.",
-      "equipo": "es una de las grandes bazas del Draco, que gira físicamente su sensor CMOS."
+      "equipo": "es una de las grandes bazas del Draco, que gira físicamente su sensor CMOS.",
+      "relacionados": [
+        "rotacion-de-campo",
+        "montura-altazimutal",
+        "autoguiado",
+        "sensor-cmos"
+      ]
     },
     {
       "id": "montura-ecuatorial",
@@ -566,7 +913,14 @@
       "termino": "Montura ecuatorial",
       "alias": "EQ",
       "definicion": "Uno de sus ejes se inclina para quedar paralelo al eje de la Tierra. Así basta con girar un solo eje a velocidad constante para seguir el cielo, y no hay rotación de campo.",
-      "analogia": "en vez de perseguir el tiovivo, te subes a él."
+      "analogia": "en vez de perseguir el tiovivo, te subes a él.",
+      "relacionados": [
+        "alineacion-polar",
+        "polo-norte-celeste",
+        "latitud",
+        "meridian-flip",
+        "rotacion-de-campo"
+      ]
     },
     {
       "id": "modo-eq-en-un-telescopio-inteligente-cuna-ecuatorial",
@@ -574,28 +928,52 @@
       "termino": "Modo EQ en un telescopio inteligente / cuña ecuatorial",
       "alias": "",
       "definicion": "Inclinar el aparato entero un ángulo igual a tu latitud para que su eje de acimut apunte al polo.",
-      "equipo": "el S50 Pro lo admite con una cuña o una rótula como la ZWO TH10 (se compra aparte) y permite subexposiciones de hasta 60 s. El Draco lo hace inclinando su propia base metálica, sin cuña externa."
+      "equipo": "el S50 Pro lo admite con una cuña o una rótula como la ZWO TH10 (se compra aparte) y permite subexposiciones de hasta 60 s. El Draco lo hace inclinando su propia base metálica, sin cuña externa.",
+      "relacionados": [
+        "latitud",
+        "alineacion-polar",
+        "rotacion-de-campo",
+        "montura-ecuatorial",
+        "cenit-horizonte-altitud-y-acimut"
+      ]
     },
     {
       "id": "latitud",
       "bloque": 4,
       "termino": "Latitud",
       "alias": "",
-      "definicion": "Tu distancia angular al ecuador, y el ángulo al que hay que inclinar el eje en modo EQ: unos 37,9° en Córdoba capital."
+      "definicion": "Tu distancia angular al ecuador, y el ángulo al que hay que inclinar el eje en modo EQ: unos 37,9° en Córdoba capital.",
+      "relacionados": [
+        "polo-norte-celeste",
+        "modo-eq-en-un-telescopio-inteligente-cuna-ecuatorial",
+        "alineacion-polar",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec"
+      ]
     },
     {
       "id": "alineacion-polar",
       "bloque": 4,
       "termino": "Alineación polar",
       "alias": "",
-      "definicion": "Orientar con precisión el eje de la montura ecuatorial hacia el polo celeste. Cuanto mejor, más largas y limpias las tomas. Los aparatos inteligentes guían el proceso desde la app; ya no hace falta buscar la Polar a ojo con un buscador."
+      "definicion": "Orientar con precisión el eje de la montura ecuatorial hacia el polo celeste. Cuanto mejor, más largas y limpias las tomas. Los aparatos inteligentes guían el proceso desde la app; ya no hace falta buscar la Polar a ojo con un buscador.",
+      "relacionados": [
+        "montura-ecuatorial",
+        "polo-norte-celeste",
+        "latitud",
+        "deriva-y-drift"
+      ]
     },
     {
       "id": "goto",
       "bloque": 4,
       "termino": "GoTo",
       "alias": "",
-      "definicion": "La capacidad de apuntar sola a cualquier objeto que elijas en un catálogo. Todos los inteligentes la tienen."
+      "definicion": "La capacidad de apuntar sola a cualquier objeto que elijas en un catálogo. Todos los inteligentes la tienen.",
+      "relacionados": [
+        "plate-solving",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec",
+        "nivelacion"
+      ]
     },
     {
       "id": "plate-solving",
@@ -603,14 +981,24 @@
       "termino": "Plate solving",
       "alias": "resolución astrométrica",
       "definicion": "El aparato toma una foto rápida, compara el patrón de estrellas con un catálogo y deduce exactamente hacia dónde mira, con precisión de segundos de arco. Luego corrige la puntería.",
-      "analogia": "reconocer una ciudad por la forma de su callejero visto desde un avión. Es la razón por la que ya no hace falta \"alinear con dos o tres estrellas\" como antes."
+      "analogia": "reconocer una ciudad por la forma de su callejero visto desde un avión. Es la razón por la que ya no hace falta \"alinear con dos o tres estrellas\" como antes.",
+      "relacionados": [
+        "goto",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec",
+        "calibracion-fotometrica-del-color"
+      ]
     },
     {
       "id": "error-periodico",
       "bloque": 4,
       "termino": "Error periódico",
       "alias": "",
-      "definicion": "Pequeña oscilación regular en el seguimiento debida a la imperfección de los engranajes. Se corrige con autoguiado."
+      "definicion": "Pequeña oscilación regular en el seguimiento debida a la imperfección de los engranajes. Se corrige con autoguiado.",
+      "relacionados": [
+        "autoguiado",
+        "holgura",
+        "montura"
+      ]
     },
     {
       "id": "holgura",
@@ -618,7 +1006,12 @@
       "termino": "Holgura",
       "alias": "*backlash*",
       "definicion": "Juego mecánico entre engranajes al cambiar de sentido.",
-      "equipo": "el S50 Pro estrena un sistema de transmisión con holgura casi nula, más resistente al viento."
+      "equipo": "el S50 Pro estrena un sistema de transmisión con holgura casi nula, más resistente al viento.",
+      "relacionados": [
+        "error-periodico",
+        "autoguiado",
+        "montura"
+      ]
     },
     {
       "id": "autoguiado",
@@ -627,42 +1020,74 @@
       "alias": "",
       "definicion": "Un segundo telescopio pequeño con su propia cámara vigila una estrella varias veces por segundo y manda pequeñas correcciones a la montura. Es lo que permite exposiciones de minutos sin estelas.",
       "analogia": "el carril que te mantiene en la autopista.",
-      "equipo": "el Draco lleva un telescopio-guía integrado (por eso llega a 300 s por toma); el S50 Pro no lo tiene."
+      "equipo": "el Draco lleva un telescopio-guía integrado (por eso llega a 300 s por toma); el S50 Pro no lo tiene.",
+      "relacionados": [
+        "error-periodico",
+        "telescopio-guia-oag",
+        "subexposicion"
+      ]
     },
     {
       "id": "telescopio-guia-oag",
       "bloque": 4,
       "termino": "Telescopio guía / OAG",
       "alias": "",
-      "definicion": "Las dos maneras clásicas de guiar: con un pequeño telescopio aparte o con un prisma que roba luz del telescopio principal (*Off-Axis Guider*)."
+      "definicion": "Las dos maneras clásicas de guiar: con un pequeño telescopio aparte o con un prisma que roba luz del telescopio principal (*Off-Axis Guider*).",
+      "relacionados": [
+        "autoguiado",
+        "error-periodico"
+      ]
     },
     {
       "id": "deriva-y-drift",
       "bloque": 4,
       "termino": "Deriva y *drift*",
       "alias": "",
-      "definicion": "Desplazamiento lento del objeto en la imagen por una alineación imperfecta o un trípode mal nivelado. El apilado lo corrige, pero se pierden bordes."
+      "definicion": "Desplazamiento lento del objeto en la imagen por una alineación imperfecta o un trípode mal nivelado. El apilado lo corrige, pero se pierden bordes.",
+      "relacionados": [
+        "alineacion-polar",
+        "nivelacion",
+        "recorte",
+        "tripode-y-rosca-3-8",
+        "apilado"
+      ]
     },
     {
       "id": "nivelacion",
       "bloque": 4,
       "termino": "Nivelación",
       "alias": "",
-      "definicion": "Que la base del telescopio esté perfectamente horizontal. Influye en la precisión del GoTo y del seguimiento Alt-Az. Una base niveladora con burbuja lo hace en segundos."
+      "definicion": "Que la base del telescopio esté perfectamente horizontal. Influye en la precisión del GoTo y del seguimiento Alt-Az. Una base niveladora con burbuja lo hace en segundos.",
+      "relacionados": [
+        "montura-altazimutal",
+        "goto",
+        "tripode-y-rosca-3-8"
+      ]
     },
     {
       "id": "tripode-y-rosca-3-8",
       "bloque": 4,
       "termino": "Trípode y rosca 3/8″",
       "alias": "",
-      "definicion": "La rosca estándar \"grande\" de los trípodes, la que usan ambos aparatos. La pequeña, de fotografía, es 1/4″. La rigidez del trípode importa más que su peso: el viento y las pisadas se transmiten a la imagen."
+      "definicion": "La rosca estándar \"grande\" de los trípodes, la que usan ambos aparatos. La pequeña, de fotografía, es 1/4″. La rigidez del trípode importa más que su peso: el viento y las pisadas se transmiten a la imagen.",
+      "relacionados": [
+        "nivelacion",
+        "deriva-y-drift",
+        "modo-eq-en-un-telescopio-inteligente-cuna-ecuatorial",
+        "meridian-flip"
+      ]
     },
     {
       "id": "meridian-flip",
       "bloque": 4,
       "termino": "Meridian flip",
       "alias": "",
-      "definicion": "En monturas ecuatoriales clásicas, cuando un objeto cruza el meridiano el telescopio debe \"dar la vuelta\" para no chocar con el trípode. Los inteligentes lo resuelven solos."
+      "definicion": "En monturas ecuatoriales clásicas, cuando un objeto cruza el meridiano el telescopio debe \"dar la vuelta\" para no chocar con el trípode. Los inteligentes lo resuelven solos.",
+      "relacionados": [
+        "meridiano",
+        "montura-ecuatorial",
+        "tripode-y-rosca-3-8"
+      ]
     },
     {
       "id": "subexposicion",
@@ -670,14 +1095,39 @@
       "termino": "Subexposición",
       "alias": "*sub* o *light frame*",
       "definicion": "Cada una de las fotos individuales que se toman del objeto.",
-      "equipo": "el S50 Pro trabaja con subs de 10–30 s (hasta 60 s en modo EQ); el Draco, hasta 300 s."
+      "equipo": "el S50 Pro trabaja con subs de 10–30 s (hasta 60 s en modo EQ); el Draco, hasta 300 s.",
+      "relacionados": [
+        "tiempo-de-integracion",
+        "subs-cortas-o-largas",
+        "rotacion-de-campo",
+        "autoguiado"
+      ]
     },
     {
       "id": "tiempo-de-integracion",
       "bloque": 5,
       "termino": "Tiempo de integración",
       "alias": "",
-      "definicion": "Suma de todas las subs: 360 tomas de 10 s son 1 hora de integración. Es la cifra que se publica junto a cada foto (\"3 h de integración\") y la que más determina la calidad final."
+      "definicion": "Suma de todas las subs: 360 tomas de 10 s son 1 hora de integración. Es la cifra que se publica junto a cada foto (\"3 h de integración\") y la que más determina la calidad final.",
+      "relacionados": [
+        "relacion-senal-ruido",
+        "subexposicion",
+        "integracion-multinoche",
+        "subs-cortas-o-largas"
+      ]
+    },
+    {
+      "id": "subs-cortas-o-largas",
+      "bloque": 5,
+      "termino": "¿Subs cortas o largas?",
+      "alias": "",
+      "definicion": "Con la misma integración total, las subs largas ganan cuando el ruido de lectura pesa mucho (cielos oscuros, filtros estrechos). Las cortas ganan en tolerancia: un avión o una ráfaga de viento estropea 10 s, no 5 minutos. Bajo cielo contaminado la diferencia se estrecha mucho.",
+      "relacionados": [
+        "subexposicion",
+        "ruido",
+        "tiempo-de-integracion",
+        "contaminacion-luminica"
+      ]
     },
     {
       "id": "apilado",
@@ -686,14 +1136,27 @@
       "alias": "*stacking*",
       "definicion": "Alinear todas las subs y promediarlas (o tomar la mediana) píxel a píxel. La señal del objeto es la misma en todas, mientras que el ruido aleatorio es distinto en cada una y se cancela.",
       "cuenta": "es el mismo principio que promediar muchas mediciones para reducir el error estándar, que cae como 1/√N.",
-      "cuentaEtiqueta": "La matemática"
+      "cuentaEtiqueta": "La matemática",
+      "relacionados": [
+        "relacion-senal-ruido",
+        "rechazo-de-pixeles",
+        "apilado-en-vivo",
+        "tiempo-de-integracion",
+        "dithering",
+        "integracion-multinoche"
+      ]
     },
     {
       "id": "apilado-en-vivo",
       "bloque": 5,
       "termino": "Apilado en vivo",
       "alias": "*live stacking*",
-      "definicion": "El aparato apila cada sub según llega y te enseña en la pantalla cómo la imagen \"aparece\" poco a poco. Es la experiencia central de los telescopios inteligentes."
+      "definicion": "El aparato apila cada sub según llega y te enseña en la pantalla cómo la imagen \"aparece\" poco a poco. Es la experiencia central de los telescopios inteligentes.",
+      "relacionados": [
+        "apilado",
+        "subexposicion",
+        "integracion-multinoche"
+      ]
     },
     {
       "id": "rechazo-de-pixeles",
@@ -702,7 +1165,12 @@
       "alias": "*sigma clipping*",
       "definicion": "Al apilar, se descartan valores anómalos que se alejan más de cierto número de desviaciones típicas de la media: satélites, aviones, rayos cósmicos.",
       "cuenta": "exactamente lo que parece, recortar los *outliers* en cada píxel.",
-      "cuentaEtiqueta": "La estadística"
+      "cuentaEtiqueta": "La estadística",
+      "relacionados": [
+        "apilado",
+        "dithering",
+        "ruido"
+      ]
     },
     {
       "id": "frames-de-calibracion",
@@ -728,35 +1196,64 @@
           "texto": "*darks* con la duración de los *flats*, para calibrar los *flats*."
         }
       ],
-      "equipo": "ambos hacen la calibración automáticamente (el S50 Pro con un filtro \"de oscuro\" interno; el Draco con *flats* y *bias* de fábrica y *darks* automáticos). Solo tendrás que pensar en ello si procesas los archivos en bruto a mano."
+      "equipo": "ambos hacen la calibración automáticamente (el S50 Pro con un filtro \"de oscuro\" interno; el Draco con *flats* y *bias* de fábrica y *darks* automáticos). Solo tendrás que pensar en ello si procesas los archivos en bruto a mano.",
+      "relacionados": [
+        "master-dark-master-flat",
+        "ruido",
+        "dithering",
+        "coma-astigmatismo-curvatura-de-campo-vineteo",
+        "ganancia-gain-e-iso"
+      ]
     },
     {
       "id": "master-dark-master-flat",
       "bloque": 5,
       "termino": "Master dark / master flat",
       "alias": "",
-      "definicion": "Promedio de muchos *darks* o *flats*, para que la calibración no añada su propio ruido."
+      "definicion": "Promedio de muchos *darks* o *flats*, para que la calibración no añada su propio ruido.",
+      "relacionados": [
+        "frames-de-calibracion",
+        "ruido",
+        "refrigeracion-activa"
+      ]
     },
     {
       "id": "dithering",
       "bloque": 5,
       "termino": "Dithering",
       "alias": "",
-      "definicion": "Desplazar ligeramente el encuadre unos pocos píxeles entre subs. Así los defectos fijos del sensor caen en sitios distintos del cielo y el apilado los elimina. Evita el ruido \"en lluvia\" (*walking noise*)."
+      "definicion": "Desplazar ligeramente el encuadre unos pocos píxeles entre subs. Así los defectos fijos del sensor caen en sitios distintos del cielo y el apilado los elimina. Evita el ruido \"en lluvia\" (*walking noise*).",
+      "relacionados": [
+        "rechazo-de-pixeles",
+        "frames-de-calibracion",
+        "ruido",
+        "apilado",
+        "recorte"
+      ]
     },
     {
       "id": "histograma",
       "bloque": 5,
       "termino": "Histograma",
       "alias": "",
-      "definicion": "Gráfico que muestra cuántos píxeles hay de cada brillo. En astrofotografía una sub bien expuesta tiene el pico separado del borde izquierdo (no recortado en negro) y las estrellas no saturadas a la derecha."
+      "definicion": "Gráfico que muestra cuántos píxeles hay de cada brillo. En astrofotografía una sub bien expuesta tiene el pico separado del borde izquierdo (no recortado en negro) y las estrellas no saturadas a la derecha.",
+      "relacionados": [
+        "estirado-stretch-e-imagen-no-lineal",
+        "saturacion",
+        "rango-dinamico"
+      ]
     },
     {
       "id": "mosaico",
       "bloque": 5,
       "termino": "Mosaico",
       "alias": "",
-      "definicion": "Varias tomas contiguas unidas para cubrir un objeto mayor que el campo. Ojo: el tiempo se reparte entre los paneles, así que cada uno recibe menos integración."
+      "definicion": "Varias tomas contiguas unidas para cubrir un objeto mayor que el campo. Ojo: el tiempo se reparte entre los paneles, así que cada uno recibe menos integración.",
+      "relacionados": [
+        "campo-de-vision",
+        "mosaico-8k",
+        "tiempo-de-integracion"
+      ]
     },
     {
       "id": "mosaico-8k",
@@ -764,14 +1261,23 @@
       "termino": "Mosaico 8K",
       "alias": "",
       "definicion": "",
-      "equipo": "el S50 Pro puede componer mosaicos que pasan de 4K a imágenes de unos 8K."
+      "equipo": "el S50 Pro puede componer mosaicos que pasan de 4K a imágenes de unos 8K.",
+      "relacionados": [
+        "mosaico",
+        "campo-de-vision"
+      ]
     },
     {
       "id": "modo-plan-plan-de-sesion",
       "bloque": 5,
       "termino": "Modo plan / plan de sesión",
       "alias": "",
-      "definicion": "Programar una lista de objetos y horas para que el aparato trabaje solo toda la noche. Ambos lo ofrecen."
+      "definicion": "Programar una lista de objetos y horas para que el aparato trabaje solo toda la noche. Ambos lo ofrecen.",
+      "relacionados": [
+        "integracion-multinoche",
+        "culminacion",
+        "goto"
+      ]
     },
     {
       "id": "integracion-multinoche",
@@ -780,7 +1286,12 @@
       "alias": "",
       "definicion": "Juntar las subs de un mismo objeto tomadas en varias noches para alcanzar muchas horas.",
       "regla": "activa siempre \"guardar subexposiciones\" en la app; si no, solo se conserva el resultado apilado.",
-      "reglaEtiqueta": "Consejo"
+      "reglaEtiqueta": "Consejo",
+      "relacionados": [
+        "tiempo-de-integracion",
+        "apilado",
+        "fits-fit"
+      ]
     },
     {
       "id": "lucky-imaging",
@@ -788,35 +1299,63 @@
       "termino": "Lucky imaging",
       "alias": "imagen afortunada",
       "definicion": "Técnica planetaria y lunar: grabar un vídeo de miles de fotogramas muy cortos y quedarse con el 5–10 % más nítido, los que \"pillaron\" la atmósfera quieta.",
-      "equipo": "ambos graban vídeo para Sol, Luna y planetas."
+      "equipo": "ambos graban vídeo para Sol, Luna y planetas.",
+      "relacionados": [
+        "seeing",
+        "apilado",
+        "filtro-solar"
+      ]
     },
     {
       "id": "sesion-first-light-y-noche-de-pruebas",
       "bloque": 5,
       "termino": "Sesión, *first light* y \"noche de pruebas\"",
       "alias": "",
-      "definicion": "*First light* es la primera noche de un equipo. Tradición: no esperes una obra maestra; dedícala a aprender la app."
+      "definicion": "*First light* es la primera noche de un equipo. Tradición: no esperes una obra maestra; dedícala a aprender la app.",
+      "relacionados": [
+        "apilado-en-vivo",
+        "modo-plan-plan-de-sesion"
+      ]
     },
     {
       "id": "contaminacion-luminica",
       "bloque": 6,
       "termino": "Contaminación lumínica",
       "alias": "",
-      "definicion": "Luz artificial que ilumina el fondo del cielo y \"tapa\" los objetos tenues. No impide fotografiar, pero obliga a más integración o a filtros. Las farolas LED blancas modernas son peores que las antiguas de sodio naranja, porque emiten en casi todos los colores y son más difíciles de filtrar."
+      "definicion": "Luz artificial que ilumina el fondo del cielo y \"tapa\" los objetos tenues. No impide fotografiar, pero obliga a más integración o a filtros. Las farolas LED blancas modernas son peores que las antiguas de sodio naranja, porque emiten en casi todos los colores y son más difíciles de filtrar.",
+      "relacionados": [
+        "escala-de-bortle",
+        "sqm-sky-quality-meter-y-mag-arcsec",
+        "cupula-de-luz",
+        "gradiente",
+        "nanometro-nm-y-ancho-de-banda",
+        "masa-de-aire-y-la-regla-de-los-30"
+      ]
     },
     {
       "id": "escala-de-bortle",
       "bloque": 6,
       "termino": "Escala de Bortle",
       "alias": "1–9",
-      "definicion": "Clasificación visual de la oscuridad del cielo creada por John E. Bortle en 2001. 1 = cielo prístino; 4 = rural con cúpulas de luz en el horizonte; 6–7 = periferia urbana; 9 = centro de gran ciudad. Es una referencia orientativa, no una medida física."
+      "definicion": "Clasificación visual de la oscuridad del cielo creada por John E. Bortle en 2001. 1 = cielo prístino; 4 = rural con cúpulas de luz en el horizonte; 6–7 = periferia urbana; 9 = centro de gran ciudad. Es una referencia orientativa, no una medida física.",
+      "relacionados": [
+        "sqm-sky-quality-meter-y-mag-arcsec",
+        "contaminacion-luminica",
+        "cupula-de-luz"
+      ]
     },
     {
       "id": "sqm-sky-quality-meter-y-mag-arcsec",
       "bloque": 6,
       "termino": "SQM (*Sky Quality Meter*) y mag/arcsec²",
       "alias": "",
-      "definicion": "Medida física del brillo del fondo de cielo, en magnitudes por segundo de arco cuadrado. Como siempre en magnitudes, **más alto es mejor**: 21,7–22 es un cielo excelente; 20 es periurbano; 18 o menos es ciudad. Puedes consultarlo en lightpollutionmap.info o medirlo con un fotómetro SQM."
+      "definicion": "Medida física del brillo del fondo de cielo, en magnitudes por segundo de arco cuadrado. Como siempre en magnitudes, **más alto es mejor**: 21,7–22 es un cielo excelente; 20 es periurbano; 18 o menos es ciudad. Puedes consultarlo en lightpollutionmap.info o medirlo con un fotómetro SQM.",
+      "relacionados": [
+        "escala-de-bortle",
+        "magnitud-aparente",
+        "brillo-superficial",
+        "tamano-angular-grado-minuto-y-segundo-de-arco"
+      ]
     },
     {
       "id": "cupula-de-luz",
@@ -825,14 +1364,24 @@
       "alias": "",
       "definicion": "Resplandor sobre el horizonte en dirección a una ciudad.",
       "regla": "fotografía hacia el lado contrario a la ciudad más cercana y con el objeto alto.",
-      "reglaEtiqueta": "Regla práctica"
+      "reglaEtiqueta": "Regla práctica",
+      "relacionados": [
+        "contaminacion-luminica",
+        "gradiente",
+        "masa-de-aire-y-la-regla-de-los-30"
+      ]
     },
     {
       "id": "gradiente",
       "bloque": 6,
       "termino": "Gradiente",
       "alias": "",
-      "definicion": "Variación suave del brillo de fondo de un lado a otro de la imagen, causada por la contaminación lumínica o la Luna. Se elimina en el procesado (bloque 7)."
+      "definicion": "Variación suave del brillo de fondo de un lado a otro de la imagen, causada por la contaminación lumínica o la Luna. Se elimina en el procesado (bloque 7).",
+      "relacionados": [
+        "eliminacion-de-gradientes",
+        "contaminacion-luminica",
+        "cupula-de-luz"
+      ]
     },
     {
       "id": "espectro-continuo-frente-a-lineas-de-emision",
@@ -841,7 +1390,13 @@
       "alias": "",
       "definicion": "Una estrella o una galaxia emite luz en todos los colores (como el arcoíris completo). Una nebulosa de emisión emite solo en unos pocos colores muy precisos, como un letrero de neón.",
       "cuenta": "cada elemento ionizado emite fotones a longitudes de onda fijas cuando sus electrones se recombinan y bajan de nivel de energía. Esa diferencia es la que aprovechan los filtros.",
-      "cuentaEtiqueta": "La física"
+      "cuentaEtiqueta": "La física",
+      "relacionados": [
+        "las-lineas-clave",
+        "filtro-de-banda-dual",
+        "nebulosa",
+        "galaxia"
+      ]
     },
     {
       "id": "las-lineas-clave",
@@ -866,6 +1421,12 @@
           "nombre": "Hβ (hidrógeno beta)",
           "texto": "486,1 nm, azul. Útil sobre todo en algunas nebulosas concretas."
         }
+      ],
+      "relacionados": [
+        "espectro-continuo-frente-a-lineas-de-emision",
+        "filtro-de-banda-dual",
+        "paleta-sho-o-paleta-hubble",
+        "nanometro-nm-y-ancho-de-banda"
       ]
     },
     {
@@ -873,7 +1434,13 @@
       "bloque": 6,
       "termino": "Nanómetro (nm) y ancho de banda",
       "alias": "",
-      "definicion": "1 nm es una milmillonésima de metro. El ancho de banda de un filtro dice cuántos nanómetros deja pasar alrededor de su línea: cuanto más estrecho, más contraste frente a la contaminación lumínica, pero menos luz y más tiempo necesario."
+      "definicion": "1 nm es una milmillonésima de metro. El ancho de banda de un filtro dice cuántos nanómetros deja pasar alrededor de su línea: cuanto más estrecho, más contraste frente a la contaminación lumínica, pero menos luz y más tiempo necesario.",
+      "relacionados": [
+        "filtro-de-banda-estrecha",
+        "filtro-de-banda-dual",
+        "las-lineas-clave",
+        "contaminacion-luminica"
+      ]
     },
     {
       "id": "filtro-de-banda-ancha-uv-ir-cut",
@@ -881,14 +1448,24 @@
       "termino": "Filtro de banda ancha / UV-IR cut",
       "alias": "",
       "definicion": "Deja pasar todo el visible y corta el ultravioleta y el infrarrojo, que enfocarían en otro punto e hincharían las estrellas. Es el filtro para galaxias, cúmulos y nebulosas de reflexión.",
-      "equipo": "el S50 Pro lo trae integrado; el Draco incluye un filtro \"astro\" equivalente."
+      "equipo": "el S50 Pro lo trae integrado; el Draco incluye un filtro \"astro\" equivalente.",
+      "relacionados": [
+        "galaxia",
+        "filtro-antipolucion-de-banda-ancha",
+        "filtro-de-banda-dual"
+      ]
     },
     {
       "id": "filtro-antipolucion-de-banda-ancha",
       "bloque": 6,
       "termino": "Filtro antipolución de banda ancha",
       "alias": "LPR, CLS",
-      "definicion": "Recorta algunas franjas típicas de las farolas antiguas. Con LED moderno su eficacia es limitada."
+      "definicion": "Recorta algunas franjas típicas de las farolas antiguas. Con LED moderno su eficacia es limitada.",
+      "relacionados": [
+        "contaminacion-luminica",
+        "filtro-de-banda-ancha-uv-ir-cut",
+        "filtro-de-banda-dual"
+      ]
     },
     {
       "id": "filtro-de-banda-dual",
@@ -896,14 +1473,27 @@
       "termino": "Filtro de banda dual",
       "alias": "*dual-band*, Hα + OIII",
       "definicion": "Deja pasar dos ventanas estrechas a la vez, una en el Hα y otra en el OIII, y bloquea casi todo lo demás. Es el filtro \"salvavidas\" de las nebulosas de emisión desde la ciudad o con Luna.",
-      "equipo": "ambos lo traen; en el S50 Pro las ventanas miden unos 20 nm (Hα) y 30 nm (OIII)."
+      "equipo": "ambos lo traen; en el S50 Pro las ventanas miden unos 20 nm (Hα) y 30 nm (OIII).",
+      "relacionados": [
+        "las-lineas-clave",
+        "paleta-hoo",
+        "filtro-de-banda-estrecha",
+        "nebulosa"
+      ]
     },
     {
       "id": "filtro-de-banda-estrecha",
       "bloque": 6,
       "termino": "Filtro de banda estrecha",
       "alias": "*narrowband*",
-      "definicion": "Filtro de una sola línea con un ancho de 3–7 nm. Es el estándar con cámaras monocromas."
+      "definicion": "Filtro de una sola línea con un ancho de 3–7 nm. Es el estándar con cámaras monocromas.",
+      "relacionados": [
+        "las-lineas-clave",
+        "paleta-sho-o-paleta-hubble",
+        "camara-monocroma",
+        "nanometro-nm-y-ancho-de-banda",
+        "fase-lunar-y-luna-nueva"
+      ]
     },
     {
       "id": "paleta-sho-o-paleta-hubble",
@@ -911,21 +1501,37 @@
       "termino": "Paleta SHO o \"paleta Hubble\"",
       "alias": "",
       "definicion": "Asignar el SII al rojo, el Hα al verde y el OIII al azul. Es un **falso color** científico: permite ver por separado dónde está cada elemento. El resultado son los famosos dorados y azul turquesa de las fotos de la NASA.",
-      "equipo": "la versión SHO del Draco añade un segundo filtro dual (SII + OIII) y su app combina los datos automáticamente en esta paleta."
+      "equipo": "la versión SHO del Draco añade un segundo filtro dual (SII + OIII) y su app combina los datos automáticamente en esta paleta.",
+      "relacionados": [
+        "paleta-hoo",
+        "las-lineas-clave",
+        "falso-color-frente-a-color-natural",
+        "combinacion-de-canales"
+      ]
     },
     {
       "id": "paleta-hoo",
       "bloque": 6,
       "termino": "Paleta HOO",
       "alias": "",
-      "definicion": "Hα al rojo y OIII al verde y al azul. Es la que sale de forma natural con un filtro dual en una cámara a color, con tonos rojo y cian bastante cercanos a la realidad."
+      "definicion": "Hα al rojo y OIII al verde y al azul. Es la que sale de forma natural con un filtro dual en una cámara a color, con tonos rojo y cian bastante cercanos a la realidad.",
+      "relacionados": [
+        "paleta-sho-o-paleta-hubble",
+        "filtro-de-banda-dual",
+        "falso-color-frente-a-color-natural"
+      ]
     },
     {
       "id": "falso-color-frente-a-color-natural",
       "bloque": 6,
       "termino": "Falso color frente a color natural",
       "alias": "",
-      "definicion": "Ninguna foto de cielo profundo es \"lo que verías\": el ojo no ve color en objetos tan tenues. El color natural (RGB) intenta reproducir los colores reales; el falso color los reasigna para revelar la química."
+      "definicion": "Ninguna foto de cielo profundo es \"lo que verías\": el ojo no ve color en objetos tan tenues. El color natural (RGB) intenta reproducir los colores reales; el falso color los reasigna para revelar la química.",
+      "relacionados": [
+        "paleta-sho-o-paleta-hubble",
+        "paleta-hoo",
+        "calibracion-fotometrica-del-color"
+      ]
     },
     {
       "id": "filtro-solar",
@@ -933,35 +1539,59 @@
       "termino": "Filtro solar",
       "alias": "ND, densidad neutra",
       "definicion": "Filtro que bloquea casi toda la luz del Sol (típicamente deja pasar 1/100.000). Imprescindible y siempre **delante** de la óptica, bien asentado.",
-      "equipo": "el S50 Pro trae uno magnético; el Draco estándar lo lleva interno y automático; el Draco SHO lo trae externo, magnético. **Nunca apuntes al Sol sin él.**"
+      "equipo": "el S50 Pro trae uno magnético; el Draco estándar lo lleva interno y automático; el Draco SHO lo trae externo, magnético. **Nunca apuntes al Sol sin él.**",
+      "relacionados": [
+        "halfa-solar",
+        "lucky-imaging"
+      ]
     },
     {
       "id": "halfa-solar",
       "bloque": 6,
       "termino": "Hα solar",
       "alias": "telescopio solar",
-      "definicion": "Para ver protuberancias y la cromosfera hace falta un telescopio específico de banda ultraestrecha (menos de 0,1 nm). Ninguno de estos dos aparatos lo hace: con ellos verás manchas solares en luz blanca."
+      "definicion": "Para ver protuberancias y la cromosfera hace falta un telescopio específico de banda ultraestrecha (menos de 0,1 nm). Ninguno de estos dos aparatos lo hace: con ellos verás manchas solares en luz blanca.",
+      "relacionados": [
+        "filtro-solar",
+        "las-lineas-clave"
+      ]
     },
     {
       "id": "fits-fit",
       "bloque": 7,
       "termino": "FITS / FIT",
       "alias": "",
-      "definicion": "Formato estándar de la astronomía científica (desde 1981). Guarda los datos en bruto, sin comprimir, con 16 bits o más, y una cabecera con metadatos: objeto, coordenadas, exposición, temperatura, fecha. Es tu \"negativo\": consérvalo siempre."
+      "definicion": "Formato estándar de la astronomía científica (desde 1981). Guarda los datos en bruto, sin comprimir, con 16 bits o más, y una cabecera con metadatos: objeto, coordenadas, exposición, temperatura, fecha. Es tu \"negativo\": consérvalo siempre.",
+      "relacionados": [
+        "tiff-png-jpeg",
+        "profundidad-de-bits",
+        "imagen-lineal",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec"
+      ]
     },
     {
       "id": "tiff-png-jpeg",
       "bloque": 7,
       "termino": "TIFF / PNG / JPEG",
       "alias": "",
-      "definicion": "TIFF de 16 bits sirve para intercambiar imágenes entre programas sin perder calidad. JPEG es solo para compartir el resultado final: comprime y tiene 8 bits."
+      "definicion": "TIFF de 16 bits sirve para intercambiar imágenes entre programas sin perder calidad. JPEG es solo para compartir el resultado final: comprime y tiene 8 bits.",
+      "relacionados": [
+        "fits-fit",
+        "profundidad-de-bits"
+      ]
     },
     {
       "id": "imagen-lineal",
       "bloque": 7,
       "termino": "Imagen lineal",
       "alias": "",
-      "definicion": "Recién apilada, la imagen guarda una relación proporcional entre el brillo real y el valor del píxel. En pantalla parece casi negra con unas cuantas estrellas. Es el estado en el que se hacen las operaciones \"científicas\": calibración de color, eliminación de gradientes, deconvolución."
+      "definicion": "Recién apilada, la imagen guarda una relación proporcional entre el brillo real y el valor del píxel. En pantalla parece casi negra con unas cuantas estrellas. Es el estado en el que se hacen las operaciones \"científicas\": calibración de color, eliminación de gradientes, deconvolución.",
+      "relacionados": [
+        "estirado-stretch-e-imagen-no-lineal",
+        "autoestirado",
+        "eliminacion-de-gradientes",
+        "deconvolucion"
+      ]
     },
     {
       "id": "estirado-stretch-e-imagen-no-lineal",
@@ -970,14 +1600,23 @@
       "alias": "",
       "definicion": "Aplicar una curva que levanta muchísimo las sombras sin quemar las luces, para que aparezca la nebulosa. Una vez estirada, la imagen es no lineal.",
       "cuenta": "son transformaciones como el arcoseno, la curva logarítmica o la *Midtones Transfer Function*; el *Generalized Hyperbolic Stretch* (GHS) es la versión más controlable.",
-      "cuentaEtiqueta": "La matemática"
+      "cuentaEtiqueta": "La matemática",
+      "relacionados": [
+        "imagen-lineal",
+        "autoestirado",
+        "histograma"
+      ]
     },
     {
       "id": "autoestirado",
       "bloque": 7,
       "termino": "Autoestirado",
       "alias": "STF, *autostretch*",
-      "definicion": "Vista previa estirada solo en pantalla, que no modifica los datos. Sirve para ver qué hay en la imagen lineal."
+      "definicion": "Vista previa estirada solo en pantalla, que no modifica los datos. Sirve para ver qué hay en la imagen lineal.",
+      "relacionados": [
+        "estirado-stretch-e-imagen-no-lineal",
+        "imagen-lineal"
+      ]
     },
     {
       "id": "eliminacion-de-gradientes",
@@ -985,28 +1624,49 @@
       "termino": "Eliminación de gradientes",
       "alias": "ABE, DBE, *background extraction*",
       "definicion": "Modelar el fondo del cielo con una superficie suave y restarlo, para quitar la contaminación lumínica, la Luna o el viñeteo residual. GraXpert y Siril lo hacen muy bien.",
-      "equipo": "la app del S50 Pro trae DBE integrado."
+      "equipo": "la app del S50 Pro trae DBE integrado.",
+      "relacionados": [
+        "gradiente",
+        "contaminacion-luminica",
+        "imagen-lineal",
+        "coma-astigmatismo-curvatura-de-campo-vineteo"
+      ]
     },
     {
       "id": "calibracion-fotometrica-del-color",
       "bloque": 7,
       "termino": "Calibración fotométrica del color",
       "alias": "PCC / SPCC",
-      "definicion": "El programa identifica las estrellas por *plate solving*, consulta su color real en un catálogo (Gaia) y corrige el balance de blancos para que coincida. Es la forma \"científica\" de obtener un color correcto. Siril lo hace gratis."
+      "definicion": "El programa identifica las estrellas por *plate solving*, consulta su color real en un catálogo (Gaia) y corrige el balance de blancos para que coincida. Es la forma \"científica\" de obtener un color correcto. Siril lo hace gratis.",
+      "relacionados": [
+        "balance-de-blancos-neutralizacion-del-fondo",
+        "plate-solving",
+        "reduccion-del-verde"
+      ]
     },
     {
       "id": "balance-de-blancos-neutralizacion-del-fondo",
       "bloque": 7,
       "termino": "Balance de blancos / neutralización del fondo",
       "alias": "",
-      "definicion": "Hacer que el fondo del cielo sea un gris neutro y no verdoso, rojizo o anaranjado."
+      "definicion": "Hacer que el fondo del cielo sea un gris neutro y no verdoso, rojizo o anaranjado.",
+      "relacionados": [
+        "calibracion-fotometrica-del-color",
+        "reduccion-del-verde",
+        "gradiente"
+      ]
     },
     {
       "id": "reduccion-del-verde",
       "bloque": 7,
       "termino": "Reducción del verde",
       "alias": "SCNR",
-      "definicion": "Las cámaras a color y la contaminación lumínica dejan una dominante verde que casi nunca es real (no hay objetos de cielo profundo verdes, salvo el OIII). SCNR la elimina."
+      "definicion": "Las cámaras a color y la contaminación lumínica dejan una dominante verde que casi nunca es real (no hay objetos de cielo profundo verdes, salvo el OIII). SCNR la elimina.",
+      "relacionados": [
+        "matriz-de-bayer-y-camara-en-color",
+        "balance-de-blancos-neutralizacion-del-fondo",
+        "contaminacion-luminica"
+      ]
     },
     {
       "id": "deconvolucion",
@@ -1015,266 +1675,407 @@
       "alias": "",
       "definicion": "Revertir matemáticamente parte del emborronado causado por la atmósfera y la óptica, a partir de la forma de las estrellas (la PSF).",
       "cuenta": "si la imagen observada es la real convolucionada con la PSF, la deconvolución intenta invertir esa operación. Se aplica en lineal y con mucha prudencia.",
-      "cuentaEtiqueta": "La matemática"
+      "cuentaEtiqueta": "La matemática",
+      "relacionados": [
+        "psf",
+        "hfd-fwhm",
+        "imagen-lineal"
+      ]
     },
     {
       "id": "psf",
       "bloque": 7,
       "termino": "PSF",
       "alias": "*Point Spread Function*",
-      "definicion": "La \"firma\" de cómo tu sistema dibuja un punto de luz. Una estrella perfecta sería un punto; en la práctica es una pequeña campana."
+      "definicion": "La \"firma\" de cómo tu sistema dibuja un punto de luz. Una estrella perfecta sería un punto; en la práctica es una pequeña campana.",
+      "relacionados": [
+        "deconvolucion",
+        "hfd-fwhm",
+        "seeing"
+      ]
     },
     {
       "id": "reduccion-de-ruido",
       "bloque": 7,
       "termino": "Reducción de ruido",
       "alias": "*denoise*",
-      "definicion": "Suavizar el grano sin borrar el detalle. Hoy se hace sobre todo con redes neuronales entrenadas para astrofotografía (GraXpert Denoise, Cosmic Clarity, NoiseXTerminator)."
+      "definicion": "Suavizar el grano sin borrar el detalle. Hoy se hace sobre todo con redes neuronales entrenadas para astrofotografía (GraXpert Denoise, Cosmic Clarity, NoiseXTerminator).",
+      "relacionados": [
+        "ruido",
+        "relacion-senal-ruido",
+        "mascaras"
+      ]
     },
     {
       "id": "eliminacion-de-estrellas",
       "bloque": 7,
       "termino": "Eliminación de estrellas",
       "alias": "*starless*",
-      "definicion": "Separar la imagen en dos capas, una solo con estrellas y otra solo con la nebulosa, para procesarlas por separado y luego recombinarlas. StarNet2 es gratuito."
+      "definicion": "Separar la imagen en dos capas, una solo con estrellas y otra solo con la nebulosa, para procesarlas por separado y luego recombinarlas. StarNet2 es gratuito.",
+      "relacionados": [
+        "reduccion-de-estrellas",
+        "flujo-de-trabajo-workflow-tipico",
+        "mascaras"
+      ]
     },
     {
       "id": "reduccion-de-estrellas",
       "bloque": 7,
       "termino": "Reducción de estrellas",
       "alias": "",
-      "definicion": "Hacer las estrellas más pequeñas para que la nebulosa gane protagonismo."
+      "definicion": "Hacer las estrellas más pequeñas para que la nebulosa gane protagonismo.",
+      "relacionados": [
+        "eliminacion-de-estrellas",
+        "mascaras"
+      ]
     },
     {
       "id": "saturacion-y-curvas",
       "bloque": 7,
       "termino": "Saturación y curvas",
       "alias": "",
-      "definicion": "Ajustes finales de color e intensidad, como en cualquier fotografía. La tentación del principiante es pasarse."
+      "definicion": "Ajustes finales de color e intensidad, como en cualquier fotografía. La tentación del principiante es pasarse.",
+      "relacionados": [
+        "estirado-stretch-e-imagen-no-lineal",
+        "mascaras"
+      ]
     },
     {
       "id": "mascaras",
       "bloque": 7,
       "termino": "Máscaras",
       "alias": "",
-      "definicion": "Selecciones que limitan un proceso a una zona: por ejemplo, reducir ruido solo en el fondo o aumentar contraste solo en la nebulosa."
+      "definicion": "Selecciones que limitan un proceso a una zona: por ejemplo, reducir ruido solo en el fondo o aumentar contraste solo en la nebulosa.",
+      "relacionados": [
+        "reduccion-de-ruido",
+        "eliminacion-de-estrellas",
+        "saturacion-y-curvas"
+      ]
     },
     {
       "id": "combinacion-de-canales",
       "bloque": 7,
       "termino": "Combinación de canales",
       "alias": "*channel combination*",
-      "definicion": "Montar una imagen en color a partir de capas separadas (R, G, B, o SII, Hα, OIII)."
+      "definicion": "Montar una imagen en color a partir de capas separadas (R, G, B, o SII, Hα, OIII).",
+      "relacionados": [
+        "paleta-sho-o-paleta-hubble",
+        "camara-monocroma",
+        "paleta-hoo"
+      ]
     },
     {
       "id": "recorte",
       "bloque": 7,
       "termino": "Recorte",
       "alias": "*crop*",
-      "definicion": "Quitar los bordes con menos integración o deformados, típicos de la rotación de campo en Alt-Az y del *dithering*."
+      "definicion": "Quitar los bordes con menos integración o deformados, típicos de la rotación de campo en Alt-Az y del *dithering*.",
+      "relacionados": [
+        "rotacion-de-campo",
+        "dithering",
+        "mosaico",
+        "montura-altazimutal"
+      ]
     },
     {
       "id": "flujo-de-trabajo-workflow-tipico",
       "bloque": 7,
       "termino": "Flujo de trabajo (*workflow*) típico",
       "alias": "",
-      "definicion": "Apilar → recortar → eliminar gradientes → calibrar el color → reducir ruido (en lineal) → estirar → separar estrellas → retocar la nebulosa → recombinar → ajustes finales y exportar."
+      "definicion": "Apilar → recortar → eliminar gradientes → calibrar el color → reducir ruido (en lineal) → estirar → separar estrellas → retocar la nebulosa → recombinar → ajustes finales y exportar.",
+      "relacionados": [
+        "apilado",
+        "eliminacion-de-gradientes",
+        "estirado-stretch-e-imagen-no-lineal",
+        "eliminacion-de-estrellas"
+      ]
     },
     {
       "id": "sigla-abe-dbe",
       "bloque": 8,
       "termino": "ABE / DBE",
       "alias": "",
-      "definicion": "Extracción automática / dinámica del fondo (gradientes)"
+      "definicion": "Extracción automática / dinámica del fondo (gradientes)",
+      "relacionados": [
+        "eliminacion-de-gradientes"
+      ]
     },
     {
       "id": "sigla-alt-az",
       "bloque": 8,
       "termino": "Alt-Az",
       "alias": "",
-      "definicion": "Montura altazimutal"
+      "definicion": "Montura altazimutal",
+      "relacionados": [
+        "montura-altazimutal"
+      ]
     },
     {
       "id": "sigla-apo",
       "bloque": 8,
       "termino": "APO",
       "alias": "",
-      "definicion": "Apocromático"
+      "definicion": "Apocromático",
+      "relacionados": [
+        "acromatico-apocromatico"
+      ]
     },
     {
       "id": "sigla-ascom-alpaca",
       "bloque": 8,
       "termino": "ASCOM / Alpaca",
       "alias": "",
-      "definicion": "Estándar para que programas de distintos fabricantes controlen telescopios; Alpaca es su versión por red, válida en Mac"
+      "definicion": "Estándar para que programas de distintos fabricantes controlen telescopios; Alpaca es su versión por red, válida en Mac",
+      "relacionados": [
+        "goto"
+      ]
     },
     {
       "id": "sigla-bortle",
       "bloque": 8,
       "termino": "Bortle",
       "alias": "",
-      "definicion": "Escala 1–9 de oscuridad del cielo"
+      "definicion": "Escala 1–9 de oscuridad del cielo",
+      "relacionados": [
+        "escala-de-bortle"
+      ]
     },
     {
       "id": "sigla-clear-skies",
       "bloque": 8,
       "termino": "Clear skies",
       "alias": "",
-      "definicion": "Despedida habitual entre astrofotógrafos: \"cielos despejados\""
+      "definicion": "Despedida habitual entre astrofotógrafos: \"cielos despejados\"",
+      "relacionados": []
     },
     {
       "id": "sigla-dso",
       "bloque": 8,
       "termino": "DSO",
       "alias": "",
-      "definicion": "Objeto de cielo profundo"
+      "definicion": "Objeto de cielo profundo",
+      "relacionados": [
+        "cielo-profundo"
+      ]
     },
     {
       "id": "sigla-eaa",
       "bloque": 8,
       "termino": "EAA",
       "alias": "",
-      "definicion": "Astronomía asistida electrónicamente: mirar en pantalla en directo, sin buscar la foto perfecta"
+      "definicion": "Astronomía asistida electrónicamente: mirar en pantalla en directo, sin buscar la foto perfecta",
+      "relacionados": [
+        "apilado-en-vivo"
+      ]
     },
     {
       "id": "sigla-eq",
       "bloque": 8,
       "termino": "EQ",
       "alias": "",
-      "definicion": "Montura o modo ecuatorial"
+      "definicion": "Montura o modo ecuatorial",
+      "relacionados": [
+        "montura-ecuatorial",
+        "modo-eq-en-un-telescopio-inteligente-cuna-ecuatorial"
+      ]
     },
     {
       "id": "sigla-fov",
       "bloque": 8,
       "termino": "FOV",
       "alias": "",
-      "definicion": "Campo de visión"
+      "definicion": "Campo de visión",
+      "relacionados": [
+        "campo-de-vision"
+      ]
     },
     {
       "id": "sigla-fwhm-hfr",
       "bloque": 8,
       "termino": "FWHM / HFR",
       "alias": "",
-      "definicion": "Tamaño de las estrellas, medida de nitidez"
+      "definicion": "Tamaño de las estrellas, medida de nitidez",
+      "relacionados": [
+        "hfd-fwhm"
+      ]
     },
     {
       "id": "sigla-goto",
       "bloque": 8,
       "termino": "GoTo",
       "alias": "",
-      "definicion": "Apuntado automático"
+      "definicion": "Apuntado automático",
+      "relacionados": [
+        "goto"
+      ]
     },
     {
       "id": "sigla-halfa-oiii-sii",
       "bloque": 8,
       "termino": "Hα, OIII, SII",
       "alias": "",
-      "definicion": "Líneas del hidrógeno, oxígeno y azufre"
+      "definicion": "Líneas del hidrógeno, oxígeno y azufre",
+      "relacionados": [
+        "las-lineas-clave",
+        "filtro-de-banda-dual",
+        "halfa-solar"
+      ]
     },
     {
       "id": "sigla-hoo-sho",
       "bloque": 8,
       "termino": "HOO / SHO",
       "alias": "",
-      "definicion": "Paletas de color de banda estrecha"
+      "definicion": "Paletas de color de banda estrecha",
+      "relacionados": [
+        "paleta-sho-o-paleta-hubble",
+        "paleta-hoo"
+      ]
     },
     {
       "id": "sigla-integracion",
       "bloque": 8,
       "termino": "Integración",
       "alias": "",
-      "definicion": "Tiempo total sumado de todas las tomas"
+      "definicion": "Tiempo total sumado de todas las tomas",
+      "relacionados": [
+        "tiempo-de-integracion",
+        "integracion-multinoche"
+      ]
     },
     {
       "id": "sigla-lights-darks-flats-bias",
       "bloque": 8,
       "termino": "Lights, darks, flats, bias",
       "alias": "",
-      "definicion": "Tomas del objeto y tomas de calibración"
+      "definicion": "Tomas del objeto y tomas de calibración",
+      "relacionados": [
+        "frames-de-calibracion",
+        "subexposicion"
+      ]
     },
     {
       "id": "sigla-luna-nueva",
       "bloque": 8,
       "termino": "Luna nueva",
       "alias": "",
-      "definicion": "Las noches buenas para cielo profundo"
+      "definicion": "Las noches buenas para cielo profundo",
+      "relacionados": [
+        "fase-lunar-y-luna-nueva"
+      ]
     },
     {
       "id": "sigla-moonless",
       "bloque": 8,
       "termino": "Moonless",
       "alias": "",
-      "definicion": "Ventana de la noche sin Luna sobre el horizonte"
+      "definicion": "Ventana de la noche sin Luna sobre el horizonte",
+      "relacionados": [
+        "fase-lunar-y-luna-nueva",
+        "noche-astronomica"
+      ]
     },
     {
       "id": "sigla-nb-bb",
       "bloque": 8,
       "termino": "NB / BB",
       "alias": "",
-      "definicion": "Banda estrecha / banda ancha"
+      "definicion": "Banda estrecha / banda ancha",
+      "relacionados": [
+        "filtro-de-banda-estrecha",
+        "filtro-de-banda-ancha-uv-ir-cut"
+      ]
     },
     {
       "id": "sigla-osc",
       "bloque": 8,
       "termino": "OSC",
       "alias": "",
-      "definicion": "Cámara a color de una sola toma"
+      "definicion": "Cámara a color de una sola toma",
+      "relacionados": [
+        "matriz-de-bayer-y-camara-en-color"
+      ]
     },
     {
       "id": "sigla-plate-solving",
       "bloque": 8,
       "termino": "Plate solving",
       "alias": "",
-      "definicion": "Reconocer el cielo por el patrón de estrellas"
+      "definicion": "Reconocer el cielo por el patrón de estrellas",
+      "relacionados": [
+        "plate-solving"
+      ]
     },
     {
       "id": "sigla-psf",
       "bloque": 8,
       "termino": "PSF",
       "alias": "",
-      "definicion": "Forma en que el sistema dibuja una estrella"
+      "definicion": "Forma en que el sistema dibuja una estrella",
+      "relacionados": [
+        "psf"
+      ]
     },
     {
       "id": "sigla-snr",
       "bloque": 8,
       "termino": "SNR",
       "alias": "",
-      "definicion": "Relación señal/ruido"
+      "definicion": "Relación señal/ruido",
+      "relacionados": [
+        "relacion-senal-ruido"
+      ]
     },
     {
       "id": "sigla-spcc",
       "bloque": 8,
       "termino": "SPCC",
       "alias": "",
-      "definicion": "Calibración espectrofotométrica del color (Gaia)"
+      "definicion": "Calibración espectrofotométrica del color (Gaia)",
+      "relacionados": [
+        "calibracion-fotometrica-del-color"
+      ]
     },
     {
       "id": "sigla-starless",
       "bloque": 8,
       "termino": "Starless",
       "alias": "",
-      "definicion": "Imagen sin estrellas"
+      "definicion": "Imagen sin estrellas",
+      "relacionados": [
+        "eliminacion-de-estrellas"
+      ]
     },
     {
       "id": "sigla-sub",
       "bloque": 8,
       "termino": "Sub",
       "alias": "",
-      "definicion": "Cada toma individual"
+      "definicion": "Cada toma individual",
+      "relacionados": [
+        "subexposicion"
+      ]
     },
     {
       "id": "sigla-seeing",
       "bloque": 8,
       "termino": "Seeing",
       "alias": "",
-      "definicion": "Turbulencia atmosférica"
+      "definicion": "Turbulencia atmosférica",
+      "relacionados": [
+        "seeing"
+      ]
     },
     {
       "id": "sigla-walking-noise",
       "bloque": 8,
       "termino": "Walking noise",
       "alias": "",
-      "definicion": "Ruido en forma de lluvia diagonal por falta de *dithering*"
+      "definicion": "Ruido en forma de lluvia diagonal por falta de *dithering*",
+      "relacionados": [
+        "dithering",
+        "ruido"
+      ]
     }
   ]
 }

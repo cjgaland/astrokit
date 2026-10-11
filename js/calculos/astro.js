@@ -275,3 +275,88 @@ export function muestrear(altura, inicio, fin, pasoMin = 10) {
   }
   return puntos;
 }
+
+/* ---------- Planetas ----------
+   Elementos orbitales keplerianos aproximados del JPL (E. M. Standish,
+   "Keplerian Elements for Approximate Positions of the Major Planets"),
+   válidos de 1800 a 2050 con errores de minutos de arco.
+   Para cada planeta: [valor en J2000, variación por siglo] de
+     a  semieje mayor (UA)            e  excentricidad
+     I  inclinación (°)               L  longitud media (°)
+     w  longitud del perihelio (°)    O  longitud del nodo ascendente (°)
+   "tierra" es en realidad el baricentro Tierra-Luna: de sobra para esto. */
+const ELEMENTOS = {
+  mercurio: { a: [0.38709927, 0.00000037], e: [0.20563593, 0.00001906], I: [7.00497902, -0.00594749], L: [252.25032350, 149472.67411175], w: [77.45779628, 0.16047689], O: [48.33076593, -0.12534081] },
+  venus:    { a: [0.72333566, 0.00000390], e: [0.00677672, -0.00004107], I: [3.39467605, -0.00078890], L: [181.97909950, 58517.81538729], w: [131.60246718, 0.00268329], O: [76.67984255, -0.27769418] },
+  tierra:   { a: [1.00000261, 0.00000562], e: [0.01671123, -0.00004392], I: [-0.00001531, -0.01294668], L: [100.46457166, 35999.37244981], w: [102.93768193, 0.32327364], O: [0, 0] },
+  marte:    { a: [1.52371034, 0.00001847], e: [0.09339410, 0.00007882], I: [1.84969142, -0.00813131], L: [-4.55343205, 19140.30268499], w: [-23.94362959, 0.44441088], O: [49.55953891, -0.29257343] },
+  jupiter:  { a: [5.20288700, -0.00011607], e: [0.04838624, -0.00013253], I: [1.30439695, -0.00183714], L: [34.39644051, 3034.74612775], w: [14.72847983, 0.21252668], O: [100.47390909, 0.20469106] },
+  saturno:  { a: [9.53667594, -0.00125060], e: [0.05386179, -0.00050991], I: [2.48599187, 0.00193609], L: [49.95424423, 1222.49362201], w: [92.59887831, -0.41897216], O: [113.66242448, -0.28867794] },
+  urano:    { a: [19.18916464, -0.00196176], e: [0.04725744, -0.00004397], I: [0.77263783, -0.00242939], L: [313.23810451, 428.48202785], w: [170.95427630, 0.40805281], O: [74.01692503, 0.04240589] },
+  neptuno:  { a: [30.06992276, 0.00026291], e: [0.00859048, 0.00005105], I: [1.77004347, 0.00035372], L: [-55.12002969, 218.45945325], w: [44.96476227, -0.32241464], O: [131.78422574, -0.00508664] },
+};
+
+/* Diámetro aparente a 1 UA (″) y fórmula de magnitud de Müller (Meeus, cap. 41):
+   m = m0 + 5·log10(r·Δ) + c1·i + c2·i² + c3·i³, con i el ángulo de fase en grados.
+   (Para Saturno se ignora el brillo de los anillos: el valor real puede ser algo mejor.) */
+const FISICOS = {
+  mercurio: { d1: 6.74, m: [-0.42, 0.0380, -0.000273, 0.000002] },
+  venus:    { d1: 16.92, m: [-4.40, 0.0009, 0.000239, -0.00000065] },
+  marte:    { d1: 9.36, m: [-1.52, 0.016, 0, 0] },
+  jupiter:  { d1: 196.94, m: [-9.40, 0.005, 0, 0] },
+  saturno:  { d1: 165.6, m: [-8.88, 0, 0, 0] },
+  urano:    { d1: 65.8, m: [-7.19, 0, 0, 0] },
+  neptuno:  { d1: 62.2, m: [-6.87, 0, 0, 0] },
+};
+export const PLANETAS = Object.keys(FISICOS);
+
+/** Posición heliocéntrica eclíptica (UA) resolviendo la ecuación de Kepler */
+function heliocentrica(nombre, T) {
+  const el = ELEMENTOS[nombre];
+  const v = (k) => el[k][0] + el[k][1] * T;
+  const a = v('a'), e = v('e'), I = v('I'), L = v('L'), w = v('w'), O = v('O');
+  const omega = w - O;                                   // argumento del perihelio
+  const M = norm180(L - w) * RAD;                        // anomalía media (rad)
+  // Ecuación de Kepler: E − e·sen E = M. Se resuelve por aproximaciones sucesivas (Newton)
+  let E = M + e * Math.sin(M);
+  for (let i = 0; i < 8; i++) E -= (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
+  // Coordenadas en el plano de la órbita
+  const xp = a * (Math.cos(E) - e);
+  const yp = a * Math.sqrt(1 - e * e) * Math.sin(E);
+  // Girar al plano de la eclíptica (tres giros: ω, I y Ω)
+  const co = cos(omega), so = sin(omega), cO = cos(O), sO = sin(O), cI = cos(I), sI = sin(I);
+  return {
+    x: (co * cO - so * sO * cI) * xp + (-so * cO - co * sO * cI) * yp,
+    y: (co * sO + so * cO * cI) * xp + (-so * sO + co * cO * cI) * yp,
+    z: (so * sI) * xp + (co * sI) * yp,
+  };
+}
+
+/**
+ * Posición geocéntrica de un planeta: ra, dec (J2000, grados), distancia a la
+ * Tierra Δ y al Sol r (UA), elongación respecto al Sol (°), magnitud y
+ * diámetro aparente (″).
+ */
+export function posicionPlaneta(nombre, fecha) {
+  const T = (diaJuliano(fecha) - 2451545.0) / 36525;
+  const p = heliocentrica(nombre, T);
+  const t = heliocentrica('tierra', T);
+  const g = { x: p.x - t.x, y: p.y - t.y, z: p.z - t.z };           // de la Tierra al planeta
+  const delta = Math.hypot(g.x, g.y, g.z);
+  const r = Math.hypot(p.x, p.y, p.z);
+  const R = Math.hypot(t.x, t.y, t.z);
+  // De eclípticas a ecuatoriales (oblicuidad J2000)
+  const eps = 23.43928;
+  const X = g.x, Y = g.y * cos(eps) - g.z * sin(eps), Z = g.y * sin(eps) + g.z * cos(eps);
+  // Elongación (ángulo Sol–Tierra–planeta) y ángulo de fase (Sol–planeta–Tierra), por el teorema del coseno
+  const elongacion = Math.acos((R * R + delta * delta - r * r) / (2 * R * delta)) * DEG;
+  const fase = Math.acos(Math.min(1, Math.max(-1, (r * r + delta * delta - R * R) / (2 * r * delta)))) * DEG;
+  const [m0, c1, c2, c3] = FISICOS[nombre].m;
+  return {
+    ra: norm360(Math.atan2(Y, X) * DEG),
+    dec: Math.asin(Z / delta) * DEG,
+    distancia: delta, r, elongacion,
+    magnitud: m0 + 5 * Math.log10(r * delta) + c1 * fase + c2 * fase ** 2 + c3 * fase ** 3,
+    diametro: FISICOS[nombre].d1 / delta,
+  };
+}

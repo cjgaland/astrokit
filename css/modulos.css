@@ -772,3 +772,55 @@ mark {
 .foto-campo__botones { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; flex: 1; min-width: 180px; }
 .formulario__botones { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .formulario__botones .boton-sec { display: inline-flex; align-items: center; text-decoration: none; height: 46px; }
+
+/* ---------- Glosario · "Ver también" ---------- */
+.ver-tambien { margin: 0 0 30px; }
+.ver-tambien .etiqueta { display: block; margin-bottom: 10px; }
+.ver-tambien__lista { list-style: none; display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+.relacionado {
+  display: flex; flex-direction: column; gap: 2px; height: 100%;
+  padding: 10px 12px 11px 14px; position: relative;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  text-decoration: none; color: var(--tinta);
+  transition: border-color var(--t-rapida), transform var(--t-rapida);
+}
+.relacionado::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; background: var(--color); }
+.relacionado:hover { border-color: color-mix(in srgb, var(--color) 55%, var(--borde)); transform: translateY(-1px); }
+.relacionado__bloque { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--color); }
+.relacionado__nombre { font-family: var(--f-titular); font-size: 19px; line-height: 1.15; }
+
+/* ==========================================================================
+   ENLACES
+   ========================================================================== */
+.aviso-red {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding: 12px 14px;
+  border: 1px dashed var(--acento); border-radius: var(--radio); color: var(--acento); font-size: 15px;
+}
+.grupo-enlaces { margin-bottom: 32px; }
+.grupo-enlaces__cabecera { margin-bottom: 12px; }
+.grupo-enlaces__cabecera .panel__titulo { margin-bottom: 4px; }
+.grupo-enlaces .panel__num { color: var(--color); }
+.enlaces__lista { list-style: none; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+.enlace {
+  position: relative; height: 100%;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 14px 16px 12px 18px;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  box-shadow: var(--sombra); text-decoration: none; color: var(--tinta);
+  transition: border-color var(--t-rapida), transform var(--t-rapida);
+}
+.enlace::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--color); border-radius: var(--radio) 0 0 var(--radio); }
+.enlace:hover { border-color: color-mix(in srgb, var(--color) 55%, var(--borde)); transform: translateY(-1px); }
+.enlace__cabecera { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.enlace__nombre { font-family: var(--f-titular); font-size: 24px; line-height: 1.1; }
+.app .enlace__flecha { width: 18px; height: 18px; color: var(--tinta-3); transition: transform var(--t-rapida), color var(--t-rapida); }
+.enlace:hover .enlace__flecha { transform: translateX(3px); color: var(--color); }
+.enlace__texto { flex: 1; font-size: 14px; line-height: 1.5; color: var(--tinta-2); }
+.enlace__texto em { color: var(--tinta); }
+.enlace__etiquetas { display: flex; flex-wrap: wrap; gap: 5px; }
+.etiqueta-nivel, .etiqueta-plataforma {
+  font-family: var(--f-cifra); font-size: 10.5px; letter-spacing: .04em;
+  padding: 2px 8px; border-radius: 10px; border: 1px solid var(--borde); color: var(--tinta-2);
+}
+.etiqueta-nivel--empezar { background: var(--color); border-color: var(--color); color: var(--fondo); }
+.enlace__dominio { font-size: 11px; color: var(--tinta-3); }

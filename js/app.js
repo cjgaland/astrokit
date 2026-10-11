@@ -32,8 +32,8 @@ const MODULOS = [
     cargar: () => import('./modulos/checklist.js') },
   { id: 'cuaderno', nombre: 'Cuaderno', icono: 'cuaderno',
     cargar: () => import('./modulos/cuaderno.js') },
-  { id: 'enlaces', nombre: 'Enlaces', icono: 'enlaces', fase: 6,
-    resumen: 'Software para Mac y webs de planificación.' },
+  { id: 'enlaces', nombre: 'Enlaces', icono: 'enlaces',
+    cargar: () => import('./modulos/enlaces.js') },
 ];
 const MODULO_INICIAL = 'glosario';
 

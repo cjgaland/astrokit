@@ -324,6 +324,8 @@ function pintarFicha(t) {
                 aria-pressed="${sabidos.tiene(t.id)}">${icono('check')}<span>Ya lo sé</span></button>
       </div>
 
+      ${verTambien(t)}
+
       <nav class="ficha__paso">
         ${anterior ? `<a href="#glosario/${anterior.id}" class="paso paso--ant">
             <span class="etiqueta">${icono('atras')} Anterior</span>
@@ -333,6 +335,30 @@ function pintarFicha(t) {
             <span class="paso__nombre">${escaparHTML(sinMarcas(siguiente.termino))}</span></a>` : '<span></span>'}
       </nav>
     </article>`;
+}
+
+/** "Ver también": los términos relacionados (campo "relacionados" del JSON) */
+function verTambien(t) {
+  const relacionados = (t.relacionados || [])
+    .map((id) => datos.terminos.find((x) => x.id === id))
+    .filter(Boolean);
+  if (!relacionados.length) return '';
+  return `
+    <aside class="ver-tambien">
+      <span class="etiqueta">Ver también</span>
+      <ul class="ver-tambien__lista">
+        ${relacionados.map((r) => {
+          const b = datos.bloques.find((x) => x.id === r.bloque);
+          return `
+          <li>
+            <a class="relacionado" href="#glosario/${r.id}" style="--color: var(--b${r.bloque})">
+              <span class="relacionado__bloque cifra">${r.bloque} · ${escaparHTML(b.corto)}</span>
+              <span class="relacionado__nombre">${escaparHTML(sinMarcas(r.termino))}</span>
+            </a>
+          </li>`;
+        }).join('')}
+      </ul>
+    </aside>`;
 }
 
 /* ==========================================================================

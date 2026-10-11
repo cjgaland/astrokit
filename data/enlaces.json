@@ -1,0 +1,45 @@
+{
+  "_nota": "Enlaces útiles, sacados de la comparativa. etiquetas: plataformas o detalles cortos. nivel: empezar, intermedio, opcional, futuro. En la URL, {lat} y {lon} se sustituyen por las coordenadas del lugar elegido en el Planificador.",
+  "grupos": [
+    {
+      "id": "planificar",
+      "titulo": "Planificar la noche",
+      "descripcion": "Antes de salir: nubes, seeing, oscuridad del sitio y qué hay en el cielo.",
+      "enlaces": [
+        { "nombre": "Clear Outside", "url": "https://clearoutside.com/forecast/{lat}/{lon}", "descripcion": "Previsión astronómica por horas para tu lugar: nubes por capas, humedad, Luna y Bortle.", "etiquetas": ["Web", "iOS"], "nivel": "empezar" },
+        { "nombre": "Meteoblue · Astronomy seeing", "url": "https://www.meteoblue.com/en/weather/outdoorsports/seeing", "descripcion": "Previsión de seeing y transparencia: dice si la noche será nítida o turbulenta.", "etiquetas": ["Web"], "nivel": "empezar" },
+        { "nombre": "Light Pollution Map", "url": "https://www.lightpollutionmap.info", "descripcion": "Mapa de contaminación lumínica para elegir sitios oscuros de campo.", "etiquetas": ["Web"], "nivel": "empezar" },
+        { "nombre": "Telescopius", "url": "https://telescopius.com", "descripcion": "Buscador de objetos por temporada, tamaño y altura desde tu ubicación, con simulador de campo.", "etiquetas": ["Web"], "nivel": "intermedio" },
+        { "nombre": "Stellarium", "url": "https://stellarium.org", "descripcion": "Planetario de escritorio: qué hay en el cielo, cuándo culmina y simulación del encuadre con tu sensor y focal.", "etiquetas": ["Mac", "Gratis"], "nivel": "empezar" }
+      ]
+    },
+    {
+      "id": "control",
+      "titulo": "Controlar el telescopio",
+      "descripcion": "Las apps del fabricante y alternativas para cuando se queden cortas.",
+      "enlaces": [
+        { "nombre": "App Seestar (ZWO)", "url": "https://www.seestar.com", "descripcion": "Control completo del S50 Pro: GoTo, apilado, planes y procesado rápido. En Mac con chip Apple funciona la app de iPad; usa el modo Station para manejarlo desde casa.", "etiquetas": ["iOS", "Mac M1+"], "nivel": "empezar" },
+        { "nombre": "App DWARFLAB", "url": "https://dwarflab.com", "descripcion": "Control del Draco, con modo Pro manual. En Mac está por confirmar.", "etiquetas": ["iOS"], "nivel": "empezar" },
+        { "nombre": "Seestar ALP", "url": "https://github.com/smart-underworld/seestar_alp", "descripcion": "Proyecto comunitario de código abierto: planes avanzados, control desde el navegador y puente ASCOM Alpaca.", "etiquetas": ["Mac", "Python"], "nivel": "intermedio" },
+        { "nombre": "KStars / Ekos", "url": "https://kstars.kde.org", "descripcion": "Suite astronómica completa con control de equipos (INDI). Útil si un día montas equipo modular.", "etiquetas": ["Mac", "Gratis"], "nivel": "opcional" }
+      ]
+    },
+    {
+      "id": "procesar",
+      "titulo": "Procesar en el Mac",
+      "descripcion": "Flujo recomendado: GraXpert (gradientes) → Siril (color y estirado) → Affinity o GIMP (ajustes finales).",
+      "enlaces": [
+        { "nombre": "Siril", "url": "https://siril.org", "descripcion": "El programa central: apilado, calibración, gradientes, color con Gaia (SPCC) y estirado. Tiene un script para datos del Seestar.", "etiquetas": ["Mac", "Gratis"], "nivel": "empezar" },
+        { "nombre": "GraXpert", "url": "https://graxpert.com", "descripcion": "Eliminación de gradientes y reducción de ruido con IA, muy sencilla.", "etiquetas": ["Mac", "Gratis"], "nivel": "empezar" },
+        { "nombre": "StarNet2", "url": "https://www.starnetastro.com", "descripcion": "Separa estrellas y nebulosa para procesarlas por separado; se integra en Siril.", "etiquetas": ["Mac", "Gratis"], "nivel": "intermedio" },
+        { "nombre": "Seti Astro Suite", "url": "https://www.setiastro.com", "descripcion": "Utilidades gratuitas: nitidez y ruido con IA, combinación de paletas, estirados.", "etiquetas": ["Mac", "Gratis"], "nivel": "intermedio" },
+        { "nombre": "ASTAP", "url": "https://www.hnsky.org/astap.htm", "descripcion": "Plate solving y análisis de imágenes.", "etiquetas": ["Mac", "Gratis"], "nivel": "opcional" },
+        { "nombre": "PlanetarySystemStacker", "url": "https://github.com/Rolf-Hempel/PlanetarySystemStacker", "descripcion": "Apilado de vídeos de Luna, Sol y planetas (lucky imaging).", "etiquetas": ["Mac", "Gratis"], "nivel": "opcional" },
+        { "nombre": "Affinity", "url": "https://affinity.serif.com", "descripcion": "Retoque final: curvas, máscaras, capas y exportación.", "etiquetas": ["Mac", "Gratis"], "nivel": "empezar" },
+        { "nombre": "GIMP", "url": "https://www.gimp.org", "descripcion": "Alternativa libre para el retoque final.", "etiquetas": ["Mac", "Gratis"], "nivel": "opcional" },
+        { "nombre": "PixInsight", "url": "https://pixinsight.com", "descripcion": "El estándar profesional (≈ 300 €, licencia única). No hace falta para empezar.", "etiquetas": ["Mac", "De pago"], "nivel": "futuro" }
+      ]
+    }
+  ],
+  "noMac": ["N.I.N.A.", "Sequator", "DeepSkyStacker"]
+}

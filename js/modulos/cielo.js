@@ -25,9 +25,13 @@ import { leer, guardar } from '../almacen.js';
 const LUGARES_INICIALES = [
   { id: 'casa', nombre: 'Casa (Córdoba)', lat: 37.89, lon: -4.77 },
 ];
+// Las primeras versiones traían un segundo lugar predefinido (37,59° N, 4,64° O) que ya no se usa:
+// si quedó guardado en el dispositivo, se quita aquí
+const esRetirado = (l) => l.lat === 37.59 && l.lon === -4.64 && !l.id.startsWith('l');
+const lugaresGuardados = leer('cielo:lugares', LUGARES_INICIALES).filter((l) => !esRetirado(l));
 const estado = {
-  lugares: leer('cielo:lugares', LUGARES_INICIALES),
-  lugarId: leer('cielo:lugar', 'casa'),
+  lugares: lugaresGuardados.length ? lugaresGuardados : LUGARES_INICIALES,
+  lugarId: lugaresGuardados.some((l) => l.id === leer('cielo:lugar', 'casa')) ? leer('cielo:lugar', 'casa') : 'casa',
   gpsAlAbrir: leer('cielo:gpsAlAbrir', true),
   fecha: null,                 // 'AAAA-MM-DD' o null = hoy
   tipo: 'todos',               // filtro de objetos
@@ -40,6 +44,9 @@ const guardarLugares = () => {
 };
 
 const ALTURA_UTIL = 30;        // por debajo de 30° la atmósfera estropea la imagen
+// Planetas y Luna son brillantes: valen desde 15° y con el Sol por debajo de −6° (crepúsculo civil)
+const ALTURA_UTIL_SOLAR = 15;
+const SOL_MAX_SOLAR = -6;
 const PASO = 10;               // minutos entre muestras
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 const TIPOS = [
@@ -47,12 +54,28 @@ const TIPOS = [
   { id: 'galaxia', texto: 'Galaxias' },
   { id: 'nebulosa', texto: 'Nebulosas' },
   { id: 'cumulo', texto: 'Cúmulos' },
+  { id: 'sistema', texto: 'Sistema Solar' },
 ];
+const NOMBRE_PLANETA = {
+  mercurio: 'Mercurio', venus: 'Venus', marte: 'Marte', jupiter: 'Júpiter',
+  saturno: 'Saturno', urano: 'Urano', neptuno: 'Neptuno',
+};
+const CONSEJO_PLANETA = {
+  mercurio: 'Siempre cerca del Sol: búscalo bajo, en el crepúsculo, con el horizonte despejado.',
+  venus: 'Brillantísimo y con fases como la Luna. Exposiciones muy cortas o vídeo.',
+  marte: 'Pequeño salvo cerca de la oposición; con buen seeing se ve el casquete polar.',
+  jupiter: 'Sus cuatro grandes lunas caben en el campo; para las bandas, vídeo y lucky imaging.',
+  saturno: 'Los anillos se distinguen incluso con 50 mm. Vídeo y apilado de los mejores fotogramas.',
+  urano: 'Un puntito verdoso: el reto es encontrarlo e identificarlo, no el detalle.',
+  neptuno: 'Aún más pequeño y tenue que Urano: un punto azulado entre las estrellas.',
+};
+const ESCALA_REFERENCIA = 2.30;   // ″/px del S50 Pro, para traducir tamaños a píxeles
 const NOMBRE_TIPO = {
   'galaxia': 'Galaxia', 'nebulosa-emision': 'Neb. de emisión', 'nebulosa-reflexion': 'Neb. de reflexión',
   'nebulosa-planetaria': 'Neb. planetaria', 'remanente': 'Remanente', 'cumulo-abierto': 'Cúmulo abierto',
-  'cumulo-globular': 'Cúmulo globular',
+  'cumulo-globular': 'Cúmulo globular', 'planeta': 'Planeta', 'luna': 'Satélite',
 };
+const esSolar = (o) => o.tipo === 'planeta' || o.tipo === 'luna';
 // Objetos cuya luz sale en líneas de emisión: el filtro dual (Hα + OIII) los salva con Luna
 const DE_EMISION = new Set(['nebulosa-emision', 'remanente', 'nebulosa-planetaria']);
 
@@ -166,6 +189,7 @@ function calcularNoche() {
       distLuna: separacion(ra, o.dec, posLuna.ra, posLuna.dec),
     };
   });
+  lista.push(...sistemaSolar({ lat, lon, mediodia, medianoche, desde, hasta, sol, luna, fase, posLuna }));
   lista.sort((a, b) => b.puntos - a.puntos || b.altMax - a.altMax);
 
   return {
@@ -174,6 +198,53 @@ function calcularNoche() {
     llena: A.proximaFase(mediodia, 180),
     objetos: lista,
   };
+}
+
+/**
+ * Planetas y Luna para la noche. Sus coordenadas cambian (la Luna ~13° al día),
+ * así que se calculan para la medianoche; para los planetas basta con eso.
+ */
+function sistemaSolar({ lat, lon, mediodia, medianoche, desde, hasta, sol, luna, fase, posLuna }) {
+  // ¿Está el Sol por debajo de −6° en el instante t? (muestras de 5 en 5 minutos)
+  const solBajo = (t) => (sol[Math.round((t - desde.getTime()) / 300000)]?.alt ?? 0) < SOL_MAX_SOLAR;
+  const utilDe = (curva) => curva.filter((p) => solBajo(p.t) && p.alt >= ALTURA_UTIL_SOLAR).length * PASO;
+
+  const planetas = A.PLANETAS.map((id) => {
+    const p = A.posicionPlaneta(id, medianoche);
+    const curva = A.muestrear((t) => A.altAz(p.ra, p.dec, lat, lon, t).alt, desde, hasta, PASO);
+    const util = utilDe(curva);
+    return {
+      o: {
+        id, nombre: NOMBRE_PLANETA[id], catalogo: 'Planeta', tipo: 'planeta',
+        mag: p.magnitud, ar: p.ra / 15, dec: p.dec, consejo: CONSEJO_PLANETA[id],
+        solar: { diametro: p.diametro, distancia: p.distancia, elongacion: p.elongacion },
+      },
+      curva, util, utilSinLuna: util, conLuna: 0, puntos: util,
+      altMax: A.alturaMaxima(p.dec, lat),
+      culmina: A.proximaCulminacion(p.ra, lon, mediodia),
+      distLuna: separacion(p.ra, p.dec, posLuna.ra, posLuna.dec),
+    };
+  });
+
+  // La Luna: su curva ya está calculada (topocéntrica). Para la culminación se
+  // afina en dos pasos, porque se mueve ~0,5° por hora respecto a las estrellas.
+  let culmina = A.proximaCulminacion(posLuna.ra, lon, mediodia);
+  culmina = A.proximaCulminacion(A.posicionLuna(culmina).ra, lon, mediodia);
+  const utilLuna = utilDe(luna);
+  const laLuna = {
+    o: {
+      id: 'luna-cielo', nombre: 'La Luna', catalogo: 'Satélite', tipo: 'luna', mag: null,
+      ar: posLuna.ra / 15, dec: posLuna.dec,
+      consejo: fase.iluminada < 0.97 && fase.iluminada > 0.05
+        ? 'El terminador (la línea entre luz y sombra) es donde mejor se ven los cráteres.'
+        : 'Llena es muy plana y brillante; con poca fase, búscala en el crepúsculo.',
+      solar: { diametro: 1865, iluminada: fase.iluminada },
+    },
+    curva: luna, util: utilLuna, utilSinLuna: utilLuna, conLuna: 0, puntos: utilLuna,
+    altMax: A.alturaMaxima(posLuna.dec, lat),
+    culmina, distLuna: 0,
+  };
+  return [...planetas, laLuna];
 }
 
 /** Mes en que el objeto culmina hacia medianoche (su "temporada") */
@@ -237,7 +308,7 @@ function pintarEsqueleto() {
             ${TIPOS.map((t) => `<button class="chip chip--estado" type="button" data-tipo="${t.id}">${t.texto}</button>`).join('')}
           </div>
         </div>
-        <p class="nota">Ordenados por tiempo útil: por encima de ${ALTURA_UTIL}° y con noche astronómica, dando prioridad a las horas sin Luna. Toca un objeto para ver su curva de altura.</p>
+        <p class="nota" id="nota-objetos"></p>
         <div id="objetos"></div>
       </section>
     </section>`;
@@ -406,11 +477,14 @@ function pintarLinea() {
 /* ---------- Objetos ---------- */
 function pintarObjetos() {
   raiz.querySelectorAll('[data-tipo]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tipo === estado.tipo)));
-  const pasa = (o) => estado.tipo === 'todos' || o.tipo.startsWith(estado.tipo);
+  const pasa = (o) => estado.tipo === 'todos' || (estado.tipo === 'sistema' ? esSolar(o) : o.tipo.startsWith(estado.tipo));
   const lista = noche.objetos.filter((x) => pasa(x.o));
   const buenos = lista.filter((x) => x.util >= 60);
   const resto = lista.filter((x) => x.util < 60);
 
+  raiz.querySelector('#nota-objetos').textContent = estado.tipo === 'sistema'
+    ? `Ordenados por tiempo útil: planetas y Luna cuentan desde ${ALTURA_UTIL_SOLAR}° y con el Sol por debajo de ${SOL_MAX_SOLAR}°, porque son tan brillantes que el crepúsculo no les molesta. El Sol no aparece: nunca lo observes sin filtro solar.`
+    : `Ordenados por tiempo útil: por encima de ${ALTURA_UTIL}° y con noche astronómica (${ALTURA_UTIL_SOLAR}° y crepúsculo para planetas y Luna), dando prioridad a las horas sin Luna. Toca un objeto para ver su curva de altura.`;
   raiz.querySelector('#objetos').innerHTML = `
     ${buenos.length ? `<ul class="objetos">${buenos.map(filaObjeto).join('')}</ul>`
       : '<div class="vacio"><p class="vacio__titulo">Nada a buena altura esta noche.</p><p>Prueba otro tipo de objeto u otra fecha.</p></div>'}
@@ -425,23 +499,35 @@ function filaObjeto(x) {
   const { o } = x;
   const abierto = estado.abierto === o.id;
   const lunaUtil = noche.fase.iluminada > 0.3 && x.conLuna > 0;
-  const filtro = DE_EMISION.has(o.tipo) ? (lunaUtil ? 'Filtro dual' : 'UV/IR o dual') : 'UV/IR';
+  const filtro = esSolar(o) ? 'Sin filtro (UV/IR); vídeo para el detalle'
+    : DE_EMISION.has(o.tipo) ? (lunaUtil ? 'Filtro dual' : 'UV/IR o dual') : 'UV/IR';
   const culminaDeNoche = noche.s.astronomico.inicio && x.culmina >= noche.s.astronomico.inicio && x.culmina <= noche.s.astronomico.fin;
   return `
-    <li class="objeto ${abierto ? 'esta-abierto' : ''}" style="--color: var(--${o.tipo.startsWith('galaxia') ? 'b1' : o.tipo.startsWith('cumulo') ? 'b4' : DE_EMISION.has(o.tipo) ? 'b5' : 'b2'})">
+    <li class="objeto ${abierto ? 'esta-abierto' : ''}" style="--color: var(--${esSolar(o) ? 'b3' : o.tipo.startsWith('galaxia') ? 'b1' : o.tipo.startsWith('cumulo') ? 'b4' : DE_EMISION.has(o.tipo) ? 'b5' : 'b2'})">
       <button class="objeto__cabecera" type="button" data-objeto="${o.id}" aria-expanded="${abierto}">
         <span class="objeto__nombre">
           <span class="objeto__catalogo cifra">${escaparHTML(o.catalogo)}</span>
           <span class="objeto__titulo">${escaparHTML(o.nombre)}</span>
-          <span class="objeto__meta">${NOMBRE_TIPO[o.tipo] || o.tipo} · mag ${o.mag.toLocaleString('es-ES')} · ${o.ancho}′×${o.alto}′</span>
+          <span class="objeto__meta">${metaObjeto(o)}</span>
         </span>
         <span class="objeto__dato cifra"><b>${x.altMax > 0 ? grados(x.altMax) : 'no sale'}</b><small>altura máx.</small></span>
         <span class="objeto__dato cifra"><b>${hora(x.culmina)}</b><small>culmina${culminaDeNoche ? '' : ' (de día)'}</small></span>
-        <span class="objeto__dato cifra"><b>${duracion(x.util)}</b><small>útil${x.util ? ` · ${duracion(x.utilSinLuna)} sin Luna` : ''}</small></span>
+        <span class="objeto__dato cifra"><b>${duracion(x.util)}</b><small>útil${x.util && !esSolar(o) ? ` · ${duracion(x.utilSinLuna)} sin Luna` : ''}</small></span>
         ${miniCurva(x.curva)}
       </button>
       ${abierto ? detalleObjeto(x, filtro) : ''}
     </li>`;
+}
+
+/** Línea descriptiva bajo el nombre: tipo, brillo y tamaño (y distancia para los planetas) */
+function metaObjeto(o) {
+  const mag = (m) => m.toLocaleString('es-ES', { maximumFractionDigits: 1 });
+  if (o.tipo === 'luna') return `Satélite · ${Math.round(o.solar.iluminada * 100)} % iluminada · ≈ 31′`;
+  if (o.tipo === 'planeta') {
+    return `Planeta · mag ${mag(o.mag)} · ${o.solar.diametro.toLocaleString('es-ES', { maximumFractionDigits: 1 })}″ · ` +
+      `${o.solar.distancia.toLocaleString('es-ES', { maximumFractionDigits: 2 })} UA`;
+  }
+  return `${NOMBRE_TIPO[o.tipo] || o.tipo} · mag ${mag(o.mag)} · ${o.ancho}′×${o.alto}′`;
 }
 
 /** Curva pequeña de altura (sparkline) con la línea de 30° y la noche astronómica sombreada */
@@ -489,16 +575,31 @@ function detalleObjeto(x, filtro) {
         <path class="det__curva" d="${camino(x.curva)}"/>
         ${maxP.alt > 0 ? `<circle class="det__punto" cx="${X(maxP.t)}" cy="${Y(maxP.alt)}" r="4"/>` : ''}
       </svg>
-      <div class="leyenda"><span><i class="leyenda__objeto"></i>${escaparHTML(x.o.catalogo)}</span><span><i class="leyenda__luna"></i>Luna</span><span><i class="leyenda__oscuro"></i>Noche astronómica</span></div>
+      <div class="leyenda"><span><i class="leyenda__objeto"></i>${escaparHTML(esSolar(x.o) ? x.o.nombre : x.o.catalogo)}</span><span><i class="leyenda__luna"></i>Luna</span><span><i class="leyenda__oscuro"></i>Noche astronómica</span></div>
       <p class="objeto__consejo">${escaparHTML(x.o.consejo || '')}</p>
       <dl class="datos cifra">
         <dt>Filtro</dt><dd>${filtro}</dd>
+        ${esSolar(x.o) ? datosSolares(x) : `
         <dt>Temporada</dt><dd>culmina a medianoche en ${x.mejorMes}</dd>
-        <dt>Luna</dt><dd>a ${distLuna}° del objeto${distLuna < 30 && noche.fase.iluminada > 0.3 ? ' · demasiado cerca' : ''}</dd>
+        <dt>Luna</dt><dd>a ${distLuna}° del objeto${distLuna < 30 && noche.fase.iluminada > 0.3 ? ' · demasiado cerca' : ''}</dd>`}
         <dt>Coordenadas</dt><dd>AR ${horasAR(x.o.ar)} · Dec ${x.o.dec >= 0 ? '+' : '−'}${grados(Math.abs(x.o.dec), 1)}</dd>
       </dl>
-      <a class="enlace-glosario" href="#glosario/culminacion">${icono('glosario')}Qué es la culminación</a>
+      <a class="enlace-glosario" href="#glosario/${esSolar(x.o) ? 'lucky-imaging' : 'culminacion'}">${icono('glosario')}${esSolar(x.o) ? 'Qué es el lucky imaging' : 'Qué es la culminación'}</a>
     </div>`;
+}
+
+/** Filas del detalle propias de planetas y Luna */
+function datosSolares(x) {
+  const s = x.o.solar;
+  const px = s.diametro / ESCALA_REFERENCIA;
+  const tam = `${s.diametro >= 600 ? Math.round(s.diametro / 60) + '′' : s.diametro.toLocaleString('es-ES', { maximumFractionDigits: 1 }) + '″'}` +
+    ` ≈ ${Math.round(px).toLocaleString('es-ES')} px con el S50 Pro`;
+  if (x.o.tipo === 'luna') return `<dt>Tamaño</dt><dd>${tam}</dd>`;
+  const minutosLuz = Math.round(s.distancia * 8.317);              // la luz tarda 8,317 min por UA
+  return `
+    <dt>Tamaño</dt><dd>${tam}</dd>
+    <dt>Distancia</dt><dd>${s.distancia.toLocaleString('es-ES', { maximumFractionDigits: 2 })} UA · la luz tarda ${minutosLuz >= 60 ? duracion(minutosLuz) : minutosLuz + ' min'}</dd>
+    <dt>Del Sol</dt><dd>a ${Math.round(s.elongacion)}°${s.elongacion < 20 ? ' · demasiado cerca para verlo bien' : s.elongacion > 170 ? ' · en oposición: el mejor momento' : ''}</dd>`;
 }
 
 const horasAR = (h) => `${Math.floor(h)}h ${String(Math.round((h % 1) * 60)).padStart(2, '0')}m`;

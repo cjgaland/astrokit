@@ -75,6 +75,25 @@ prueba('"Frames de calibración" conserva sus 4 tipos y su "en tu equipo"', () =
   igual(t.lista.length, 4);
   cierto(t.equipo, 'falta "en tu equipo"');
 });
+prueba('incluye «¿Subs cortas o largas?» (se perdía en la primera conversión)', () =>
+  cierto(glosario.terminos.some((t) => t.id === 'subs-cortas-o-largas')));
+prueba('"Ver también": todos los relacionados existen y ninguno apunta a sí mismo', () => {
+  const ids = new Set(glosario.terminos.map((t) => t.id));
+  for (const t of glosario.terminos) {
+    for (const r of t.relacionados || []) {
+      cierto(ids.has(r), `${t.id} → ${r} no existe`);
+      cierto(r !== t.id, `${t.id} se relaciona consigo mismo`);
+    }
+  }
+});
+prueba('"Ver también": casi todos los términos tienen al menos uno', () => {
+  const sin = glosario.terminos.filter((t) => !(t.relacionados || []).length);
+  cierto(sin.length <= 3, `sin relacionados: ${sin.map((t) => t.id).join(', ')}`);
+});
+prueba('escala de placa se relaciona con muestreo y seeing', () => {
+  const r = glosario.terminos.find((t) => t.id === 'escala-de-placa').relacionados;
+  cierto(r.includes('muestreo-submuestreo-y-sobremuestreo') && r.includes('seeing'));
+});
 prueba('ningún texto conserva marcas sin procesar (*Analogía:* etc.)', () => {
   const texto = JSON.stringify(glosario.terminos);
   cierto(!/\*(Analogía|La cuenta|En tu equipo|Regla práctica):\*/.test(texto), 'quedan marcas');
@@ -184,6 +203,21 @@ prueba('La culminación coincide con la altura máxima calculada', () => {
   const t = A.proximaCulminacion(0.712 * 15, -4.77, U(2026, 9, 11, 12));
   cerca(A.altAz(0.712 * 15, 41.27, 37.89, -4.77, t).alt, 86.62, 0.05);
 });
+prueba('Planetas (Meeus 33.a): Venus 20-dic-1992 → AR 316,2°, Dec −18,9°, Δ 0,911 UA', () => {
+  const v = A.posicionPlaneta('venus', U(1992, 11, 20));
+  cerca(v.ra, 316.17, 0.3); cerca(v.dec, -18.89, 0.3); cerca(v.distancia, 0.911, 0.005);
+});
+prueba('Oposiciones: Júpiter 10-ene-2026, Saturno 21-sep-2025 y Marte 16-ene-2025 (> 175° del Sol)', () => {
+  cierto(A.posicionPlaneta('jupiter', U(2026, 0, 10)).elongacion > 175, 'Júpiter');
+  cierto(A.posicionPlaneta('saturno', U(2025, 8, 21)).elongacion > 175, 'Saturno');
+  cierto(A.posicionPlaneta('marte', U(2025, 0, 16)).elongacion > 175, 'Marte');
+});
+prueba('Venus en su máxima elongación del 1-jun-2025: 45,9°', () =>
+  cerca(A.posicionPlaneta('venus', U(2025, 5, 1)).elongacion, 45.9, 0.5));
+prueba('Júpiter en oposición: ≈ 46,6″ y magnitud ≈ −2,7', () => {
+  const j = A.posicionPlaneta('jupiter', U(2026, 0, 10));
+  cerca(j.diametro, 46.6, 0.5); cerca(j.magnitud, -2.7, 0.2);
+});
 prueba('Fase: Luna llena iluminada > 99 % y nueva < 1 %', () => {
   cierto(A.faseLunar(A.proximaFase(U(2026, 0, 1), 180)).iluminada > 0.99);
   cierto(A.faseLunar(A.proximaFase(U(2026, 0, 1), 0)).iluminada < 0.01);
@@ -251,6 +285,20 @@ prueba('Totales multinoche por objeto (sin distinguir mayúsculas)', () => {
   igual(t.noches, 2); igual(t.minutos, 120);
 });
 
+/* ---------- Enlaces ---------- */
+grupo('Enlaces (data/enlaces.json)');
+const enlaces = await fetch('../data/enlaces.json').then((r) => r.json());
+prueba('todas las direcciones son https y válidas', () => {
+  for (const g of enlaces.grupos) for (const e of g.enlaces) {
+    const u = new URL(e.url.replace('{lat}', '37.89').replace('{lon}', '-4.77'));
+    igual(u.protocol, 'https:');
+  }
+});
+prueba('están las webs de planificación y el software de la comparativa', () => {
+  const nombres = enlaces.grupos.flatMap((g) => g.enlaces.map((e) => normalizar(e.nombre))).join(' | ');
+  for (const n of ['clear outside', 'meteoblue', 'light pollution', 'telescopius', 'stellarium', 'siril', 'graxpert', 'starnet', 'kstars'])
+    cierto(nombres.includes(n), `falta ${n}`);
+});
 /* ---------- Ejecutar y pintar ---------- */
 const salida = document.getElementById('salida');
 let ok = 0, mal = 0;

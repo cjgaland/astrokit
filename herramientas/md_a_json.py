@@ -7,7 +7,8 @@ Cómo usarlo (desde la carpeta AstroKit):
 
 Solo usa la librería estándar de Python. Es de "un solo uso": una vez generado
 el JSON, lo normal es editar directamente data/glosario.json. Si vuelves a
-ejecutarlo, SOBRESCRIBE el JSON con lo que diga el .md.
+ejecutarlo, SOBRESCRIBE el JSON con lo que diga el .md, y después hay que
+ejecutar herramientas/relacionados.py para recalcular el "Ver también".
 
 Cómo está escrito el glosario (y por tanto qué busca este script):
   - Cada bloque temático empieza con "## N. Título".
@@ -137,8 +138,8 @@ def convertir():
                                  "termino": sigla, "alias": "", "definicion": significa})
             continue
 
-        # --- Nuevo término: "**Nombre**. Texto..." o "**Las líneas clave**:"
-        m = re.match(r"^\*\*(.+?)\*\*[.:]\s*(.*)$", linea)
+        # --- Nuevo término: "**Nombre**. Texto...", "**Las líneas clave**:" o "**¿Pregunta?** Texto"
+        m = re.match(r"^\*\*(.+?)\*\*(?:[.:]|(?<=\?\*\*))\s*(.*)$", linea)
         if m:
             nombre, alias = separar_nombre(m.group(1))
             termino_actual = {"id": nuevo_id(nombre), "bloque": bloque_actual,
