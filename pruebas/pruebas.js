@@ -12,6 +12,7 @@
 
 import { normalizar, resaltar, mdLigero, sinMarcas } from '../js/util.js';
 import * as O from '../js/calculos/optica.js';
+import * as A from '../js/calculos/astro.js';
 
 const grupos = [];
 function grupo(nombre) { grupos.push({ nombre, pruebas: [] }); }
@@ -131,6 +132,60 @@ prueba('SNR √N: para duplicarla hacen falta 4× tomas', () => {
   cerca(O.factorSNR(1440, 360), 2, 1e-12);
 });
 prueba('360 tomas de 10 s = 1 h de integración', () => cerca(O.horasIntegracion(360, 10), 1, 1e-12));
+
+/* ---------- Astronomía ---------- */
+grupo('Planificador (js/calculos/astro.js) contra valores de referencia');
+// Fechas en UTC, para que la prueba dé lo mismo en cualquier zona horaria
+const U = (...a) => new Date(Date.UTC(...a));
+const minutos = (a, b) => Math.abs(a - b) / 60000;
+
+prueba('Día juliano del 1-1-2000 12:00 UT = 2.451.545', () => cerca(A.diaJuliano(U(2000, 0, 1, 12)), 2451545, 1e-9));
+prueba('Tiempo sidéreo (Meeus 12.a): 10-abr-1987 0h UT = 197,6932°', () =>
+  cerca(A.tiempoSidereoLocal(U(1987, 3, 10), 0), 197.6932, 0.001));
+prueba('Sol (Meeus 25.a): 13-oct-1992 → AR 198,38°, Dec −7,79°', () => {
+  const s = A.posicionSol(U(1992, 9, 13));
+  cerca(s.ra, 198.381, 0.02); cerca(s.dec, -7.785, 0.02);
+});
+prueba('Luna (Meeus 47.a): 12-abr-1992 → AR 134,69°, Dec 13,77° (±0,3°)', () => {
+  const l = A.posicionLuna(U(1992, 3, 12));
+  cerca(l.ra, 134.688, 0.3); cerca(l.dec, 13.768, 0.3);
+});
+prueba('Altura y acimut (Meeus 13.b, Venus desde Washington): 15,12° y 248,03°', () => {
+  const v = A.altAz(347.3193375, -6.719892, 38.92139, -77.06556, U(1987, 3, 10, 19, 21));
+  cerca(v.alt, 15.125, 0.05); cerca(v.az, 248.034, 0.05);
+});
+prueba('Luna nueva del 6-ene-2000 a las 18:14 UT (±1 h)', () =>
+  cierto(minutos(A.proximaFase(U(2000, 0, 1), 0), U(2000, 0, 6, 18, 14)) < 60));
+prueba('Luna llena del eclipse del 7-sep-2025, 18:09 UT (±1 h)', () =>
+  cierto(minutos(A.proximaFase(U(2025, 8, 1), 180), U(2025, 8, 7, 18, 9)) < 60));
+prueba('Madrid 21-jun-2025: puesta 21:48 y salida 06:45 hora local (±3 min)', () => {
+  const s = A.sucesosNoche(U(2025, 5, 21, 12), 40.4168, -3.7038);
+  cierto(minutos(s.puesta.inicio, U(2025, 5, 21, 19, 48)) < 3, 'puesta ' + s.puesta.inicio.toISOString());
+  cierto(minutos(s.puesta.fin, U(2025, 5, 22, 4, 45)) < 3, 'salida ' + s.puesta.fin.toISOString());
+});
+prueba('Madrid 21-dic-2025: puesta 17:51 y salida 08:34 hora local (±3 min)', () => {
+  const s = A.sucesosNoche(U(2025, 11, 21, 12), 40.4168, -3.7038);
+  cierto(minutos(s.puesta.inicio, U(2025, 11, 21, 16, 51)) < 3, 'puesta ' + s.puesta.inicio.toISOString());
+  cierto(minutos(s.puesta.fin, U(2025, 11, 22, 7, 34)) < 3, 'salida ' + s.puesta.fin.toISOString());
+});
+prueba('Córdoba en diciembre: la noche astronómica empieza hacia las 19:30 (glosario)', () => {
+  const s = A.sucesosNoche(U(2026, 11, 21, 12), 37.89, -4.77);
+  cierto(minutos(s.astronomico.inicio, U(2026, 11, 21, 18, 30)) < 20, s.astronomico.inicio.toISOString());
+});
+prueba('Córdoba en junio: la noche astronómica empieza después de las 23:00 (glosario)', () => {
+  const s = A.sucesosNoche(U(2026, 5, 21, 12), 37.89, -4.77);
+  cierto(s.astronomico.inicio > U(2026, 5, 21, 21, 0), s.astronomico.inicio.toISOString());
+});
+prueba('Altura máxima de M31 desde Córdoba: 90 − |37,89 − 41,27| = 86,6°', () =>
+  cerca(A.alturaMaxima(41.27, 37.89), 86.62, 0.01));
+prueba('La culminación coincide con la altura máxima calculada', () => {
+  const t = A.proximaCulminacion(0.712 * 15, -4.77, U(2026, 9, 11, 12));
+  cerca(A.altAz(0.712 * 15, 41.27, 37.89, -4.77, t).alt, 86.62, 0.05);
+});
+prueba('Fase: Luna llena iluminada > 99 % y nueva < 1 %', () => {
+  cierto(A.faseLunar(A.proximaFase(U(2026, 0, 1), 180)).iluminada > 0.99);
+  cierto(A.faseLunar(A.proximaFase(U(2026, 0, 1), 0)).iluminada < 0.01);
+});
 
 /* ---------- Ejecutar y pintar ---------- */
 const salida = document.getElementById('salida');
