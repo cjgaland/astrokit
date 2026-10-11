@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pruebas de AstroKit</title>
+  <style>
+    /* Página sencilla: verde = la prueba pasa, rojo = falla */
+    :root { color-scheme: light dark; --ok: #2f7d32; --mal: #c62828; }
+    body { font: 15px/1.5 ui-monospace, Menlo, monospace; max-width: 860px; margin: 24px auto; padding: 0 16px; background: Canvas; color: CanvasText; }
+    h1 { font: 400 32px Georgia, serif; margin: 0 0 4px; }
+    h2 { font: 500 14px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .1em; margin: 24px 0 6px; opacity: .7; }
+    .ok { color: var(--ok); } .mal { color: var(--mal); font-weight: 600; }
+    .detalle { opacity: .7; font-size: 13px; margin-left: 22px; }
+    #resumen { font-size: 18px; padding: 10px 14px; border-radius: 6px; margin: 12px 0; border: 1px solid; }
+  </style>
+</head>
+<body>
+  <h1>Pruebas de AstroKit</h1>
+  <p>Comprueban los datos y las funciones de cálculo con valores conocidos. Recarga tras cada cambio.</p>
+  <div id="resumen">Ejecutando…</div>
+  <div id="salida"></div>
+  <script type="module" src="pruebas.js"></script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+/* ==========================================================================
+   base.css — Maquetación general, cabecera, navegación y piezas comunes
+   ========================================================================== */
+
+/* ---------- Reinicio mínimo ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body, h1, h2, h3, h4, p, ul, ol, figure, blockquote { margin: 0; }
+ul, ol { padding: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+
+/* Iconos del sprite: trazo fino que hereda el color del texto */
+.app svg, .velo-noche svg {
+  width: 1.25em; height: 1.25em;
+  stroke: currentColor; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+  fill: none; flex-shrink: 0;
+}
+
+/* Texto solo para lectores de pantalla (accesibilidad) */
+.sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- Cuerpo ---------- */
+body {
+  font-family: var(--f-texto);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--tinta);
+  background-color: var(--fondo);
+  /* Retícula de instrumento (dirección B): dos degradados de 1px que se repiten */
+  background-image:
+    linear-gradient(var(--reticula) 1px, transparent 1px),
+    linear-gradient(90deg, var(--reticula) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-attachment: fixed;
+  min-height: 100vh;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--t-media), color var(--t-media);
+}
+
+::selection { background: var(--resalte); }
+
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ---------- Estructura de la app ----------
+   Móvil (por defecto): cabecera arriba, contenido, barra de navegación abajo.
+   Pantalla ancha (≥ 900 px): columna lateral de navegación a la izquierda. */
+.app {
+  min-height: 100dvh;
+  padding-bottom: calc(var(--alto-nav) + var(--zona-segura-abajo));
+}
+
+/* ---------- Cabecera ---------- */
+.cabecera {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+  height: calc(var(--alto-cabecera) + var(--zona-segura-arriba));
+  padding: var(--zona-segura-arriba) var(--hueco) 0;
+  background: color-mix(in srgb, var(--fondo) 88%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  border-bottom: 1px solid var(--filete-suave);
+}
+/* filete dorado doble bajo la cabecera, como en los atlas grabados */
+.cabecera::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -4px;
+  border-bottom: 1px solid var(--filete-suave); opacity: .6;
+  pointer-events: none;
+}
+
+.marca {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; color: var(--tinta);
+}
+.app .marca__icono {
+  width: 26px; height: 26px; color: var(--filete); stroke-width: 1.3;
+}
+.marca__texto {
+  font-family: var(--f-titular); font-size: 24px; line-height: 1; letter-spacing: -.01em;
+}
+.marca__texto em { color: var(--acento); }
+
+.cabecera__titulo {
+  flex: 1; min-width: 0;
+  font-family: var(--f-cifra); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--tinta-3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cabecera__titulo::before { content: "/ "; color: var(--filete); }
+.cabecera__titulo:empty::before { content: ""; }
+
+.cabecera__acciones { display: flex; align-items: center; gap: 6px; }
+
+.boton-icono {
+  display: grid; place-items: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  color: var(--tinta-2);
+  transition: background var(--t-rapida), color var(--t-rapida);
+}
+.boton-icono:hover { background: var(--fondo-2); color: var(--tinta); }
+
+/* El botón de modo noche: siempre visible y fácil de acertar a oscuras */
+.boton-noche {
+  display: flex; align-items: center; gap: 6px;
+  height: 38px; padding: 0 14px 0 11px; border-radius: 19px;
+  font-family: var(--f-cifra); font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--tinta);
+  border: 1px solid var(--filete);
+  transition: background var(--t-rapida), color var(--t-rapida), border-color var(--t-rapida);
+}
+.boton-noche:hover { background: var(--fondo-2); }
+.boton-noche[aria-pressed="true"] {
+  background: var(--acento); color: var(--acento-texto); border-color: var(--acento);
+}
+
+/* Atenuador de brillo: solo aparece en modo noche */
+.atenuador { display: none; align-items: center; }
+:root[data-noche="si"] .atenuador { display: flex; }
+/* Deslizador dibujado a mano: el del navegador trae grises claros que de noche deslumbran */
+.atenuador input {
+  width: 74px; height: 22px; background: transparent;
+  -webkit-appearance: none; appearance: none;
+}
+.atenuador input::-webkit-slider-runnable-track { height: 3px; border-radius: 2px; background: var(--tinta-3); }
+.atenuador input::-moz-range-track { height: 3px; border-radius: 2px; background: var(--tinta-3); }
+.atenuador input::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px; margin-top: -6.5px;
+  border-radius: 50%; border: 0; background: var(--acento);
+}
+.atenuador input::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; border: 0; background: var(--acento); }
+/* En el móvil, de noche, el deslizador ocupa el sitio del título del módulo */
+@media (max-width: 520px) {
+  :root[data-noche="si"] .cabecera__titulo { visibility: hidden; }
+  :root[data-noche="si"] .boton-noche span { display: none; }
+  :root[data-noche="si"] .boton-noche { padding: 0 11px; }
+}
+
+/* Velo negro para bajar aún más el brillo de noche (opacidad desde JS) */
+.velo-noche {
+  position: fixed; inset: 0; z-index: 100; pointer-events: none;
+  background: #000; opacity: 0; transition: opacity var(--t-media);
+}
+:root:not([data-noche="si"]) .velo-noche { opacity: 0 !important; }
+
+/* ---------- Navegación ---------- */
+.navegacion {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: flex; justify-content: space-around;
+  height: calc(var(--alto-nav) + var(--zona-segura-abajo));
+  padding: 6px 4px var(--zona-segura-abajo);
+  background: color-mix(in srgb, var(--superficie) 92%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--borde);
+}
+.nav__enlace {
+  position: relative;
+  flex: 1; max-width: 90px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  text-decoration: none; color: var(--tinta-3);
+  font-size: 10.5px; letter-spacing: .02em;
+  border-radius: var(--radio);
+  transition: color var(--t-rapida);
+}
+.app .nav__enlace svg { width: 23px; height: 23px; }
+.nav__enlace:hover { color: var(--tinta-2); }
+.nav__enlace[aria-current="page"] { color: var(--tinta); }
+/* rayita de color sobre el módulo activo */
+.nav__enlace[aria-current="page"]::before {
+  content: ""; position: absolute; top: -6px; left: 30%; right: 30%;
+  height: 2px; border-radius: 2px; background: var(--acento);
+}
+.nav__num { display: none; }
+
+@media (min-width: 900px) {
+  .app {
+    display: grid;
+    grid-template-columns: 232px 1fr;
+    grid-template-rows: auto 1fr;
+    padding-bottom: 0;
+  }
+  .cabecera { grid-column: 1 / -1; }
+  .navegacion {
+    position: sticky; top: calc(var(--alto-cabecera) + 8px);
+    align-self: start;
+    flex-direction: column; justify-content: flex-start; gap: 2px;
+    height: auto; padding: 24px 14px;
+    background: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+    border-top: 0;
+  }
+  .nav__enlace {
+    flex: none; max-width: none;
+    flex-direction: row; justify-content: flex-start; gap: 12px;
+    padding: 10px 12px;
+    font-size: 15px; letter-spacing: 0;
+  }
+  .app .nav__enlace svg { width: 20px; height: 20px; }
+  .nav__enlace:hover { background: var(--fondo-2); }
+  .nav__enlace[aria-current="page"] { background: var(--superficie); box-shadow: var(--sombra); }
+  .nav__enlace[aria-current="page"]::before {
+    top: 10px; bottom: 10px; left: 0; right: auto; width: 2px; height: auto;
+  }
+  /* numeración tipo instrumento: 01, 02... */
+  .nav__num {
+    display: inline; margin-left: auto;
+    font-family: var(--f-cifra); font-size: 11px; color: var(--tinta-3);
+  }
+}
+
+/* ---------- Contenido ---------- */
+.contenido {
+  width: 100%; max-width: 1080px; margin: 0 auto;
+  padding: 20px var(--hueco) 48px;
+  outline: none;
+}
+@media (min-width: 900px) {
+  .contenido { padding: 32px 40px 64px; margin: 0; }
+}
+
+/* Entrada suave del módulo al cambiar de pantalla */
+.entrada { animation: entrada var(--t-media) var(--curva) both; }
+@keyframes entrada {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Piezas tipográficas comunes ---------- */
+.etiqueta {
+  font-family: var(--f-cifra); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--tinta-3);
+}
+.titular {
+  font-family: var(--f-titular); font-weight: 400;
+  font-size: clamp(38px, 8vw, 64px); line-height: .95; letter-spacing: -.015em;
+}
+.titular em { font-style: italic; color: var(--acento); }
+.entradilla { color: var(--tinta-2); max-width: var(--ancho-lectura); }
+.cifra { font-family: var(--f-cifra); font-variant-numeric: tabular-nums; }
+
+/* Espectro: la tira de colores de los 8 bloques (dirección C) */
+.espectro { display: flex; gap: 3px; height: 4px; }
+.espectro span { flex: 1; border-radius: 1px; }
+
+/* ---------- Pantalla "próximamente" para módulos aún no construidos ---------- */
+.pronto {
+  max-width: 560px; margin: 8vh auto 0; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.app .pronto svg { width: 54px; height: 54px; stroke: var(--filete); stroke-width: 1.1; }
+.pronto .titular { font-size: clamp(34px, 7vw, 48px); }
+.pronto__fase {
+  font-family: var(--f-cifra); font-size: 12px; color: var(--tinta-3);
+  border: 1px dashed var(--filete); border-radius: 20px; padding: 4px 12px;
+}

@@ -1,0 +1,143 @@
+/* ==========================================================================
+   tokens.css — La "paleta" de AstroKit
+   --------------------------------------------------------------------------
+   Aquí NO hay maquetación: solo variables (colores, tipografías, medidas).
+   El resto de CSS usa siempre var(--algo), así que para cambiar el aspecto
+   de toda la app basta con tocar este archivo.
+
+   La identidad mezcla las tres direcciones que elegiste:
+     A · Atlas celeste  → tinta azul noche, pergamino, filetes dorados, serif.
+     B · Instrumento    → cifras en monoespaciada, retícula, acento ámbar.
+     C · Espectro       → cada bloque temático lleva un color de línea espectral.
+
+   Hay tres modos:
+     claro  (pergamino)      → data-tema="claro"
+     oscuro (tinta)          → data-tema="oscuro"
+     auto                    → sigue el ajuste del sistema
+     noche  (rojo sobre negro) → data-noche="si", gana sobre todos los demás
+   ========================================================================== */
+
+:root {
+  /* --- Tipografías --- */
+  --f-titular: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --f-texto: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-cifra: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* --- Medidas --- */
+  --radio: 6px;
+  --radio-g: 14px;
+  --hueco: 16px;
+  --ancho-lectura: 68ch;
+  --alto-cabecera: 56px;
+  --alto-nav: 64px;
+  --zona-segura-abajo: env(safe-area-inset-bottom, 0px); /* barra del iPhone */
+  --zona-segura-arriba: env(safe-area-inset-top, 0px);
+
+  /* --- Movimiento --- */
+  --t-rapida: 140ms;
+  --t-media: 260ms;
+  --curva: cubic-bezier(.2, .7, .2, 1);
+
+  color-scheme: light;
+}
+
+/* ---------- MODO CLARO: "pergamino" (por defecto) ---------- */
+:root {
+  --fondo: #f2ede2;          /* papel */
+  --fondo-2: #e9e2d3;        /* papel un tono más hondo */
+  --superficie: #fbf8f1;     /* fichas */
+  --tinta: #18213a;          /* texto principal: azul tinta */
+  --tinta-2: #4b5168;        /* texto secundario */
+  --tinta-3: #8a8676;        /* pistas, etiquetas */
+  --filete: #b8964e;         /* dorado de los grabados */
+  --filete-suave: #d9ccae;
+  --borde: #ddd3bf;
+  --acento: #b5651d;         /* ámbar instrumental */
+  --acento-texto: #fff8ec;
+  --reticula: rgba(24, 33, 58, .05);
+  --sombra: 0 1px 0 rgba(24, 33, 58, .04), 0 8px 24px -12px rgba(24, 33, 58, .18);
+  --resalte: rgba(181, 101, 29, .22);   /* fondo de las coincidencias del buscador */
+
+  /* Colores espectrales de los 8 bloques del glosario */
+  --b1: #34508f;  /* el cielo — índigo nocturno */
+  --b2: #1f8a7e;  /* óptica — OIII, verde azulado */
+  --b3: #6d4597;  /* sensor — violeta */
+  --b4: #b5651d;  /* montura — ámbar */
+  --b5: #c9302a;  /* captura — Hα, rojo */
+  --b6: #9c2f66;  /* filtros — magenta SII */
+  --b7: #55782f;  /* procesado — verde */
+  --b8: #6b6457;  /* siglas — gris tinta */
+}
+
+/* ---------- MODO OSCURO: "tinta" ---------- */
+/* Se aplica si el usuario lo elige, o si está en "auto" y el sistema está en
+   oscuro. CSS no permite combinar un selector con una @media en la misma regla,
+   así que la lista de colores aparece dos veces: si cambias una, cambia la otra. */
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --fondo: #0b1222;
+  --fondo-2: #0f182c;
+  --superficie: #121c33;
+  --tinta: #ebe2cb;
+  --tinta-2: #b4b3ad;
+  --tinta-3: #7d8496;
+  --filete: #c9a85c;
+  --filete-suave: #3a3a3c;
+  --borde: #22304d;
+  --acento: #f2a33a;
+  --acento-texto: #1b1206;
+  --reticula: rgba(201, 168, 92, .055);
+  --sombra: 0 1px 0 rgba(0, 0, 0, .3), 0 10px 30px -14px rgba(0, 0, 0, .7);
+  --resalte: rgba(242, 163, 58, .28);
+  --b1: #7f9be0; --b2: #4fc4b5; --b3: #ad8ae0; --b4: #f2a33a;
+  --b5: #f0645c; --b6: #e0709f; --b7: #9cc265; --b8: #a59d8c;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-tema="auto"] {
+    color-scheme: dark;
+    --fondo: #0b1222;
+    --fondo-2: #0f182c;
+    --superficie: #121c33;
+    --tinta: #ebe2cb;
+    --tinta-2: #b4b3ad;
+    --tinta-3: #7d8496;
+    --filete: #c9a85c;
+    --filete-suave: #3a3a3c;
+    --borde: #22304d;
+    --acento: #f2a33a;
+    --acento-texto: #1b1206;
+    --reticula: rgba(201, 168, 92, .055);
+    --sombra: 0 1px 0 rgba(0, 0, 0, .3), 0 10px 30px -14px rgba(0, 0, 0, .7);
+    --resalte: rgba(242, 163, 58, .28);
+    --b1: #7f9be0; --b2: #4fc4b5; --b3: #ad8ae0; --b4: #f2a33a;
+    --b5: #f0645c; --b6: #e0709f; --b7: #9cc265; --b8: #a59d8c;
+  }
+}
+
+/* ---------- MODO NOCHE: rojo sobre negro ----------
+   La retina tiene dos tipos de células: conos (color, luz de día) y bastones
+   (visión nocturna). Los bastones son casi ciegos al rojo por encima de
+   ~620 nm, así que una luz roja tenue no "deslumbra" la visión nocturna,
+   que tarda 20–30 minutos en recuperarse si la estropeas.
+   Por eso aquí TODOS los colores tienen azul = 0 y muy poco verde:
+   la luz que emite la pantalla queda en la zona roja del espectro. */
+:root[data-noche="si"] {
+  color-scheme: dark;
+  --fondo: #000000;
+  --fondo-2: #070000;
+  --superficie: #0d0100;
+  --tinta: #e0240b;          /* rojo principal */
+  --tinta-2: #a81a00;
+  --tinta-3: #6e1000;
+  --filete: #8a1600;
+  --filete-suave: #2a0500;
+  --borde: #2a0500;
+  --acento: #ff3300;
+  --acento-texto: #000000;
+  --reticula: rgba(255, 40, 0, .05);
+  --sombra: none;
+  --resalte: rgba(255, 40, 0, .25);
+  /* los bloques se distinguen solo por la intensidad del rojo */
+  --b1: #c41e00; --b2: #e02a00; --b3: #a81800; --b4: #ff3300;
+  --b5: #ff2200; --b6: #b81c00; --b7: #d42600; --b8: #7a1200;
+}
