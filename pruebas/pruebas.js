@@ -299,6 +299,7 @@ prueba('están las webs de planificación y el software de la comparativa', () =
   for (const n of ['clear outside', 'meteoblue', 'light pollution', 'telescopius', 'stellarium', 'siril', 'graxpert', 'starnet', 'kstars'])
     cierto(nombres.includes(n), `falta ${n}`);
 });
+
 /* ---------- Ejecutar y pintar ---------- */
 const salida = document.getElementById('salida');
 let ok = 0, mal = 0;
