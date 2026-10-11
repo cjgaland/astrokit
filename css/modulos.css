@@ -37,7 +37,7 @@
   position: relative; display: flex; align-items: center; gap: 8px;
   margin-bottom: 14px;
 }
-.app .buscador__lupa {
+.app svg.buscador__lupa {
   position: absolute; left: 14px; width: 20px; height: 20px;
   color: var(--tinta-3); pointer-events: none;
 }
@@ -317,3 +317,165 @@ mark {
 .app .paso .etiqueta svg { width: 14px; height: 14px; }
 .paso--sig { text-align: right; align-items: flex-end; }
 .paso__nombre { font-family: var(--f-titular); font-size: 21px; line-height: 1.15; }
+
+/* ==========================================================================
+   PIEZAS COMUNES DE MÓDULO (paneles, campos, fórmulas)
+   ========================================================================== */
+.modulo__cabecera { margin-bottom: 28px; }
+.modulo__cabecera .titular { margin: 8px 0 12px; }
+
+.panel {
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-g);
+  box-shadow: var(--sombra);
+  padding: 20px;
+  margin-bottom: 22px;
+}
+.panel--sin-caja { background: none; border: 0; box-shadow: none; padding: 0; }
+@media (max-width: 480px) { .panel { padding: 16px 14px; } }
+
+.panel__fila { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 20px; margin-bottom: 14px; }
+.panel__fila .panel__titulo { margin-bottom: 0; }
+.panel__titulo {
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: var(--f-titular); font-weight: 400; font-size: 28px; line-height: 1.1;
+  margin-bottom: 16px;
+}
+.panel__num { font-family: var(--f-cifra); font-size: 12px; color: var(--acento); letter-spacing: .08em; }
+
+/* Campos de texto con su unidad */
+.campos { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr)); margin: 16px 0 12px; }
+.campo { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.campo__etiqueta { font-size: 13px; color: var(--tinta-2); }
+.campo__caja {
+  display: flex; align-items: center;
+  background: var(--fondo); border: 1px solid var(--borde); border-radius: var(--radio);
+  transition: border-color var(--t-rapida);
+}
+.campo__caja:focus-within { border-color: var(--acento); }
+.campo__caja input {
+  flex: 1; min-width: 0; height: 44px; padding: 0 0 0 12px;
+  font-family: var(--f-cifra); font-size: 17px;   /* ≥ 16 px: sin zoom en el iPhone */
+  background: none; border: 0; outline: none; color: var(--tinta);
+}
+.campo__unidad { padding: 0 12px 0 6px; font-family: var(--f-cifra); font-size: 13px; color: var(--tinta-3); }
+.campo__ayuda { font-size: 12px; color: var(--tinta-3); }
+
+.selector-equipo, .selector-objeto { display: flex; flex-wrap: wrap; gap: 6px; }
+.selector-equipo .chip[aria-pressed="true"], .selector-objeto .chip[aria-pressed="true"] { --color: var(--tinta); }
+
+.ficha-equipo { font-size: 14px; color: var(--tinta-2); line-height: 1.5; }
+.ficha-equipo strong { color: var(--tinta); font-weight: 500; }
+.nota { font-size: 13px; color: var(--tinta-3); }
+.aviso { color: var(--acento); }
+
+.comparar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--borde); }
+.comparar select, .boton-sec {
+  height: 40px; padding: 0 12px; font-size: 15px;
+  background: var(--fondo); color: var(--tinta);
+  border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.boton-sec { display: inline-flex; align-items: center; gap: 8px; }
+.boton-sec:hover { border-color: var(--filete); }
+.app .boton-sec svg { width: 17px; height: 17px; }
+
+/* Fórmula: siempre visible, con aspecto de instrumento */
+.formula {
+  font-size: 13px; line-height: 1.75; color: var(--tinta-2);
+  padding: 8px 10px; margin: 10px 0 8px;
+  background-color: var(--fondo-2);
+  background-image:
+    linear-gradient(var(--reticula) 1px, transparent 1px),
+    linear-gradient(90deg, var(--reticula) 1px, transparent 1px);
+  background-size: 12px 12px;
+  border-left: 2px solid var(--acento);
+  overflow-x: auto;
+}
+.formula--sec { border-left-color: var(--filete); }
+.formula__nota { color: var(--tinta-3); }
+
+.explica { margin-top: 18px; padding: 14px 16px; border: 1px dashed var(--filete); border-radius: var(--radio); }
+.explica .etiqueta { color: var(--filete); display: block; margin-bottom: 6px; }
+.explica p { font-size: 15px; line-height: 1.6; color: var(--tinta-2); }
+.explica var { font-family: var(--f-cifra); font-style: normal; color: var(--tinta); }
+
+/* ==========================================================================
+   ÓPTICA
+   ========================================================================== */
+.seeing { display: flex; align-items: center; gap: 10px; }
+.seeing input { width: 130px; }
+.seeing output { min-width: 3em; color: var(--acento); }
+
+.lecturas { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+.lectura {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  box-shadow: var(--sombra); padding: 14px 16px 16px;
+  display: flex; flex-direction: column;
+}
+.lectura__cabecera { display: flex; justify-content: space-between; align-items: center; }
+.lectura__cabecera h3 { font-weight: 400; margin: 0; }
+.lectura__glosario { color: var(--tinta-3); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; }
+.lectura__glosario:hover { color: var(--acento); background: var(--fondo-2); }
+.app .lectura__glosario svg { width: 17px; height: 17px; }
+.lectura__cifra { font-size: clamp(30px, 6vw, 38px); line-height: 1.1; color: var(--acento); margin-top: 4px; }
+.lectura__cifra span { font-size: 15px; color: var(--tinta-3); margin-left: 3px; }
+.lectura__sub { font-size: 13px; color: var(--tinta-2); margin-top: 2px; }
+.lectura__texto { font-size: 14px; line-height: 1.5; color: var(--tinta-2); }
+
+/* Escala de muestreo: sub | óptimo | sobre */
+.muestreo { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--borde); }
+.muestreo__barra { position: relative; display: grid; grid-template-columns: 22fr 44fr 34fr; gap: 2px; margin: 6px 0 4px; }
+.muestreo__zona { font-family: var(--f-cifra); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; text-align: center; padding: 3px 0; color: var(--tinta-2); }
+.muestreo__zona--sub { background: color-mix(in srgb, var(--b6) 18%, transparent); }
+.muestreo__zona--ok { background: color-mix(in srgb, var(--b7) 22%, transparent); }
+.muestreo__zona--sobre { background: color-mix(in srgb, var(--b1) 18%, transparent); }
+.muestreo__marca { position: absolute; top: -4px; bottom: -4px; width: 3px; margin-left: -1.5px; background: var(--acento); border-radius: 2px; }
+
+/* Encuadre */
+.selector-objeto { margin-bottom: 14px; }
+.encuadre { display: grid; gap: 18px; }
+@media (min-width: 760px) { .encuadre { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: start; } }
+.encuadre__lienzo {
+  background: #05070d; border-radius: var(--radio); overflow: hidden;
+  border: 1px solid var(--borde);
+  /* el "cielo" del simulador es oscuro en todos los temas, salvo el de noche que ya es negro */
+  --tinta: #ebe2cb; --tinta-2: #b4b3ad; --tinta-3: #6c7180; --filete: #c9a85c;
+}
+:root[data-noche="si"] .encuadre__lienzo { background: #000; --tinta: #e0240b; --tinta-2: #a81a00; --tinta-3: #6e1000; --filete: #8a1600; }
+.encuadre__svg { width: 100%; height: auto; }
+.encuadre__estrella { fill: var(--tinta-2); opacity: .55; }
+.encuadre__estrella-brillante { fill: var(--tinta); }
+.encuadre__brazo { stroke: var(--tinta); stroke-opacity: .25; stroke-width: 1; }
+.encuadre__crater { fill: var(--tinta-3); opacity: .6; }
+.encuadre__campo { fill: none; stroke: var(--acento); stroke-width: 2; }
+.encuadre__campo2 { fill: none; stroke: var(--filete); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.encuadre__etiqueta { font-family: var(--f-cifra); font-size: 11px; }
+.encuadre__campo-texto { fill: var(--acento); }
+.encuadre__campo2-texto { fill: var(--filete); }
+.encuadre__escala path { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+.encuadre__escala text { font-family: var(--f-cifra); font-size: 11px; fill: var(--tinta-2); }
+.encuadre__info { display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.5; color: var(--tinta-2); }
+.encuadre__info strong { color: var(--tinta); font-weight: 500; }
+.encuadre__nombre { font-family: var(--f-titular); font-weight: 400; font-size: 30px; line-height: 1; color: var(--tinta); }
+.datos { display: grid; grid-template-columns: auto 1fr; gap: 3px 14px; font-size: 13px; margin: 0; }
+.datos dt { color: var(--tinta-3); }
+.datos dd { margin: 0; color: var(--tinta); }
+.encuadre__info .boton-sec { align-self: flex-start; }
+
+/* SNR */
+.snr { display: grid; gap: 18px; }
+@media (min-width: 760px) { .snr { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); } }
+.snr__controles { display: grid; gap: 14px; align-content: start; }
+.deslizador { display: flex; align-items: center; gap: 12px; height: 44px; }
+.deslizador input { flex: 1; }
+.deslizador output { font-size: 20px; color: var(--acento); min-width: 3.2em; text-align: right; }
+.snr__grafica { margin-top: 14px; max-width: 640px; }
+.grafica { width: 100%; height: auto; }
+.grafica__ejes line { stroke: var(--tinta-3); stroke-width: 1; }
+.grafica__ejes text, .grafica__texto { font-family: var(--f-cifra); font-size: 12px; fill: var(--tinta-3); }
+.grafica__texto--meta { fill: var(--acento); }
+.grafica__curva { fill: none; stroke: var(--tinta); stroke-width: 2; }
+.grafica__guia { stroke: var(--filete); stroke-width: 1; stroke-dasharray: 3 4; }
+.grafica__punto { fill: var(--acento); }
+.grafica__punto--ahora { fill: var(--superficie); stroke: var(--tinta); stroke-width: 2; }

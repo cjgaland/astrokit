@@ -1,0 +1,21 @@
+{
+  "_nota": "Objetos del cielo. ancho/alto: tamaño angular aparente en minutos de arco (′). angulo: inclinación del eje largo en grados (ángulo de posición, medido desde el norte hacia el este). ar en horas decimales y dec en grados (J2000), para el planificador de la fase 3. tipo: galaxia, nebulosa-emision, nebulosa-reflexion, nebulosa-planetaria, remanente, cumulo-abierto, cumulo-globular, luna.",
+  "objetos": [
+    { "id": "m31", "nombre": "Galaxia de Andrómeda", "catalogo": "M31", "tipo": "galaxia",
+      "ancho": 190, "alto": 60, "angulo": 35, "ar": 0.712, "dec": 41.27, "mag": 3.4, "simulador": true },
+    { "id": "m42", "nombre": "Nebulosa de Orión", "catalogo": "M42", "tipo": "nebulosa-emision",
+      "ancho": 85, "alto": 60, "angulo": 0, "ar": 5.588, "dec": -5.39, "mag": 4.0, "simulador": true },
+    { "id": "m45", "nombre": "Pléyades", "catalogo": "M45", "tipo": "cumulo-abierto",
+      "ancho": 110, "alto": 110, "angulo": 0, "ar": 3.790, "dec": 24.12, "mag": 1.6, "simulador": true },
+    { "id": "ngc7000", "nombre": "Nebulosa Norteamérica", "catalogo": "NGC 7000", "tipo": "nebulosa-emision",
+      "ancho": 120, "alto": 100, "angulo": 0, "ar": 20.979, "dec": 44.33, "mag": 4.0, "simulador": true },
+    { "id": "m51", "nombre": "Galaxia del Remolino", "catalogo": "M51", "tipo": "galaxia",
+      "ancho": 11, "alto": 7, "angulo": 163, "ar": 13.498, "dec": 47.20, "mag": 8.4, "simulador": true },
+    { "id": "luna", "nombre": "La Luna", "catalogo": "Luna", "tipo": "luna",
+      "ancho": 31, "alto": 31, "angulo": 0, "simulador": true },
+    { "id": "m33", "nombre": "Galaxia del Triángulo", "catalogo": "M33", "tipo": "galaxia",
+      "ancho": 70, "alto": 40, "angulo": 23, "ar": 1.564, "dec": 30.66, "mag": 5.7, "simulador": true },
+    { "id": "m57", "nombre": "Nebulosa del Anillo", "catalogo": "M57", "tipo": "nebulosa-planetaria",
+      "ancho": 1.4, "alto": 1.0, "angulo": 60, "ar": 18.893, "dec": 33.03, "mag": 8.8, "simulador": true }
+  ]
+}

@@ -24,8 +24,8 @@ import { icono } from './util.js';
 const MODULOS = [
   { id: 'glosario', nombre: 'Glosario', icono: 'glosario',
     cargar: () => import('./modulos/glosario.js') },
-  { id: 'optica', nombre: 'Óptica', icono: 'optica', fase: 2,
-    resumen: 'Relación focal, campo de visión, escala de placa, Dawes, simulador de encuadre y calculadora de SNR.' },
+  { id: 'optica', nombre: 'Óptica', icono: 'optica',
+    cargar: () => import('./modulos/optica.js') },
   { id: 'cielo', nombre: 'Cielo', icono: 'cielo', fase: 3,
     resumen: 'Fase lunar, noche astronómica y objetos recomendados del mes.' },
   { id: 'checklist', nombre: 'Checklist', icono: 'checklist', fase: 4,

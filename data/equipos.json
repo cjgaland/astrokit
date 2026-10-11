@@ -1,0 +1,44 @@
+{
+  "_nota": "Equipos predefinidos de la calculadora óptica. apertura y focal en mm; pixel en micras (µm); resolución en píxeles. Puedes añadir los tuyos copiando un bloque.",
+  "equipos": [
+    {
+      "id": "s50pro",
+      "nombre": "Seestar S50 Pro",
+      "corto": "S50 Pro",
+      "apertura": 50,
+      "focal": 260,
+      "pixel": 2.9,
+      "resX": 3840,
+      "resY": 2160,
+      "sensor": "OmniVision OS08B10 · 1/1,2″ · 8,3 MP",
+      "exposicion": "10–30 s Alt-Az · 60 s en EQ",
+      "nota": "Refractor APO de 4 elementos, plegado."
+    },
+    {
+      "id": "draco-dso",
+      "nombre": "DWARFLAB Draco · cielo profundo",
+      "corto": "Draco 2×2",
+      "apertura": 90,
+      "focal": 340,
+      "pixel": 2.4,
+      "resX": 4096,
+      "resY": 3072,
+      "sensor": "1/1,3″ · 50 MP agrupado 2×2 → ≈12 MP",
+      "exposicion": "Hasta 300 s (autoguiado + desrotador)",
+      "nota": "Resolución estimada a partir de los 50 MP 4:3 del fabricante; confirmar cuando se entregue."
+    },
+    {
+      "id": "draco-50mp",
+      "nombre": "DWARFLAB Draco · 50 MP",
+      "corto": "Draco 50 MP",
+      "apertura": 90,
+      "focal": 340,
+      "pixel": 1.2,
+      "resX": 8192,
+      "resY": 6144,
+      "sensor": "1/1,3″ · 50 MP nativos",
+      "exposicion": "Luna, Sol y planetas (vídeo / lucky imaging)",
+      "nota": "Resolución estimada a partir de los 50 MP 4:3 del fabricante; confirmar cuando se entregue."
+    }
+  ]
+}
