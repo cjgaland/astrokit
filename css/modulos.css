@@ -666,3 +666,109 @@ mark {
 .boton-icono--peligro:hover { color: var(--b5); }
 .anadir { display: flex; gap: 8px; padding: 10px 12px 14px 18px; border-top: 1px dashed var(--borde); }
 .checklist__pie { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 8px; }
+
+/* ==========================================================================
+   CUADERNO
+   ========================================================================== */
+.estadisticas {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  padding: 12px 0; margin-bottom: 18px;
+  border-top: 1px solid var(--filete); border-bottom: 1px solid var(--filete-suave);
+}
+.estadisticas > div { display: flex; flex-direction: column; }
+.estadisticas .lectura__cifra { font-size: clamp(19px, 5vw, 32px); white-space: nowrap; }
+
+.cuaderno__barra { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
+.boton-principal {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 46px; padding: 0 22px; border-radius: 23px;
+  background: var(--acento); color: var(--acento-texto); border: 0;
+  font-size: 16px; font-weight: 500; text-decoration: none;
+  transition: filter var(--t-rapida);
+}
+.boton-principal:hover { filter: brightness(1.08); }
+.buscador--pequeno { flex: 1; min-width: 200px; margin: 0; }
+.buscador--pequeno input { height: 46px; }
+
+.sesiones { list-style: none; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.sesion {
+  display: flex; gap: 14px; align-items: center; padding: 10px;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  box-shadow: var(--sombra); text-decoration: none; color: inherit;
+  transition: border-color var(--t-rapida);
+}
+.sesion:hover { border-color: var(--filete); }
+.sesion__foto { flex-shrink: 0; width: 84px; height: 84px; border-radius: 4px; }
+.sesion__texto { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sesion__fecha { font-size: 11px; letter-spacing: .06em; color: var(--tinta-3); text-transform: uppercase; }
+.sesion__objeto { font-family: var(--f-titular); font-size: 24px; line-height: 1.05; }
+.sesion__meta { font-size: 13px; color: var(--tinta-2); }
+.sesion__estrellas { color: var(--acento); font-size: 13px; letter-spacing: 1px; }
+.sesion__estrellas span { color: var(--borde); }
+.sesion__estrellas--grande { font-size: 20px; margin-top: 8px; }
+
+/* Fotos: marco oscuro; de noche se pasan a monocromo rojo (sin verde ni azul) */
+.foto {
+  position: relative; overflow: hidden;
+  display: grid; place-items: center;
+  background: #05070d; color: #6c7180;
+}
+.foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.app .foto svg { width: 30px; height: 30px; }
+:root[data-noche="si"] .foto { background: #000; color: var(--tinta-3); }
+:root[data-noche="si"] .foto img { filter: grayscale(1) brightness(.75); }
+:root[data-noche="si"] .foto:has(img)::after {
+  content: ""; position: absolute; inset: 0;
+  background: #ff0000; mix-blend-mode: multiply; pointer-events: none;
+}
+
+.copia { margin-top: 30px; }
+.copia__botones { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 8px; }
+.boton-archivo { cursor: pointer; }
+
+/* Ficha de sesión */
+.ficha-sesion { max-width: 760px; margin: 0 auto; }
+.ficha-sesion__foto { margin: 20px 0 6px; border-radius: var(--radio); max-height: 70vh; }
+.ficha-sesion__foto img { object-fit: contain; height: auto; max-height: 70vh; }
+.ficha-sesion__datos { display: grid; gap: 16px; margin-top: 20px; }
+@media (min-width: 700px) { .ficha-sesion__datos { grid-template-columns: 1fr 1fr; align-items: start; } }
+.ficha-sesion__datos .datos { font-size: 15px; gap: 6px 16px; }
+.ficha-sesion__notas { margin-top: 18px; padding: 14px 16px; border: 1px dashed var(--filete); border-radius: var(--radio); }
+.ficha-sesion__notas p { margin-top: 6px; line-height: 1.6; }
+.boton-marca { text-decoration: none; }
+.boton-marca--peligro:hover { border-color: var(--b5); color: var(--b5); }
+
+/* Formulario */
+.formulario-sesion .titular { margin: 4px 0 18px; }
+.formulario { display: grid; gap: 16px; }
+.formulario__rejilla { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+.campo--ancho { grid-column: span 2; }
+@media (max-width: 480px) { .campo--ancho { grid-column: auto; } }
+.campo__caja select {
+  flex: 1; min-width: 0; height: 44px; padding: 0 10px; font-size: 16px;
+  background: none; border: 0; outline: none; color: var(--tinta);
+}
+.campo__caja input[type="date"] { font-family: var(--f-cifra); padding-right: 10px; }
+.campo textarea {
+  width: 100%; padding: 10px 12px; font-size: 16px; line-height: 1.5; resize: vertical;
+  background: var(--fondo); color: var(--tinta); border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.campo textarea:focus { outline: none; border-color: var(--acento); }
+.campo__error { color: var(--b5); }
+:root[data-noche="si"] .campo__error { color: var(--acento); }
+
+.valoracion { border: 0; padding: 0; margin: 0; display: flex; align-items: center; gap: 2px; }
+.valoracion legend { margin-bottom: 4px; }
+.valoracion label { cursor: pointer; }
+.valoracion input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.valoracion span { font-size: 30px; line-height: 1; color: var(--borde); padding: 0 2px; transition: color var(--t-rapida); }
+/* Truco CSS: se iluminan la estrella elegida y todas las anteriores */
+.valoracion:has(input:checked) label span { color: var(--acento); }
+.valoracion label:has(input:checked) ~ label span { color: var(--borde); }
+.valoracion input:focus-visible + span { outline: 2px solid var(--acento); border-radius: 4px; }
+
+.foto-campo__fila { display: flex; gap: 14px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
+.foto-campo__vista { width: 120px; height: 120px; border-radius: var(--radio); }
+.foto-campo__botones { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; flex: 1; min-width: 180px; }
+.formulario__botones { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.formulario__botones .boton-sec { display: inline-flex; align-items: center; text-decoration: none; height: 46px; }

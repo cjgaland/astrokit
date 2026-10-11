@@ -30,8 +30,8 @@ const MODULOS = [
     cargar: () => import('./modulos/cielo.js') },
   { id: 'checklist', nombre: 'Checklist', icono: 'checklist',
     cargar: () => import('./modulos/checklist.js') },
-  { id: 'cuaderno', nombre: 'Cuaderno', icono: 'cuaderno', fase: 5,
-    resumen: 'Registro de cada noche de observación, con copia de seguridad.' },
+  { id: 'cuaderno', nombre: 'Cuaderno', icono: 'cuaderno',
+    cargar: () => import('./modulos/cuaderno.js') },
   { id: 'enlaces', nombre: 'Enlaces', icono: 'enlaces', fase: 6,
     resumen: 'Software para Mac y webs de planificación.' },
 ];

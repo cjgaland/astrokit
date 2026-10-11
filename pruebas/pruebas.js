@@ -14,6 +14,7 @@ import { normalizar, resaltar, mdLigero, sinMarcas } from '../js/util.js';
 import * as O from '../js/calculos/optica.js';
 import * as A from '../js/calculos/astro.js';
 import { progreso, mover } from '../js/modulos/checklist.js';
+import { integracionMin, dimensionesMiniatura, mezclarSesiones, totalesPorObjeto } from '../js/modulos/cuaderno.js';
 
 const grupos = [];
 function grupo(nombre) { grupos.push({ nombre, pruebas: [] }); }
@@ -217,6 +218,37 @@ prueba('mover sube y baja sin salirse de la lista ni modificar el original', () 
   igual(mover(l, 1, 1).join(''), 'acb');
   igual(mover(l, 0, -1).join(''), 'abc');
   igual(l.join(''), 'abc');
+});
+
+/* ---------- Cuaderno ---------- */
+grupo('Cuaderno (js/modulos/cuaderno.js)');
+
+prueba('360 tomas de 10 s = 60 min de integración', () => igual(integracionMin({ subs: 360, exposicion: 10 }), 60));
+prueba('Una sesión sin tomas cuenta 0 min (no NaN)', () => igual(integracionMin({ subs: '', exposicion: '' }), 0));
+prueba('Miniatura: 3840×2160 → 400×225; una pequeña no se agranda', () => {
+  const m = dimensionesMiniatura(3840, 2160, 400);
+  igual(m.ancho, 400); igual(m.alto, 225);
+  const p = dimensionesMiniatura(300, 200, 400);
+  igual(p.ancho, 300); igual(p.alto, 200);
+});
+prueba('Miniatura vertical: 3024×4032 → 300×400', () => {
+  const m = dimensionesMiniatura(3024, 4032, 400);
+  igual(m.ancho, 300); igual(m.alto, 400);
+});
+prueba('Importar no duplica y se queda con la versión más reciente', () => {
+  const actuales = [{ id: 'a', modificado: '2026-10-01', notas: 'vieja' }, { id: 'b', modificado: '2026-10-05' }];
+  const importadas = [{ id: 'a', modificado: '2026-10-09', notas: 'nueva' }, { id: 'b', modificado: '2026-10-01' }, { id: 'c', modificado: '2026-10-02' }];
+  const r = mezclarSesiones(actuales, importadas);
+  igual(r.lista.length, 3); igual(r.nuevas, 1); igual(r.actualizadas, 1);
+  igual(r.lista.find((s) => s.id === 'a').notas, 'nueva');
+});
+prueba('Totales multinoche por objeto (sin distinguir mayúsculas)', () => {
+  const t = totalesPorObjeto([
+    { objeto: 'M31', subs: 360, exposicion: 10 },
+    { objeto: 'm31 ', subs: 180, exposicion: 20 },
+    { objeto: 'M42', subs: 100, exposicion: 10 },
+  ], 'M31');
+  igual(t.noches, 2); igual(t.minutos, 120);
 });
 
 /* ---------- Ejecutar y pintar ---------- */
