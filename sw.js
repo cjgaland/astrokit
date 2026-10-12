@@ -18,7 +18,7 @@
      así el navegador detecta un service worker nuevo y renueva la caché.
    ========================================================================== */
 
-const VERSION = 'astrokit-v7';
+const VERSION = 'astrokit-v8';
 
 // Archivos que forman la app (rutas relativas a esta carpeta)
 const ARCHIVOS = [

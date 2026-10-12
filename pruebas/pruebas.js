@@ -124,6 +124,19 @@ prueba('Draco (2×2): escala ≈ 1,46″/px y f/3,8', () => {
 });
 prueba('Draco: lado largo ≈ 1,65° (dato de la comparativa)', () =>
   cerca(O.campoVision(O.tamanoSensor(draco.resX, draco.pixel), draco.focal), 1.65, 0.02));
+const eq2 = equipos.find((e) => e.id === 'equinox2');
+prueba('eQuinox 2: escala ≈ 1,33″/px y f/3,9', () => {
+  cerca(O.escalaPlaca(eq2.pixel, eq2.focal), 1.33, 0.005);
+  cerca(O.relacionFocal(eq2.focal, eq2.apertura), 3.95, 0.01);
+});
+prueba('eQuinox 2: campo oficial ≈ 0,76° × 0,57° (46′ × 34′)', () => {
+  cerca(O.campoVision(O.tamanoSensor(eq2.resX, eq2.pixel), eq2.focal), 0.76, 0.01);
+  cerca(O.campoVision(O.tamanoSensor(eq2.resY, eq2.pixel), eq2.focal), 0.57, 0.01);
+});
+prueba('eQuinox 2: ≈ 5,2× la luz del S50 Pro y ≈ 1,6× la del Draco', () => {
+  cerca(O.luzRelativa(114, 50), 5.2, 0.01);
+  cerca(O.luzRelativa(114, 90), 1.6, 0.01);
+});
 prueba('Dawes: 2,32″ con 50 mm y 1,29″ con 90 mm', () => {
   cerca(O.limiteDawes(50), 2.32, 0.005);
   cerca(O.limiteDawes(90), 1.29, 0.005);
