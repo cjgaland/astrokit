@@ -825,11 +825,6 @@ mark {
 .etiqueta-nivel--empezar { background: var(--color); border-color: var(--color); color: var(--fondo); }
 .enlace__dominio { font-size: 11px; color: var(--tinta-3); }
 
-/* Enlaces · versión instalada */
-.version-app { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); }
-.version-app .etiqueta { display: block; margin-bottom: 4px; }
-.version-app p { margin-bottom: 10px; color: var(--tinta-2); }
-
 /* ==========================================================================
    PORTADA
    ========================================================================== */
@@ -871,3 +866,40 @@ mark {
   body.en-portada .navegacion { display: none; }
   body.en-portada .app { padding-bottom: 24px; }
 }
+
+/* ==========================================================================
+   INFO Y AYUDA
+   ========================================================================== */
+.info__acerca { display: flex; gap: 20px; align-items: flex-start; }
+.app svg.info__logo { flex-shrink: 0; width: 64px; height: 64px; color: var(--filete); stroke: currentColor; stroke-width: 1.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 520px) { .info__acerca { flex-direction: column; gap: 12px; } }
+.info__descripcion { font-size: 16px; line-height: 1.6; color: var(--tinta-2); margin-bottom: 12px; }
+.info__datos { font-size: 14px; }
+.info__datos a { color: var(--acento); }
+.info__creditos { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--borde); }
+.info__creditos summary { cursor: pointer; font-size: 14px; color: var(--tinta-2); }
+.info__creditos ul { margin: 8px 0 0 18px; font-size: 13.5px; line-height: 1.5; color: var(--tinta-2); }
+
+.info__version { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+.info__version .lectura__cifra { margin: 2px 0; }
+.info__subtitulo { display: block; margin: 20px 0 10px; padding-top: 14px; border-top: 1px dashed var(--borde); }
+.historial { list-style: none; display: grid; gap: 10px; }
+.historial__version { position: relative; padding: 10px 14px 10px 18px; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--fondo); }
+.historial__version::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; background: var(--borde); }
+.historial__version.es-actual { border-color: var(--acento); background: var(--superficie); }
+.historial__version.es-actual::before { background: var(--acento); }
+.historial__cabecera { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 4px; }
+.historial__numero { font-size: 14px; color: var(--tinta); text-transform: capitalize; }
+.historial__version.es-actual .historial__numero::after { content: " · instalada"; color: var(--acento); font-size: 11px; text-transform: none; }
+.historial__fecha { font-size: 12px; color: var(--tinta-3); }
+.historial__version ul { margin: 0 0 0 18px; font-size: 14px; line-height: 1.5; color: var(--tinta-2); }
+
+.ayuda { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+.ayuda__tarjeta { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--fondo); }
+.app .ayuda__icono { width: 26px; height: 26px; color: var(--acento); margin-bottom: 4px; }
+.ayuda__tarjeta h3 { font-family: var(--f-titular); font-weight: 400; font-size: 24px; line-height: 1.05; }
+.ayuda__tarjeta p { font-size: 14.5px; line-height: 1.5; color: var(--tinta-2); }
+.ayuda__botones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.ayuda__botones .boton-principal { height: 44px; padding: 0 18px; font-size: 15px; }
+.app .ayuda__botones svg { width: 17px; height: 17px; }
+.ayuda__botones .boton-sec { text-decoration: none; height: 44px; }

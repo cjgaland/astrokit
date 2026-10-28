@@ -38,6 +38,8 @@ const MODULOS = [
     cargar: () => import('./modulos/cuaderno.js') },
   { id: 'enlaces', nombre: 'Enlaces', icono: 'enlaces',
     cargar: () => import('./modulos/enlaces.js') },
+  { id: 'info', nombre: 'Info', icono: 'info',
+    cargar: () => import('./modulos/info.js') },
 ];
 // La primera vez se entra por la portada; las siguientes, directo al glosario
 const MODULO_INICIAL = leer('yaAbierta', false) ? 'glosario' : 'portada';

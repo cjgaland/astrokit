@@ -299,3 +299,9 @@ body {
 .aviso-actualizacion--novedades { border-color: var(--filete); align-items: flex-start; }
 .aviso-actualizacion--novedades .aviso-actualizacion__icono { color: var(--b7); }
 :root[data-noche="si"] .aviso-actualizacion--novedades .aviso-actualizacion__icono { color: var(--acento); }
+
+/* Con siete pestañas, en móviles estrechos la etiqueta va un punto más pequeña y sin separación extra */
+@media (max-width: 420px) {
+  .nav__enlace { font-size: 9.5px; letter-spacing: 0; }
+  .navegacion { padding-left: 0; padding-right: 0; }
+}

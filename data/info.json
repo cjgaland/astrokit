@@ -1,0 +1,16 @@
+{
+  "_nota": "Textos de la pestaña Info. El historial de versiones se lee de data/novedades.json (lo mantiene publicar_astrokit.sh). Edita aquí la descripción, la autoría y el correo de sugerencias.",
+  "descripcion": "AstroKit es una utilidad personal para aprender astrofotografía y para salir a hacerla: un glosario didáctico, una calculadora óptica que enseña sus fórmulas, el planificador de la noche, la checklist de salida al campo y un cuaderno de sesiones. Funciona sin cobertura, se instala como una app en el iPhone, el iPad y el Mac, y tiene un modo noche en rojo para no perder la adaptación a la oscuridad.",
+  "autor": "Carlos J. Galán Doval",
+  "lugar": "Córdoba",
+  "inicio": "2026",
+  "correo": "cjgaland@gmail.com",
+  "manual": "docs/Manual_de_uso_AstroKit.pdf",
+  "web": "https://cjgaland.github.io/astrokit/",
+  "tecnologia": "HTML, CSS y JavaScript sin dependencias · PWA con service worker · cálculos astronómicos de Meeus en local · datos guardados solo en el dispositivo",
+  "creditos": [
+    "Fórmulas astronómicas: Jean Meeus, «Astronomical Algorithms»; Astronomical Almanac; elementos planetarios del JPL (Standish).",
+    "Datos de los telescopios: AstroBackyard, Skies & Scopes, Sky at Night y las fichas de ZWO, DWARFLAB y Unistellar.",
+    "Tipografías: Instrument Serif, Space Grotesk e IBM Plex Mono (Google Fonts)."
+  ]
+}

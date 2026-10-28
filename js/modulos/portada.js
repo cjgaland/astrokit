@@ -31,6 +31,8 @@ const SECCIONES = [
     texto: 'El registro de cada noche, con foto, y la copia de seguridad de todos tus datos.' },
   { id: 'enlaces', nombre: 'Enlaces', icono: 'enlaces', num: 6,
     texto: 'El software para tu Mac y las webs de planificación.' },
+  { id: 'info', nombre: 'Info', icono: 'info', num: 7,
+    texto: 'Versión instalada, historial de cambios, manual de uso en PDF y sugerencias.' },
 ];
 
 let raiz = null;
