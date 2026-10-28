@@ -23,6 +23,9 @@ import { iniciarActualizaciones } from './actualizaciones.js';
    dinámico): la app arranca más rápido. Los que aún no existen llevan la
    fase en la que se construirán. */
 const MODULOS = [
+  // La portada no sale en la barra de navegación (enNav: false): se llega a ella pulsando el logo
+  { id: 'portada', nombre: 'Portada', icono: 'marca', enNav: false,
+    cargar: () => import('./modulos/portada.js') },
   { id: 'glosario', nombre: 'Glosario', icono: 'glosario',
     cargar: () => import('./modulos/glosario.js') },
   { id: 'optica', nombre: 'Óptica', icono: 'optica',
@@ -36,7 +39,8 @@ const MODULOS = [
   { id: 'enlaces', nombre: 'Enlaces', icono: 'enlaces',
     cargar: () => import('./modulos/enlaces.js') },
 ];
-const MODULO_INICIAL = 'glosario';
+// La primera vez se entra por la portada; las siguientes, directo al glosario
+const MODULO_INICIAL = leer('yaAbierta', false) ? 'glosario' : 'portada';
 
 const contenido = document.getElementById('contenido');
 const tituloModulo = document.getElementById('titulo-modulo');
@@ -44,7 +48,7 @@ const nav = document.getElementById('navegacion');
 
 /* ---------- Navegación ---------- */
 function dibujarNavegacion() {
-  nav.innerHTML = MODULOS.map((m, i) => `
+  nav.innerHTML = MODULOS.filter((m) => m.enNav !== false).map((m, i) => `
     <a class="nav__enlace" href="#${m.id}" data-modulo="${m.id}">
       ${icono(m.icono)}
       <span>${m.nombre}</span>
@@ -68,7 +72,9 @@ async function enrutar() {
     if (a.dataset.modulo === id) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
   });
-  tituloModulo.textContent = modulo.nombre;
+  tituloModulo.textContent = modulo.id === 'portada' ? '' : modulo.nombre;
+  document.body.classList.toggle('en-portada', modulo.id === 'portada');
+  if (modulo.id !== 'portada') guardar('yaAbierta', true);
 
   // Si seguimos en el mismo módulo y sabe actualizarse (p. ej. abrir una ficha
   // del glosario), le pasamos el nuevo parámetro sin desmontarlo.

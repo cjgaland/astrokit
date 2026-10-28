@@ -829,3 +829,45 @@ mark {
 .version-app { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); }
 .version-app .etiqueta { display: block; margin-bottom: 4px; }
 .version-app p { margin-bottom: 10px; color: var(--tinta-2); }
+
+/* ==========================================================================
+   PORTADA
+   ========================================================================== */
+.portada { max-width: 860px; margin: 0 auto; padding-top: 4vh; }
+.portada__cabecera { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.app svg.portada__logo { width: 96px; height: 96px; color: var(--filete); stroke: currentColor; stroke-width: 1.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.portada__titulo { font-family: var(--f-titular); font-weight: 400; font-size: clamp(56px, 12vw, 88px); line-height: 1; letter-spacing: -.02em; margin-top: 4px; }
+.portada__titulo em { font-style: italic; color: var(--acento); }
+.portada__lema { font-family: var(--f-cifra); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--tinta-3); }
+.portada__descripcion { max-width: 56ch; font-size: 17px; line-height: 1.6; color: var(--tinta-2); margin-top: 8px; }
+.portada__entrar { margin-top: 18px; height: 50px; padding: 0 28px; font-size: 17px; }
+.app .portada__entrar svg { width: 18px; height: 18px; }
+.portada__espectro { max-width: 320px; margin: 36px auto 28px; }
+
+.portada__secciones { list-style: none; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); }
+.seccion {
+  position: relative; height: 100%;
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px 14px 18px;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  box-shadow: var(--sombra); text-decoration: none; color: var(--tinta);
+  transition: border-color var(--t-rapida), transform var(--t-rapida);
+}
+.seccion::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--color); border-radius: var(--radio) 0 0 var(--radio); }
+.seccion:hover { border-color: color-mix(in srgb, var(--color) 55%, var(--borde)); transform: translateY(-1px); }
+.app .seccion__icono { flex-shrink: 0; width: 26px; height: 26px; color: var(--color); margin-top: 3px; }
+.seccion__nombre { display: flex; align-items: baseline; gap: 8px; font-family: var(--f-titular); font-size: 24px; line-height: 1.05; }
+.seccion__num { font-size: 11px; letter-spacing: .1em; color: var(--color); }
+.seccion__texto { display: block; font-size: 13.5px; line-height: 1.45; color: var(--tinta-2); margin-top: 5px; }
+.seccion__cuerpo { display: flex; flex-direction: column; min-width: 0; }
+
+.portada__pie { text-align: center; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--filete-suave); display: grid; gap: 4px; }
+.portada__autor { font-family: var(--f-titular); font-size: 20px; }
+.portada__version { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-3); }
+.portada__pie .nota { margin-top: 6px; }
+
+/* En la portada, la propia página ya es el índice: la barra inferior sobra en el móvil */
+@media (max-width: 899px) {
+  body.en-portada .navegacion { display: none; }
+  body.en-portada .app { padding-bottom: 24px; }
+}

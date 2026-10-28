@@ -39,6 +39,7 @@ const ARCHIVOS = [
   'js/app.js',
   'js/almacen.js',
   'js/util.js',
+  'js/modulos/portada.js',
   'js/modulos/glosario.js',
   'js/modulos/optica.js',
   'js/calculos/optica.js',
