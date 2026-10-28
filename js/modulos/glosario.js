@@ -118,6 +118,9 @@ function pintarLista() {
         <button class="boton-azar" data-accion="azar" type="button" title="Un término al azar de los que aún no sabes">
           ${icono('azar')}<span>Al azar</span>
         </button>
+        <button class="boton-azar boton-azar--fav" data-accion="repasar" type="button" title="Repasar un favorito al azar" ${favoritos.tamano ? '' : 'disabled'}>
+          ${icono('estrella')}<span>Repasar</span>
+        </button>
       </div>
 
       <div class="filtros" role="group" aria-label="Filtrar por bloque">
@@ -391,6 +394,21 @@ function alHacerClic(evento) {
       boton.closest('.tarjeta')?.classList.toggle('es-sabido', marcado);
       pintarProgreso();
     }
+    if (accion === 'fav') {
+      const repasar = raiz.querySelector('[data-accion="repasar"]');
+      if (repasar) repasar.disabled = !favoritos.tamano;
+    }
+    return;
+  }
+  if (accion === 'repasar') {
+    // Un favorito al azar, distinto del que se vio la última vez si hay más de uno
+    const favs = favoritos.valores();
+    if (!favs.length) return;
+    const ultimo = leer('glosario:ultimoRepaso', null);
+    const bolsa = favs.length > 1 ? favs.filter((id) => id !== ultimo) : favs;
+    const elegido = bolsa[Math.floor(Math.random() * bolsa.length)];
+    guardar('glosario:ultimoRepaso', elegido);
+    location.hash = 'glosario/' + elegido;
     return;
   }
   if (accion === 'azar') {

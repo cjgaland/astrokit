@@ -14,6 +14,7 @@
 
 import { cargarJSON, escaparHTML, icono } from '../util.js';
 import { versionActual, versionLegible, buscarActualizacion } from '../actualizaciones.js';
+import { listaEquipos, elegirMiEquipo, selectorMiEquipo } from '../equipo.js';
 
 let raiz = null;
 let info = null;
@@ -27,8 +28,10 @@ export async function montar(contenedor) {
   ]);
   pintar();
   raiz.addEventListener('click', alHacerClic);
+  raiz.addEventListener('change', alCambiar);
   pintarVersion();
-  return { desmontar: () => raiz.removeEventListener('click', alHacerClic) };
+  listaEquipos().then((eq) => { const c = raiz.querySelector('#mi-equipo-info'); if (c) c.innerHTML = selectorMiEquipo(eq, undefined, 'selector-mi-equipo'); });
+  return { desmontar: () => { raiz.removeEventListener('click', alHacerClic); raiz.removeEventListener('change', alCambiar); } };
 }
 
 const fechaLarga = (t) => new Date(t + 'T12:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -57,6 +60,7 @@ function pintar() {
             </dl>
           </div>
         </div>
+        <div class="info__equipo" id="mi-equipo-info"></div>
         <details class="info__creditos">
           <summary>Créditos y fuentes</summary>
           <ul>${info.creditos.map((c) => `<li>${escaparHTML(c)}</li>`).join('')}</ul>
@@ -74,7 +78,7 @@ function pintar() {
           <button class="boton-sec" type="button" id="buscar-actualizacion">${icono('azar')}Buscar actualizaciones</button>
         </div>
         <h3 class="etiqueta info__subtitulo">Historial de cambios</h3>
-        <ol class="historial">
+        <ol class="historial" aria-label="Historial de versiones">
           ${novedades.versiones.map((v, i) => `
             <li class="historial__version ${i === 0 ? 'es-actual' : ''}" data-version="${escaparHTML(v.version)}">
               <div class="historial__cabecera">
@@ -94,7 +98,7 @@ function pintar() {
             <h3>Manual de uso</h3>
             <p>Guía completa de la aplicación, con capturas de pantalla y preguntas frecuentes, en PDF.</p>
             <div class="ayuda__botones">
-              <a class="boton-principal" href="${escaparHTML(info.manual)}" target="_blank" rel="noopener">${icono('glosario')}Ver el manual</a>
+              <a class="boton-principal" href="${escaparHTML(info.manual)}" target="_blank" rel="noopener" aria-label="Ver el manual de uso (PDF, se abre en una pestaña nueva)">${icono('glosario')}Ver el manual</a>
               <a class="boton-sec" href="${escaparHTML(info.manual)}" download="Manual_de_uso_AstroKit.pdf">${icono('abajo')}Descargar</a>
             </div>
           </article>
@@ -123,6 +127,10 @@ async function pintarVersion() {
   raiz.querySelectorAll('.historial__version').forEach((li) => li.classList.toggle('es-actual', li.dataset.version === v));
   const enlace = raiz.querySelector('#enlace-sugerencias');
   if (enlace && v) enlace.href = enlace.href.replace(encodeURIComponent('—'), encodeURIComponent(versionLegible(v)));
+}
+
+function alCambiar(e) {
+  if (e.target.id === 'selector-mi-equipo') elegirMiEquipo(e.target.value);
 }
 
 async function alHacerClic(e) {

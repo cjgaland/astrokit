@@ -15,6 +15,7 @@
 import * as O from '../calculos/optica.js';
 import { cargarJSON, escaparHTML, icono } from '../util.js';
 import { leer, guardar } from '../almacen.js';
+import { idMiEquipo } from '../equipo.js';
 
 /* ---------- Estado (se recuerda entre sesiones) ---------- */
 const ESTADO_INICIAL = {
@@ -27,6 +28,8 @@ const ESTADO_INICIAL = {
   snr: { exposicion: 10, tomas: 360, factor: 2 },
 };
 const estado = { ...structuredClone(ESTADO_INICIAL), ...leer('optica', {}) };
+// Si nunca se tocó la calculadora, empieza con «mi equipo» (js/equipo.js)
+if (!leer('optica', null)) estado.equipo = idMiEquipo();
 const guardarEstado = () => guardar('optica', estado);
 
 let equipos = [];

@@ -22,6 +22,7 @@
 import { cargarJSON, escaparHTML, icono } from '../util.js';
 import { leer, guardar } from '../almacen.js';
 import { faseLunar } from '../calculos/astro.js';
+import { idMiEquipo } from '../equipo.js';
 
 /* ==========================================================================
    Funciones puras (se prueban en pruebas/pruebas.html)
@@ -250,6 +251,7 @@ function pintarFicha(s) {
       <div class="ficha__acciones">
         <a class="boton-marca" href="#cuaderno/${s.id}/editar">${icono('cuaderno')}<span>Editar</span></a>
         <a class="boton-marca" href="#cuaderno/${s.id}/repetir" title="Otra noche del mismo objeto">${icono('azar')}<span>Otra noche igual</span></a>
+        <button class="boton-marca" type="button" data-accion="compartir" data-id="${s.id}">${icono('arriba')}<span>Compartir</span></button>
         <button class="boton-marca boton-marca--peligro" type="button" data-accion="borrar" data-id="${s.id}">${icono('cerrar')}<span>Borrar</span></button>
       </div>
     </article>`;
@@ -265,7 +267,7 @@ function pintarFormulario(s, repetir = false) {
     fecha: hoy(),
     lugar: repetir ? s.lugar : (leer('cielo:lugares', [])?.find((l) => l.id === leer('cielo:lugar', 'casa'))?.nombre || ''),
     objeto: repetir ? s.objeto : '',
-    equipo: repetir ? s.equipo : (datosAux.equipos[0]?.nombre || ''),
+    equipo: repetir ? s.equipo : (datosAux.equipos.find((q) => q.id === idMiEquipo())?.nombre || datosAux.equipos[0]?.nombre || ''),
     filtro: repetir ? s.filtro : FILTROS[0],
     subs: '', exposicion: repetir ? s.exposicion : 10,
     bortle: repetir ? s.bortle : '', sqm: repetir ? s.sqm : '',
@@ -371,6 +373,75 @@ async function procesarFoto(archivo) {
 }
 
 /* ==========================================================================
+   Compartir una sesión como imagen (tarjeta 1080 × 1350, formato de Instagram)
+   --------------------------------------------------------------------------
+   Se dibuja en un <canvas>: fondo tinta, la miniatura de la foto, el objeto,
+   los datos y la firma. En el iPhone se abre el menú Compartir; en el Mac se
+   descarga como PNG.
+   ========================================================================== */
+async function compartirSesion(s, boton) {
+  const texto = boton.querySelector('span');
+  texto.textContent = 'Preparando…';
+  try {
+    const W = 1080, H = 1350;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    // Fondo: azul tinta con una retícula suave, como la app
+    x.fillStyle = '#0b1222'; x.fillRect(0, 0, W, H);
+    x.strokeStyle = 'rgba(201,168,92,0.08)'; x.lineWidth = 1;
+    for (let i = 0; i < W; i += 54) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i, H); x.stroke(); }
+    for (let j = 0; j < H; j += 54) { x.beginPath(); x.moveTo(0, j); x.lineTo(W, j); x.stroke(); }
+
+    // Foto (si hay): cuadrada, arriba, con filete dorado
+    let y = 70;
+    if (s.foto) {
+      const img = new Image(); img.src = s.foto; await img.decode();
+      const lado = W - 140, k = Math.max(lado / img.width, lado / img.height);
+      const w = img.width * k, h = img.height * k;
+      x.save(); x.beginPath(); x.rect(70, y, lado, lado); x.clip();
+      x.drawImage(img, 70 + (lado - w) / 2, y + (lado - h) / 2, w, h); x.restore();
+      x.strokeStyle = '#c9a85c'; x.lineWidth = 3; x.strokeRect(70, y, lado, lado);
+      y += lado + 60;
+    } else { y = 260; }
+
+    // Textos
+    const serif = '"Instrument Serif", Georgia, serif', mono = '"IBM Plex Mono", Menlo, monospace', sans = '"Space Grotesk", system-ui, sans-serif';
+    x.fillStyle = '#c9a85c'; x.font = `500 26px ${mono}`;
+    x.fillText(fechaLarga(s.fecha).toUpperCase() + (s.lugar ? '  ·  ' + s.lugar.toUpperCase() : ''), 70, y); y += 20;
+    x.fillStyle = '#ebe2cb'; x.font = `400 ${s.objeto.length > 18 ? 72 : 96}px ${serif}`;
+    x.fillText(s.objeto, 66, y + 96); y += 140;
+    const lineas = [
+      s.equipo, s.filtro,
+      s.subs ? `${s.subs} × ${String(s.exposicion).replace('.', ',')} s  ·  ${duracion(integracionMin(s))} de integración` : '',
+      [s.bortle ? `Bortle ${s.bortle}` : '', s.sqm ? `SQM ${String(s.sqm).replace('.', ',')}` : '', s.luna != null ? `Luna ${Math.round(s.luna * 100)} %` : ''].filter(Boolean).join('  ·  '),
+    ].filter(Boolean);
+    x.fillStyle = '#b4b3ad'; x.font = `400 34px ${sans}`;
+    for (const l of lineas) { x.fillText(l, 70, y); y += 50; }
+    if (s.valoracion) { x.fillStyle = '#f2a33a'; x.font = `400 44px ${sans}`; x.fillText('★'.repeat(s.valoracion), 70, y + 10); }
+    // Firma
+    x.fillStyle = '#7d8496'; x.font = `400 26px ${mono}`;
+    x.fillText('AstroKit · cjgaland.github.io/astrokit', 70, H - 60);
+
+    const blob = await new Promise((r) => c.toBlob(r, 'image/png'));
+    const nombre = `astrokit-${s.fecha}-${s.objeto.replace(/[^\w]+/g, '-').toLowerCase()}.png`;
+    const archivo = new File([blob], nombre, { type: 'image/png' });
+    if (navigator.canShare?.({ files: [archivo] }) && matchMedia('(pointer: coarse)').matches) {
+      await navigator.share({ files: [archivo], title: `${s.objeto} · ${fechaCorta(s.fecha)}` }).catch(() => {});
+    } else {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = nombre;
+      document.body.appendChild(a); a.click();
+      setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    }
+  } catch (err) {
+    console.warn('Compartir:', err);
+  } finally {
+    texto.textContent = 'Compartir';
+  }
+}
+
+/* ==========================================================================
    Copia de seguridad
    ========================================================================== */
 function exportar() {
@@ -442,6 +513,8 @@ function alHacerClic(ev) {
     sesiones = sesiones.filter((x) => x.id !== s.id);
     guardarSesiones();
     location.hash = 'cuaderno';
+  } else if (b.dataset.accion === 'compartir') {
+    compartirSesion(buscar(b.dataset.id), b);
   } else if (b.dataset.accion === 'quitar-foto') {
     fotoNueva = null;
     raiz.querySelector('#vista-foto').innerHTML = icono('telescopio');

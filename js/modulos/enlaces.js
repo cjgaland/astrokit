@@ -56,7 +56,7 @@ function pintar(datos) {
       </header>
 
       ${navigator.onLine ? '' : `
-        <p class="aviso-red">${icono('enlaces')}Ahora no hay conexión: estos enlaces necesitan internet. El resto de AstroKit sigue funcionando.</p>`}
+        <p class="aviso-red" role="status">${icono('enlaces')}Ahora no hay conexión: estos enlaces necesitan internet. El resto de AstroKit sigue funcionando.</p>`}
 
       ${datos.grupos.map((g, i) => `
         <section class="grupo-enlaces" style="--color: var(--b${[1, 4, 7][i % 3]})">
@@ -64,10 +64,10 @@ function pintar(datos) {
             <h2 class="panel__titulo"><span class="panel__num">${String(i + 1).padStart(2, '0')}</span>${escaparHTML(g.titulo)}</h2>
             <p class="lectura__texto">${escaparHTML(g.descripcion)}</p>
           </header>
-          <ul class="enlaces__lista">
+          <ul class="enlaces__lista" aria-label="${escaparHTML(g.titulo)}">
             ${g.enlaces.map((e) => `
               <li>
-                <a class="enlace" href="${escaparHTML(url(e.url))}" target="_blank" rel="noopener noreferrer">
+                <a class="enlace" href="${escaparHTML(url(e.url))}" target="_blank" rel="noopener noreferrer" aria-label="${escaparHTML(e.nombre)} (se abre en una pestaña nueva)">
                   <span class="enlace__cabecera">
                     <span class="enlace__nombre">${escaparHTML(e.nombre)}</span>
                     ${icono('sig', 'enlace__flecha')}

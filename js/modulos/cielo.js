@@ -18,6 +18,7 @@
 import * as A from '../calculos/astro.js';
 import { cargarJSON, escaparHTML, icono } from '../util.js';
 import { leer, guardar } from '../almacen.js';
+import { miEquipo } from '../equipo.js';
 
 /* ---------- Estado ---------- */
 // Coordenadas redondeadas a propósito (≈ 1–2 km): de sobra para la astronomía
@@ -36,6 +37,7 @@ const estado = {
   fecha: null,                 // 'AAAA-MM-DD' o null = hoy
   tipo: 'todos',               // filtro de objetos
   abierto: null,               // id del objeto desplegado
+  temporada: false,            // vista «Temporada»: los mejores objetos de los próximos meses
   editando: false,
 };
 const guardarLugares = () => {
@@ -69,7 +71,7 @@ const CONSEJO_PLANETA = {
   urano: 'Un puntito verdoso: el reto es encontrarlo e identificarlo, no el detalle.',
   neptuno: 'Aún más pequeño y tenue que Urano: un punto azulado entre las estrellas.',
 };
-const ESCALA_REFERENCIA = 2.30;   // ″/px del S50 Pro, para traducir tamaños a píxeles
+let equipoRef = { corto: 'S50 Pro', escala: 2.30 };   // «Mi equipo» (js/equipo.js): se carga al montar
 const NOMBRE_TIPO = {
   'galaxia': 'Galaxia', 'nebulosa-emision': 'Neb. de emisión', 'nebulosa-reflexion': 'Neb. de reflexión',
   'nebulosa-planetaria': 'Neb. planetaria', 'remanente': 'Remanente', 'cumulo-abierto': 'Cúmulo abierto',
@@ -81,6 +83,14 @@ const DE_EMISION = new Set(['nebulosa-emision', 'remanente', 'nebulosa-planetari
 
 let objetos = [];
 let raiz = null;
+
+/** Carga el catálogo si aún no está (necesario si calcularNoche se llama desde la portada) */
+export async function prepararCatalogo() {
+  if (!objetos.length) ({ objetos } = await cargarJSON('data/objetos.json'));
+  objetos = objetos.filter((o) => o.ar !== undefined);
+  return objetos;
+}
+export { lugarActivo };
 let noche = null;              // resultados del último cálculo
 
 /* ---------- Formato ---------- */
@@ -114,8 +124,8 @@ function lugarActivo() {
    ========================================================================== */
 export async function montar(contenedor) {
   raiz = contenedor;
-  ({ objetos } = await cargarJSON('data/objetos.json'));
-  objetos = objetos.filter((o) => o.ar !== undefined);
+  [, equipoRef] = await Promise.all([prepararCatalogo(), miEquipo()]);
+  window.addEventListener('astrokit:equipo', alCambiarEquipo);
 
   pintarEsqueleto();
   raiz.addEventListener('click', alHacerClic);
@@ -125,7 +135,13 @@ export async function montar(contenedor) {
   return { desmontar };
 }
 
+async function alCambiarEquipo() {
+  equipoRef = await miEquipo();
+  if (raiz?.isConnected) pintarObjetos();
+}
+
 function desmontar() {
+  window.removeEventListener('astrokit:equipo', alCambiarEquipo);
   raiz.removeEventListener('click', alHacerClic);
   raiz.removeEventListener('change', alCambiar);
 }
@@ -133,10 +149,12 @@ function desmontar() {
 /* ==========================================================================
    Cálculo de la noche
    ========================================================================== */
-function calcularNoche() {
-  const lugar = lugarActivo();
+/**
+ * Todo lo que la app sabe de una noche. Lo usa este módulo y también la portada
+ * (resumen «Esta noche»), por eso se exporta y admite lugar y fecha explícitos.
+ */
+export function calcularNoche(lugar = lugarActivo(), mediodia = mediodiaElegido()) {
   const { lat, lon } = lugar;
-  const mediodia = mediodiaElegido();
   const s = A.sucesosNoche(mediodia, lat, lon);
 
   // Ventana que se dibuja: de 1 h antes de la puesta a 1 h después de la salida del Sol
@@ -304,12 +322,14 @@ function pintarEsqueleto() {
       <section class="panel panel--sin-caja">
         <div class="panel__fila">
           <h2 class="panel__titulo"><span class="panel__num">03</span><span id="titulo-objetos">Objetos recomendados</span></h2>
+          <button class="chip chip--estado" type="button" data-accion="temporada" aria-pressed="false">${icono('cielo')}Temporada</button>
           <div class="filtros" role="group" aria-label="Tipo de objeto">
             ${TIPOS.map((t) => `<button class="chip chip--estado" type="button" data-tipo="${t.id}">${t.texto}</button>`).join('')}
           </div>
         </div>
         <p class="nota" id="nota-objetos"></p>
         <div id="objetos"></div>
+        <div id="temporada" hidden></div>
       </section>
     </section>`;
 }
@@ -588,12 +608,88 @@ function detalleObjeto(x, filtro) {
     </div>`;
 }
 
+/* ==========================================================================
+   Vista «Temporada»: para los próximos 6 meses, las Lunas nuevas y los cinco
+   objetos con más tiempo útil en la noche de cada Luna nueva (la mejor noche
+   del mes para cielo profundo). Se calcula al pulsar y se guarda en memoria.
+   ========================================================================== */
+let temporadaCache = null;
+
+function pintarTemporada() {
+  const caja = raiz.querySelector('#temporada');
+  const lista = raiz.querySelector('#objetos');
+  const boton = raiz.querySelector('[data-accion="temporada"]');
+  boton.setAttribute('aria-pressed', String(estado.temporada));
+  caja.hidden = !estado.temporada;
+  lista.hidden = estado.temporada;
+  raiz.querySelector('#nota-objetos').hidden = estado.temporada;
+  raiz.querySelectorAll('[data-tipo]').forEach((b) => { b.disabled = estado.temporada; });
+  if (!estado.temporada) return;
+
+  const lugar = lugarActivo();
+  const clave = `${lugar.lat},${lugar.lon},${aTextoFecha(mediodiaElegido())}`;
+  if (temporadaCache?.clave !== clave) {
+    caja.innerHTML = '<p class="nota">Calculando los próximos meses…</p>';
+    // Se calcula fuera del hilo de pintado para que el botón responda al instante
+    setTimeout(() => {
+      const meses = [];
+      let desde = mediodiaElegido();
+      for (let i = 0; i < 6; i++) {
+        const nueva = A.proximaFase(desde, 0);
+        if (!nueva) break;
+        const mediodia = new Date(nueva.getFullYear(), nueva.getMonth(), nueva.getDate(), 12, 0, 0);
+        const n = calcularNoche(lugar, mediodia);
+        meses.push({
+          nueva,
+          llena: A.proximaFase(mediodia, 180),
+          oscuro: n.oscuroSinLuna,
+          astro: n.s.astronomico,
+          mejores: n.objetos.filter((x) => x.util >= 60 && !esSolar(x.o)).slice(0, 5),
+        });
+        desde = new Date(nueva.getTime() + 2 * 86400000);
+      }
+      temporadaCache = { clave, meses };
+      pintarTemporadaLista(meses);
+    }, 30);
+  } else {
+    pintarTemporadaLista(temporadaCache.meses);
+  }
+}
+
+function pintarTemporadaLista(meses) {
+  const caja = raiz.querySelector('#temporada');
+  const fecha = (f) => f.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' });
+  caja.innerHTML = `
+    <p class="nota">Para cada uno de los próximos meses: la noche de Luna nueva (la mejor para cielo profundo) y los cinco objetos con más tiempo útil esa noche desde ${escaparHTML(lugarActivo().nombre)}.</p>
+    <ol class="temporada">
+      ${meses.map((m) => `
+        <li class="temporada__mes">
+          <header class="temporada__cabecera">
+            <span class="temporada__nombre">${escaparHTML(MESES[m.nueva.getMonth()])}</span>
+            <span class="temporada__lunas cifra">
+              <span title="Luna nueva">${icono('luna')} nueva ${fecha(m.nueva)}</span>
+              ${m.llena ? `<span title="Luna llena">${icono('sol')} llena ${fecha(m.llena)}</span>` : ''}
+              <span>${duracion(m.oscuro)} oscuro</span>
+            </span>
+          </header>
+          <ul class="temporada__objetos">
+            ${m.mejores.map((x) => `
+              <li style="--color: var(--${x.o.tipo.startsWith('galaxia') ? 'b1' : x.o.tipo.startsWith('cumulo') ? 'b4' : DE_EMISION.has(x.o.tipo) ? 'b5' : 'b2'})">
+                <span class="temporada__catalogo cifra">${escaparHTML(x.o.catalogo)}</span>
+                <span class="temporada__objeto">${escaparHTML(x.o.nombre)}</span>
+                <span class="temporada__dato cifra">${Math.round(x.altMax)}° · ${hora(x.culmina)} · ${duracion(x.util)}</span>
+              </li>`).join('')}
+          </ul>
+        </li>`).join('')}
+    </ol>`;
+}
+
 /** Filas del detalle propias de planetas y Luna */
 function datosSolares(x) {
   const s = x.o.solar;
-  const px = s.diametro / ESCALA_REFERENCIA;
+  const px = s.diametro / equipoRef.escala;
   const tam = `${s.diametro >= 600 ? Math.round(s.diametro / 60) + '′' : s.diametro.toLocaleString('es-ES', { maximumFractionDigits: 1 }) + '″'}` +
-    ` ≈ ${Math.round(px).toLocaleString('es-ES')} px con el S50 Pro`;
+    ` ≈ ${Math.round(px).toLocaleString('es-ES')} px con el ${equipoRef.corto}`;
   if (x.o.tipo === 'luna') return `<dt>Tamaño</dt><dd>${tam}</dd>`;
   const minutosLuz = Math.round(s.distancia * 8.317);              // la luz tarda 8,317 min por UA
   return `
@@ -655,6 +751,7 @@ function alHacerClic(ev) {
   if (b.dataset.tipo) { estado.tipo = b.dataset.tipo; pintarObjetos(); return; }
   if (b.dataset.objeto) { estado.abierto = estado.abierto === b.dataset.objeto ? null : b.dataset.objeto; pintarObjetos(); return; }
 
+  if (accion === 'temporada') { estado.temporada = !estado.temporada; pintarTemporada(); return; }
   if (accion === 'gps') pedirGPS();
   else if (accion === 'editar') { estado.editando = !estado.editando; pintarEditor(); }
   else if (accion === 'dia-' || accion === 'dia+') {

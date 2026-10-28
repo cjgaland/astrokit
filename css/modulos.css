@@ -903,3 +903,51 @@ mark {
 .ayuda__botones .boton-principal { height: 44px; padding: 0 18px; font-size: 15px; }
 .app .ayuda__botones svg { width: 17px; height: 17px; }
 .ayuda__botones .boton-sec { text-decoration: none; height: 44px; }
+
+/* ==========================================================================
+   PORTADA · «Esta noche» y «Mi equipo»
+   ========================================================================== */
+.esta-noche {
+  margin: 30px auto 0; max-width: 620px;
+  padding: 16px 18px; border: 1px solid var(--filete); border-radius: var(--radio-g);
+  background: var(--superficie); box-shadow: var(--sombra);
+}
+.esta-noche__cabecera { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.esta-noche__mas { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--acento); text-decoration: none; }
+.app .esta-noche__mas svg { width: 14px; height: 14px; }
+.esta-noche__datos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.esta-noche__dato { display: flex; flex-direction: column; }
+.esta-noche__cifra { font-size: clamp(20px, 5vw, 28px); line-height: 1.1; color: var(--acento); }
+.esta-noche__texto { font-size: 12px; color: var(--tinta-3); line-height: 1.3; }
+.esta-noche__objetos { list-style: none; margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--borde); display: grid; gap: 4px; }
+.esta-noche__objetos a { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; text-decoration: none; color: var(--tinta); padding: 4px 0; }
+.esta-noche__objeto { font-family: var(--f-titular); font-size: 19px; }
+.esta-noche__meta { font-size: 11px; color: var(--tinta-3); white-space: nowrap; }
+
+.mi-equipo-portada { max-width: 620px; margin: 14px auto 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; justify-content: center; }
+.mi-equipo { display: flex; align-items: center; gap: 10px; }
+.mi-equipo .etiqueta { white-space: nowrap; }
+.mi-equipo select {
+  height: 38px; padding: 0 10px; font-size: 15px;
+  background: var(--fondo); color: var(--tinta); border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.info__equipo { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--borde); }
+
+/* Glosario · botón Repasar favoritos */
+.boton-azar--fav[disabled] { opacity: .45; cursor: default; }
+.boton-azar--fav:not([disabled]) svg { color: var(--acento); }
+
+/* Cielo · vista Temporada */
+.temporada { list-style: none; display: grid; gap: 12px; margin-top: 12px; }
+.temporada__mes { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); box-shadow: var(--sombra); padding: 12px 14px; }
+.temporada__cabecera { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 14px; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed var(--borde); }
+.temporada__nombre { font-family: var(--f-titular); font-size: 24px; text-transform: capitalize; }
+.temporada__lunas { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; color: var(--tinta-3); }
+.temporada__lunas span { display: inline-flex; align-items: center; gap: 4px; }
+.app .temporada__lunas svg { width: 13px; height: 13px; }
+.temporada__objetos { list-style: none; display: grid; gap: 4px; }
+.temporada__objetos li { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: baseline; padding: 3px 0 3px 10px; border-left: 2px solid var(--color); }
+.temporada__catalogo { font-size: 11px; color: var(--color); }
+.temporada__objeto { font-family: var(--f-titular); font-size: 18px; }
+.temporada__dato { font-size: 11px; color: var(--tinta-3); white-space: nowrap; }
+@media (max-width: 480px) { .temporada__objetos li { grid-template-columns: 1fr auto; } .temporada__catalogo { display: none; } }
