@@ -824,3 +824,8 @@ mark {
 }
 .etiqueta-nivel--empezar { background: var(--color); border-color: var(--color); color: var(--fondo); }
 .enlace__dominio { font-size: 11px; color: var(--tinta-3); }
+
+/* Enlaces · versión instalada */
+.version-app { margin-top: 18px; padding: 14px 16px; border: 1px solid var(--borde); border-radius: var(--radio); background: var(--superficie); }
+.version-app .etiqueta { display: block; margin-bottom: 4px; }
+.version-app p { margin-bottom: 10px; color: var(--tinta-2); }

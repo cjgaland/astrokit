@@ -11,6 +11,7 @@
 
 import { cargarJSON, escaparHTML, icono } from '../util.js';
 import { leer } from '../almacen.js';
+import { versionActual, versionLegible, buscarActualizacion } from '../actualizaciones.js';
 
 const NIVELES = {
   empezar: 'Para empezar',
@@ -25,17 +26,45 @@ export async function montar(contenedor) {
   raiz = contenedor;
   const datos = await cargarJSON('data/enlaces.json');
   pintar(datos);
+  raiz.addEventListener('click', alHacerClic);
   // Avisar en vivo si se pierde o recupera la conexión
   const repintar = () => pintar(datos);
   window.addEventListener('online', repintar);
   window.addEventListener('offline', repintar);
-  return { desmontar: () => { window.removeEventListener('online', repintar); window.removeEventListener('offline', repintar); } };
+  return {
+    desmontar: () => {
+      raiz.removeEventListener('click', alHacerClic);
+      window.removeEventListener('online', repintar);
+      window.removeEventListener('offline', repintar);
+    },
+  };
 }
 
 /** El lugar activo del Planificador (o Córdoba si nunca se abrió) */
 function lugarActivo() {
   const lugares = leer('cielo:lugares', [{ id: 'casa', nombre: 'Casa (Córdoba)', lat: 37.89, lon: -4.77 }]);
   return lugares.find((l) => l.id === leer('cielo:lugar', 'casa')) || lugares[0];
+}
+
+/** Versión instalada y botón para buscar actualizaciones a mano */
+async function pintarVersion() {
+  const caja = raiz.querySelector('#version-app');
+  if (!caja) return;
+  const v = await versionActual();
+  caja.textContent = v ? `Tienes la ${versionLegible(v)}.` : 'Versión sin instalar (abre la app desde su dirección web para instalarla).';
+}
+
+async function alHacerClic(e) {
+  const boton = e.target.closest('#buscar-actualizacion');
+  if (!boton) return;
+  const caja = raiz.querySelector('#version-app');
+  if (!navigator.onLine) { caja.textContent = 'Sin conexión: no se puede comprobar ahora.'; return; }
+  boton.disabled = true;
+  caja.textContent = 'Buscando…';
+  const hay = await buscarActualizacion();
+  boton.disabled = false;
+  if (hay) caja.textContent = 'Hay una versión nueva: pulsa «Actualizar» en el aviso.';
+  else { await pintarVersion(); caja.textContent += ' Es la más reciente.'; }
 }
 
 function pintar(datos) {
@@ -83,5 +112,12 @@ function pintar(datos) {
         <p>${datos.noMac.map(escaparHTML).join(', ')}: solo existen para Windows. Si un tutorial los usa, busca el equivalente
           en Siril (apilado) o KStars/Ekos (control del equipo).</p>
       </aside>
+
+      <aside class="version-app">
+        <span class="etiqueta">AstroKit</span>
+        <p id="version-app">Comprobando la versión…</p>
+        <button class="boton-sec" type="button" id="buscar-actualizacion">${icono('azar')}Buscar actualizaciones</button>
+      </aside>
     </section>`;
+  pintarVersion();
 }

@@ -6,7 +6,7 @@
      2. El "router": mirar la dirección (#glosario, #glosario/apertura...)
         y montar el módulo que toca.
      3. Los temas: claro / oscuro / auto, y el modo noche con su atenuador.
-     4. Registrar el service worker (para funcionar sin conexión).
+     4. Registrar el service worker (sin conexión) y avisar de actualizaciones.
 
    Cómo funciona el router: todo lo que va detrás de "#" en la dirección
    no recarga la página; el navegador solo avisa con el evento "hashchange".
@@ -16,6 +16,7 @@
 
 import { leer, guardar } from './almacen.js';
 import { icono } from './util.js';
+import { iniciarActualizaciones } from './actualizaciones.js';
 
 /* ---------- 1. Lista de módulos ----------
    `cargar` importa el código del módulo solo cuando hace falta (import()
@@ -159,11 +160,9 @@ brillo.addEventListener('input', () => aplicarBrillo(brillo.value));
 // Si el sistema cambia entre claro y oscuro (p. ej. al anochecer) y estamos en "auto"
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', actualizarColorBarra);
 
-/* ---------- 4. Service worker ---------- */
-function registrarServiceWorker() {
-  if (!('serviceWorker' in navigator)) return;
-  navigator.serviceWorker.register('sw.js').catch((e) => console.warn('Service worker no registrado:', e));
-}
+/* ---------- 4. Service worker y aviso de actualizaciones ----------
+   Todo está en js/actualizaciones.js: registra el service worker y, cuando se
+   publica una versión nueva, muestra el aviso «Hay una versión nueva · Actualizar». */
 
 /* ---------- Arranque ---------- */
 dibujarNavegacion();
@@ -172,4 +171,4 @@ aplicarNoche(leer('noche', false));
 aplicarBrillo(leer('brilloNoche', 0));
 window.addEventListener('hashchange', enrutar);
 enrutar();
-registrarServiceWorker();
+iniciarActualizaciones();

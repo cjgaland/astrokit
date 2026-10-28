@@ -14,11 +14,19 @@
      · En localhost (cuando estamos desarrollando) hace lo contrario: primero
        la red, para ver los cambios al recargar, y la caché solo si falla.
 
-   ⚠ Cuando cambies archivos de la app publicada, sube el número de VERSION:
-     así el navegador detecta un service worker nuevo y renueva la caché.
+   Actualizaciones (ver js/actualizaciones.js):
+     · Cuando se publica una versión nueva, el navegador descarga este archivo,
+       ve que ha cambiado (VERSION distinta) e instala el service worker nuevo
+       con todos los archivos nuevos, pero lo deja ESPERANDO.
+     · La app lo detecta y muestra el aviso «Hay una versión nueva · Actualizar».
+       Al pulsar, la app le manda el mensaje 'actualizar', el nuevo toma el
+       control y la página se recarga ya con la versión nueva.
+
+   ⚠ VERSION debe cambiar en cada publicación: publicar_astrokit.sh la sube
+     solo si detecta cambios en AstroKit y nadie la ha subido a mano.
    ========================================================================== */
 
-const VERSION = 'astrokit-v8';
+const VERSION = 'astrokit-v9';
 
 // Archivos que forman la app (rutas relativas a esta carpeta)
 const ARCHIVOS = [
@@ -39,6 +47,8 @@ const ARCHIVOS = [
   'js/modulos/checklist.js',
   'js/modulos/cuaderno.js',
   'js/modulos/enlaces.js',
+  'js/actualizaciones.js',
+  'data/novedades.json',
   'data/enlaces.json',
   'data/checklist.json',
   'data/glosario.json',
@@ -57,8 +67,17 @@ self.addEventListener('install', (evento) => {
   evento.waitUntil(
     caches.open(VERSION)
       .then((cache) => cache.addAll(ARCHIVOS))
-      .then(() => self.skipWaiting())          // activarse sin esperar a cerrar pestañas
+    // Sin skipWaiting(): si ya hay una versión funcionando, la nueva espera a
+    // que el usuario pulse «Actualizar» (así no cambia nada a mitad de uso).
   );
+});
+
+// Mensajes de la app:
+//   'actualizar' → el usuario aceptó: tomar el control ya
+//   'version'    → responder con la versión (se muestra en Enlaces)
+self.addEventListener('message', (evento) => {
+  if (evento.data === 'actualizar') self.skipWaiting();
+  if (evento.data === 'version' && evento.ports[0]) evento.ports[0].postMessage(VERSION);
 });
 
 // 2) Activación: borrar cachés de versiones anteriores
