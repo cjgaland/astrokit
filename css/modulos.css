@@ -951,3 +951,88 @@ mark {
 .temporada__objeto { font-family: var(--f-titular); font-size: 18px; }
 .temporada__dato { font-size: 11px; color: var(--tinta-3); white-space: nowrap; }
 @media (max-width: 480px) { .temporada__objetos li { grid-template-columns: 1fr auto; } .temporada__catalogo { display: none; } }
+
+/* ==========================================================================
+   PESTAÑAS DE SECCIÓN (Biblioteca: Glosario | Objetos · Cielo: Planificador | Mapa)
+   ========================================================================== */
+.pestanas {
+  display: inline-flex; gap: 2px; padding: 3px; margin-bottom: 18px;
+  background: var(--fondo-2); border: 1px solid var(--borde); border-radius: 22px;
+}
+.pestanas__pestana {
+  padding: 7px 16px; border-radius: 19px; font-size: 14px; text-decoration: none; color: var(--tinta-2);
+  transition: background var(--t-rapida), color var(--t-rapida);
+}
+.pestanas__pestana:hover { color: var(--tinta); }
+.pestanas__pestana[aria-current="page"] { background: var(--superficie); color: var(--tinta); box-shadow: var(--sombra); font-weight: 500; }
+
+/* ==========================================================================
+   OBJETOS CELESTES
+   ========================================================================== */
+.orden-objetos { display: flex; align-items: center; gap: 10px; margin: 4px 0 22px; }
+.orden-objetos select { height: 36px; padding: 0 10px; font-size: 15px; background: var(--fondo); color: var(--tinta); border: 1px solid var(--borde); border-radius: var(--radio); }
+.objeto-fechas { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-top: 8px; }
+.objeto-fechas .etiqueta { margin-right: 2px; }
+.fecha-chip { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: color-mix(in srgb, var(--color) 14%, transparent); color: var(--tinta); }
+.ficha-objeto__datos { font-size: 15px; gap: 6px 16px; margin-bottom: 18px; }
+.ficha-objeto__fechas { margin-top: 24px; }
+.ficha-objeto__fechas .panel__titulo { margin-bottom: 6px; }
+.mejores-fechas { list-style: none; display: grid; gap: 8px; margin-top: 10px; }
+.mejores-fechas li {
+  display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 6px 14px;
+  padding: 10px 12px 10px 16px; position: relative;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.mejores-fechas li::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; background: var(--color); }
+.mejores-fechas__dia { font-family: var(--f-titular); font-size: 20px; line-height: 1.1; }
+.mejores-fechas__dia::first-letter { text-transform: uppercase; }
+.mejores-fechas__dato { font-size: 12px; color: var(--tinta-3); }
+.mejores-fechas .boton-sec { text-decoration: none; height: 36px; font-size: 14px; }
+@media (max-width: 520px) { .mejores-fechas li { grid-template-columns: 1fr auto; } .mejores-fechas__dato { grid-column: 1; } }
+
+/* ==========================================================================
+   MAPA CELESTE
+   ========================================================================== */
+.mapa__controles { display: grid; gap: 12px; }
+.mapa__tiempo { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mapa__tiempo input {
+  height: 40px; padding: 0 10px; font-family: var(--f-cifra); font-size: 16px;
+  background: var(--fondo); color: var(--tinta); border: 1px solid var(--borde); border-radius: var(--radio);
+}
+.mapa__capas { margin: 0; }
+.mapa__marco {
+  position: relative; border-radius: var(--radio-g); overflow: hidden;
+  border: 1px solid var(--borde); background: #070b16; box-shadow: var(--sombra);
+}
+:root[data-noche="si"] .mapa__marco { background: #050000; }
+.mapa__lienzo { display: block; width: 100%; touch-action: none; cursor: grab; }
+.mapa__lienzo:active { cursor: grabbing; }
+.mapa__zoom { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.mapa__zoom .boton-icono {
+  width: 40px; height: 40px; font-size: 22px; line-height: 1;
+  background: color-mix(in srgb, var(--superficie) 88%, transparent); color: var(--tinta);
+  border: 1px solid var(--borde); box-shadow: var(--sombra);
+}
+.mapa__globo {
+  position: absolute; z-index: 3; max-width: 260px; pointer-events: auto;
+  display: flex; flex-direction: column; gap: 2px; padding: 9px 12px;
+  background: var(--superficie); color: var(--tinta); border: 1px solid var(--filete); border-radius: var(--radio);
+  box-shadow: var(--sombra), 0 8px 24px -10px rgba(0,0,0,.5); font-size: 13px; line-height: 1.35;
+}
+.mapa__globo strong { font-family: var(--f-titular); font-weight: 400; font-size: 19px; }
+.mapa__globo span { color: var(--tinta-2); }
+.mapa__globo a { color: var(--acento); font-size: 13px; margin-top: 3px; }
+.mapa__estado { margin: 10px 0 6px; }
+.mapa__pie { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.mapa__leyenda { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--tinta-3); }
+.mapa__leyenda span { display: inline-flex; align-items: center; gap: 6px; }
+.ley { display: inline-block; width: 13px; height: 13px; border: 1.5px solid #3fb3a5; }
+:root[data-noche="si"] .ley { border-color: var(--acento); }
+.ley--galaxia { border-radius: 50%; height: 7px; }
+.ley--nebulosa { border-radius: 1px; }
+.ley--abierto { border-radius: 50%; border-style: dotted; }
+.ley--globular { border-radius: 50%; background: linear-gradient(transparent 45%, #3fb3a5 45% 55%, transparent 55%), linear-gradient(90deg, transparent 45%, #3fb3a5 45% 55%, transparent 55%); }
+.ley--planeta { border-radius: 50%; border: 0; background: #e8d08f; }
+:root[data-noche="si"] .ley--planeta { background: var(--acento); }
+.mapa__exportar { display: flex; gap: 8px; }
+.ficha-objeto__datos { grid-template-columns: minmax(110px, 38%) minmax(0, 1fr); }

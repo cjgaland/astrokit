@@ -16,7 +16,7 @@
    ========================================================================== */
 
 import * as A from '../calculos/astro.js';
-import { cargarJSON, escaparHTML, icono } from '../util.js';
+import { cargarJSON, escaparHTML, icono, pestanas } from '../util.js';
 import { leer, guardar } from '../almacen.js';
 import { miEquipo } from '../equipo.js';
 
@@ -122,8 +122,9 @@ function lugarActivo() {
 /* ==========================================================================
    Montaje
    ========================================================================== */
-export async function montar(contenedor) {
+export async function montar(contenedor, parametro) {
   raiz = contenedor;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(parametro || '')) estado.fecha = parametro;
   [, equipoRef] = await Promise.all([prepararCatalogo(), miEquipo()]);
   window.addEventListener('astrokit:equipo', alCambiarEquipo);
 
@@ -289,6 +290,7 @@ function separacion(ra1, dec1, ra2, dec2) {
 function pintarEsqueleto() {
   raiz.innerHTML = `
     <section class="cielo entrada">
+      ${pestanas('cielo', 'cielo')}
       <header class="modulo__cabecera">
         <span class="etiqueta">Módulo 03 · Planificador</span>
         <h1 class="titular">El cielo <em>de esta noche</em>.</h1>

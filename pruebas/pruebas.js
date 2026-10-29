@@ -13,6 +13,8 @@
 import { normalizar, resaltar, mdLigero, sinMarcas } from '../js/util.js';
 import * as O from '../js/calculos/optica.js';
 import * as A from '../js/calculos/astro.js';
+import { proyectar, desproyectar } from '../js/calculos/proyeccion.js';
+import { pdfConImagen } from '../js/pdf.js';
 import { progreso, mover } from '../js/modulos/checklist.js';
 import { integracionMin, dimensionesMiniatura, mezclarSesiones, totalesPorObjeto } from '../js/modulos/cuaderno.js';
 
@@ -311,6 +313,75 @@ prueba('están las webs de planificación y el software de la comparativa', () =
   const nombres = enlaces.grupos.flatMap((g) => g.enlaces.map((e) => normalizar(e.nombre))).join(' | ');
   for (const n of ['clear outside', 'meteoblue', 'light pollution', 'telescopius', 'stellarium', 'siril', 'graxpert', 'starnet', 'kstars'])
     cierto(nombres.includes(n), `falta ${n}`);
+});
+
+/* ---------- Telescopios de los amigos ---------- */
+grupo('Telescopios añadidos (data/equipos.json)');
+const s50clasico = equipos.find((e) => e.id === 's50');
+const omni127 = equipos.find((e) => e.id === 'omni127');
+prueba('Seestar S50: f/5, 2,39″/px y campo oficial 1,29° × 0,73°', () => {
+  cerca(O.relacionFocal(s50clasico.focal, s50clasico.apertura), 5, 1e-9);
+  cerca(O.escalaPlaca(s50clasico.pixel, s50clasico.focal), 2.39, 0.01);
+  cerca(O.campoVision(O.tamanoSensor(s50clasico.resX, s50clasico.pixel), s50clasico.focal), 1.28, 0.015);
+  cerca(O.campoVision(O.tamanoSensor(s50clasico.resY, s50clasico.pixel), s50clasico.focal), 0.72, 0.015);
+});
+prueba('Omni XLT 127: f/9,8, Dawes 0,91″ y 0,48″/px con la cámara supuesta', () => {
+  cerca(O.relacionFocal(omni127.focal, omni127.apertura), 9.84, 0.01);
+  cerca(O.limiteDawes(omni127.apertura), 0.913, 0.005);
+  cerca(O.escalaPlaca(omni127.pixel, omni127.focal), 0.479, 0.003);
+});
+
+/* ---------- Mapa celeste ---------- */
+grupo('Mapa celeste (proyección, datos del cielo y PDF)');
+prueba('Proyección: cénit en el centro, norte arriba y este a la izquierda', () => {
+  const z = proyectar(90, 0); cerca(z.x, 0, 1e-12); cerca(z.y, 0, 1e-12);
+  const n = proyectar(0, 0); cerca(n.y, -1, 1e-9);
+  const e = proyectar(0, 90); cerca(e.x, -1, 1e-9);
+});
+prueba('Proyección: ida y vuelta devuelve la misma altura y acimut', () => {
+  const p = proyectar(37, 123), v = desproyectar(p.x, p.y);
+  cerca(v.alt, 37, 1e-9); cerca(v.az, 123, 1e-9);
+});
+const cielo = await fetch('../data/cielo.json').then((r) => r.json());
+const { objetos: objetosCat } = await fetch('../data/objetos.json').then((r) => r.json());
+prueba('Datos del cielo: más de 1.500 estrellas y las 88 constelaciones (Serpiente en dos partes)', () => {
+  cierto(cielo.estrellas.length > 1500, `${cielo.estrellas.length} estrellas`);
+  igual(new Set(cielo.constelaciones.map((c) => c.id)).size, 88);
+});
+prueba('Datos del cielo: Sirio, Vega y la Polar están donde deben', () => {
+  const buscar = (n) => cielo.estrellas.find((e) => e[4] === n);
+  const [sirio, vega, polar] = ['Sirio', 'Vega', 'Polar'].map(buscar);
+  cerca(sirio[0], 101.29, 0.1); cerca(sirio[1], -16.72, 0.1); cerca(sirio[2], -1.44, 0.1);
+  cerca(vega[0], 279.23, 0.1); cerca(vega[1], 38.78, 0.1);
+  cerca(polar[1], 89.26, 0.1);
+});
+prueba('Todos los objetos del catálogo tienen constelación', () => {
+  const sinConst = objetosCat.filter((o) => o.ar !== undefined && !o.constelacion).map((o) => o.id);
+  cierto(!sinConst.length, `sin constelación: ${sinConst.join(', ')}`);
+});
+prueba('PDF: cabecera, final y tabla xref apuntando a su sitio', () => {
+  const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xd9]);
+  const pdf = pdfConImagen(jpeg, 200, 100, { titulo: 'Prueba' });
+  const texto = new TextDecoder('latin1').decode(pdf);
+  cierto(texto.startsWith('%PDF-1.4'), 'cabecera');
+  cierto(texto.trimEnd().endsWith('%%EOF'), 'final');
+  const inicio = Number(texto.match(/startxref\n(\d+)/)[1]);
+  igual(texto.slice(inicio, inicio + 4), 'xref');
+  const obj3 = Number(texto.match(/xref\n0 7\n.*\n.*\n.*\n(\d{10})/)[1]);
+  igual(texto.slice(obj3, obj3 + 7), '3 0 obj');
+});
+
+/* ---------- Mejores momentos de los planetas ---------- */
+grupo('Objetos celestes: mejores momentos de los planetas');
+prueba('Próxima oposición de Júpiter desde jun-2025: 10-ene-2026 (±1 día)', () => {
+  const m = A.mejorMomentoPlaneta('jupiter', U(2025, 5, 1));
+  igual(m.tipo, 'oposición');
+  cierto(minutos(m.fecha, U(2026, 0, 10)) <= 1440 * 1.5, m.fecha.toISOString());
+});
+prueba('Máxima elongación vespertina de Venus: 15-ago-2026 (±2 días)', () => {
+  const m = A.mejorMomentoPlaneta('venus', U(2026, 2, 1));
+  igual(m.tipo, 'máxima elongación vespertina');
+  cierto(minutos(m.fecha, U(2026, 7, 15)) <= 1440 * 2, m.fecha.toISOString());
 });
 
 /* ---------- Ejecutar y pintar ---------- */

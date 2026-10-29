@@ -26,12 +26,18 @@ const MODULOS = [
   // La portada no sale en la barra de navegación (enNav: false): se llega a ella pulsando el logo
   { id: 'portada', nombre: 'Portada', icono: 'marca', enNav: false,
     cargar: () => import('./modulos/portada.js') },
-  { id: 'glosario', nombre: 'Glosario', icono: 'glosario',
+  // «Biblioteca» agrupa dos pestañas: Glosario y Objetos celestes (grupo: 'glosario')
+  { id: 'glosario', nombre: 'Biblioteca', titulo: 'Glosario', icono: 'glosario',
     cargar: () => import('./modulos/glosario.js') },
+  { id: 'objetos', nombre: 'Objetos celestes', icono: 'glosario', enNav: false, grupo: 'glosario',
+    cargar: () => import('./modulos/objetos.js') },
   { id: 'optica', nombre: 'Óptica', icono: 'optica',
     cargar: () => import('./modulos/optica.js') },
-  { id: 'cielo', nombre: 'Cielo', icono: 'cielo',
+  // «Cielo» agrupa dos pestañas: Planificador y Mapa celeste (grupo: 'cielo')
+  { id: 'cielo', nombre: 'Cielo', titulo: 'Planificador', icono: 'cielo',
     cargar: () => import('./modulos/cielo.js') },
+  { id: 'mapa', nombre: 'Mapa celeste', icono: 'cielo', enNav: false, grupo: 'cielo',
+    cargar: () => import('./modulos/mapa.js') },
   { id: 'checklist', nombre: 'Checklist', icono: 'checklist',
     cargar: () => import('./modulos/checklist.js') },
   { id: 'cuaderno', nombre: 'Cuaderno', icono: 'cuaderno',
@@ -71,10 +77,10 @@ async function enrutar() {
 
   // Marcar el enlace activo en la navegación
   nav.querySelectorAll('.nav__enlace').forEach((a) => {
-    if (a.dataset.modulo === id) a.setAttribute('aria-current', 'page');
+    if (a.dataset.modulo === (modulo.grupo || id)) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
   });
-  tituloModulo.textContent = modulo.id === 'portada' ? '' : modulo.nombre;
+  tituloModulo.textContent = modulo.id === 'portada' ? '' : (modulo.titulo || modulo.nombre);
   document.body.classList.toggle('en-portada', modulo.id === 'portada');
   if (modulo.id !== 'portada') guardar('yaAbierta', true);
 

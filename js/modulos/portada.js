@@ -20,12 +20,12 @@ import { listaEquipos, idMiEquipo, elegirMiEquipo, selectorMiEquipo } from '../e
 
 // Las seis secciones, con la frase que las presenta en la portada
 const SECCIONES = [
-  { id: 'glosario', nombre: 'Glosario', icono: 'glosario', num: 1,
-    texto: '155 términos del cielo al procesado, con analogías, la cuenta y qué significan en tu equipo.' },
+  { id: 'glosario', nombre: 'Biblioteca', icono: 'glosario', num: 1,
+    texto: 'Glosario de 155 términos y Objetos celestes: galaxias, nebulosas, cúmulos y planetas con sus mejores fechas.' },
   { id: 'optica', nombre: 'Óptica', icono: 'optica', num: 2,
     texto: 'Campo, escala de placa y luz recogida de cada telescopio; simulador de encuadre y cuánto tiempo necesitas.' },
   { id: 'cielo', nombre: 'Cielo', icono: 'cielo', num: 3,
-    texto: 'La Luna, la noche astronómica y qué objetos conviene fotografiar hoy desde donde estés.' },
+    texto: 'Planificador de la noche y Mapa celeste interactivo del día y la hora que elijas, exportable a PNG y PDF.' },
   { id: 'checklist', nombre: 'Checklist', icono: 'checklist', num: 4,
     texto: 'Lo que no puede faltar antes de salir al campo, para marcar con guantes.' },
   { id: 'cuaderno', nombre: 'Cuaderno', icono: 'cuaderno', num: 5,

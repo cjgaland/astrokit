@@ -52,6 +52,32 @@
       "sensor": "Sony IMX347 · imágenes de 2520 × 2520 (6,2 MP)",
       "exposicion": "Tomas cortas en Alt-Az (sin máximo publicado)",
       "nota": "Newtoniano: colimación ocasional. Entrega imágenes de 2520 × 2520 px, pero su campo oficial (34′ × 46′) corresponde a unos 2076 × 1538 píxeles útiles a 1,33″/px: se usan estos para que el campo coincida."
+    },
+    {
+      "id": "s50",
+      "nombre": "Seestar S50",
+      "corto": "S50",
+      "apertura": 50,
+      "focal": 250,
+      "pixel": 2.9,
+      "resX": 1920,
+      "resY": 1080,
+      "sensor": "Sony IMX462 · 1/2,8″ · 2,1 MP",
+      "exposicion": "10–30 s Alt-Az (más en modo EQ con cuña)",
+      "nota": "El modelo anterior al S50 Pro: refractor APO de 3 elementos con vidrio ED, ≈ 3 kg y unas 6 h de batería. ZWO ya lo ha descatalogado."
+    },
+    {
+      "id": "omni127",
+      "nombre": "Celestron Omni XLT 127 + cámara planetaria",
+      "corto": "Omni 127",
+      "apertura": 127,
+      "focal": 1250,
+      "pixel": 2.9,
+      "resX": 3840,
+      "resY": 2160,
+      "sensor": "Cámara supuesta: ZWO ASI585MC (8,3 MP, 2,9 µm), típica para Luna y planetas",
+      "exposicion": "Montura ecuatorial CG-4 manual; con motor de seguimiento opcional",
+      "nota": "Schmidt-Cassegrain de 127 mm f/9,8 (obstrucción central ≈ 37 %, no publicada por Celestron). Es un telescopio visual: si usas otra cámara, cambia los datos en «A mano»."
     }
   ]
 }

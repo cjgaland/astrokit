@@ -14,7 +14,7 @@
    actualizar(parametro) y desmontar(), que es lo que usa el router de app.js.
    ========================================================================== */
 
-import { cargarJSON, mdLigero, sinMarcas, capitalizar, normalizar, resaltar, escaparHTML, icono } from '../util.js';
+import { cargarJSON, mdLigero, sinMarcas, capitalizar, normalizar, resaltar, escaparHTML, icono, pestanas } from '../util.js';
 import { leer, guardar, conjunto } from '../almacen.js';
 
 /* ---------- Estado del módulo ----------
@@ -98,6 +98,7 @@ function pintarLista() {
   const total = datos.terminos.length;
   raiz.innerHTML = `
     <section class="glosario entrada">
+      ${pestanas('biblioteca', 'glosario')}
       <header class="glosario__cabecera">
         <div>
           <span class="etiqueta">Módulo 01 · ${total} términos en ${datos.bloques.length} bloques</span>

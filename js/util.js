@@ -107,3 +107,16 @@ export function html(cadena) {
 export function icono(nombre, clase = '') {
   return `<svg class="${clase}" aria-hidden="true"><use href="#i-${nombre}"/></svg>`;
 }
+
+/* ---------- Pestañas de una sección (Biblioteca, Cielo) ---------- */
+const PESTANAS = {
+  biblioteca: [{ id: 'glosario', texto: 'Glosario' }, { id: 'objetos', texto: 'Objetos celestes' }],
+  cielo: [{ id: 'cielo', texto: 'Planificador' }, { id: 'mapa', texto: 'Mapa celeste' }],
+};
+/** HTML de la barra de pestañas de una sección, con la activa marcada */
+export function pestanas(seccion, activa) {
+  return `
+    <nav class="pestanas" aria-label="Apartados">
+      ${PESTANAS[seccion].map((p) => `<a class="pestanas__pestana" href="#${p.id}" ${p.id === activa ? 'aria-current="page"' : ''}>${p.texto}</a>`).join('')}
+    </nav>`;
+}

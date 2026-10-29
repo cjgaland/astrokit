@@ -360,3 +360,32 @@ export function posicionPlaneta(nombre, fecha) {
     diametro: FISICOS[nombre].d1 / delta,
   };
 }
+
+/**
+ * Mejor momento de un planeta a partir de `desde`:
+ *  · exteriores (Marte a Neptuno): la OPOSICIÓN, cuando está enfrente del Sol
+ *    (elongación máxima, ≈ 180°): más cerca, más brillante y visible toda la noche.
+ *  · interiores (Mercurio y Venus): la MÁXIMA ELONGACIÓN, su mayor separación del
+ *    Sol; «vespertina» si está al este del Sol (se ve al anochecer) o «matutina».
+ * Se busca día a día (precisión ±1 día) hasta 900 días.
+ */
+export function mejorMomentoPlaneta(nombre, desde) {
+  const interior = nombre === 'mercurio' || nombre === 'venus';
+  let previa = posicionPlaneta(nombre, desde).elongacion;
+  let subiendo = false;
+  for (let d = 1; d <= 900; d++) {
+    const t = new Date(desde.getTime() + d * MS_DIA);
+    const e = posicionPlaneta(nombre, t).elongacion;
+    if (e < previa && subiendo && (interior || previa > 150)) {
+      const fecha = new Date(t.getTime() - MS_DIA);
+      const p = posicionPlaneta(nombre, fecha), s = posicionSol(fecha);
+      return {
+        fecha, elongacion: previa,
+        tipo: interior ? (norm180(p.ra - s.ra) > 0 ? 'máxima elongación vespertina' : 'máxima elongación matutina') : 'oposición',
+      };
+    }
+    subiendo = e > previa;
+    previa = e;
+  }
+  return null;
+}
