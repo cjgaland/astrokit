@@ -2,6 +2,16 @@
   "_nota": "Qué cambia en cada versión. La app lo enseña una vez, justo después de actualizar. publicar_astrokit.sh añade aquí la entrada nueva (con el texto que le pases) cada vez que publica una versión.",
   "versiones": [
     {
+      "version": "astrokit-v14",
+      "fecha": "2026-10-29",
+      "cambios": [
+        "Mi equipo: «Ninguno» primero, los telescopios por orden alfabético y la elección se mantiene en toda la app (con «Ninguno», la calculadora abre «A mano»)",
+        "Mapa celeste: la ventanita de información desaparece al mover el ratón a una zona vacía",
+        "Sugerencias: ahora puedes escribirme por correo o por WhatsApp",
+        "Manual de uso ampliado"
+      ]
+    },
+    {
       "version": "astrokit-v13",
       "fecha": "2026-10-29",
       "cambios": [
