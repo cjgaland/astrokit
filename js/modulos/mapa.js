@@ -105,7 +105,6 @@ function actualizar(parametro) {
 
 function desmontar() {
   clearInterval(reloj);
-  clearTimeout(temporizadorGlobo);
   observador?.disconnect();
   observadorTema?.disconnect();
 }
@@ -171,7 +170,7 @@ function pintarEsqueleto() {
           <button class="boton-sec" type="button" data-accion="pdf">${icono('abajo')}PDF</button>
         </div>
       </div>
-      <p class="nota">Acerca con la rueda del ratón o pellizcando, arrastra para moverte y toca un astro para ver qué es.
+      <p class="nota">Acerca con la rueda del ratón o pellizcando y arrastra para moverte. Pasa el ratón por un astro (o tócalo) para ver qué es; con el ratón, haz clic para abrir su ficha.
         Estrellas: d3-celestial (O. Frohn, licencia BSD).</p>
     </section>`;
   raiz.addEventListener('click', alHacerClic);
@@ -182,9 +181,6 @@ function pintarEsqueleto() {
 function prepararLienzo() {
   lienzo = raiz.querySelector('#mapa-lienzo');
   globo = raiz.querySelector('#mapa-globo');
-  // Si el ratón llega al globo, se queda (para pulsar «Ver la ficha»); al salir de él, se oculta
-  globo.addEventListener('pointerenter', () => { clearTimeout(temporizadorGlobo); temporizadorGlobo = 0; });
-  globo.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') ocultarGlobo(); });
   ctx = lienzo.getContext('2d');
   observador = new ResizeObserver(() => redibujar());
   observador.observe(raiz.querySelector('#mapa-marco'));
@@ -193,7 +189,7 @@ function prepararLienzo() {
   lienzo.addEventListener('pointermove', alMover);
   lienzo.addEventListener('pointerup', alSoltar);
   lienzo.addEventListener('pointercancel', alSoltar);
-  lienzo.addEventListener('pointerleave', (e) => { if (!punteros.size && !globo.contains(e.relatedTarget)) ocultarGlobo(); });
+  lienzo.addEventListener('pointerleave', () => { if (!punteros.size) { ocultarGlobo(); lienzo.style.cursor = ''; } });
   lienzo.addEventListener('dblclick', (e) => { const p = puntoLocal(e); acercarEn(p.x, p.y, 2); });
   // El botón Noche cambia un atributo del documento: lo vigilamos para repintar en rojo
   observadorTema = new MutationObserver(redibujar);
@@ -473,31 +469,38 @@ function textoInfo(i) {
   }
 }
 
-/**
- * Muestra la información del elemento más cercano a (x, y) o, si no hay
- * ninguno, deja el mapa limpio. La zona sensible es pequeña con el ratón
- * (apunta con precisión) y más generosa con el dedo. Con el ratón no se
- * oculta al instante: se da un respiro para poder llegar al globo y pulsar
- * «Ver la ficha».
- */
-let temporizadorGlobo = 0;
-let ultimoMostrado = null;
-function mostrarGlobo(x, y, conRaton = false) {
+/** El elemento señalado en (x, y), o null. Zona sensible pequeña con ratón (apunta con precisión) y generosa con el dedo */
+function elementoEn(x, y, conRaton) {
   const holgura = conRaton ? 3 : 6, minimo = conRaton ? 6 : 12;
   let mejor = null, dist = Infinity;
   for (const el of elementos) {
     const d = Math.hypot(el.x - x, el.y - y);
     if (d <= Math.max(el.r + holgura, minimo) && d < dist) { dist = d; mejor = el; }
   }
-  if (!mejor) {
-    if (!conRaton) { ocultarGlobo(); return; }
-    if (!globo.hidden && !temporizadorGlobo) temporizadorGlobo = setTimeout(ocultarGlobo, 250);
-    return;
-  }
-  clearTimeout(temporizadorGlobo); temporizadorGlobo = 0;
+  return mejor;
+}
+/** Dirección de la ficha de un elemento (#objetos/…), si la tiene (las estrellas y el Sol no) */
+const fichaDe = (el) => el && /href="(#[^"]+)"/.exec(textoInfo(el.info))?.[1];
+
+/**
+ * Muestra la información del elemento que hay en (x, y) o, si no hay ninguno,
+ * deja el mapa limpio.
+ *   · Con ratón: el globo aparece mientras el puntero está encima y desaparece
+ *     en cuanto se retira. El globo no captura el ratón (pointer-events: none),
+ *     así que nunca se queda «enganchado»; la ficha se abre haciendo clic en el objeto.
+ *   · Con el dedo: el globo se queda hasta tocar otra cosa y trae «Ver la ficha».
+ */
+let ultimoMostrado = null;
+function mostrarGlobo(x, y, conRaton = false) {
+  const mejor = elementoEn(x, y, conRaton);
+  if (conRaton) lienzo.style.cursor = fichaDe(mejor) ? 'pointer' : '';
+  if (!mejor) { ocultarGlobo(); return; }
   if (mejor === ultimoMostrado && !globo.hidden) return;   // ya se está mostrando
   ultimoMostrado = mejor;
-  globo.innerHTML = textoInfo(mejor.info);
+  let html = textoInfo(mejor.info);
+  if (conRaton) html = html.replace(/<a href="[^"]+">Ver la ficha ›<\/a>/, '<span class="mapa__pista">Haz clic para ver la ficha</span>');
+  globo.innerHTML = html;
+  globo.classList.toggle('mapa__globo--raton', conRaton);
   globo.hidden = false;
   const marco = raiz.querySelector('#mapa-marco');
   const gx = Math.min(mejor.x + 14, marco.clientWidth - globo.offsetWidth - 6);
@@ -506,7 +509,6 @@ function mostrarGlobo(x, y, conRaton = false) {
   globo.style.top = Math.max(6, gy) + 'px';
 }
 function ocultarGlobo() {
-  clearTimeout(temporizadorGlobo); temporizadorGlobo = 0;
   ultimoMostrado = null;
   if (globo) globo.hidden = true;
 }
@@ -573,6 +575,10 @@ function alSoltar(e) {
     if (Date.now() - ultimoToque < 300) acercarEn(p.x, p.y, 2);
     else mostrarGlobo(p.x, p.y);
     ultimoToque = Date.now();
+  } else if (eraToque) {
+    // clic con el ratón sobre un objeto, planeta o la Luna: abre su ficha
+    const ficha = fichaDe(elementoEn(p.x, p.y, true));
+    if (ficha) location.hash = ficha;
   }
 }
 

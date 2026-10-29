@@ -4,6 +4,9 @@
 
 /* ---------- Reinicio mínimo ---------- */
 *, *::before, *::after { box-sizing: border-box; }
+/* El atributo hidden oculta SIEMPRE, aunque la clase del elemento le dé otro display
+   (el navegador lo aplica con la prioridad más baja y cualquier display: flex lo anulaba) */
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }
 body, h1, h2, h3, h4, p, ul, ol, figure, blockquote { margin: 0; }
 ul, ol { padding: 0; }
