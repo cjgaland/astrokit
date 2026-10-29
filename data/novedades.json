@@ -2,6 +2,13 @@
   "_nota": "Qué cambia en cada versión. La app lo enseña una vez, justo después de actualizar. publicar_astrokit.sh añade aquí la entrada nueva (con el texto que le pases) cada vez que publica una versión.",
   "versiones": [
     {
+      "version": "astrokit-v18",
+      "fecha": "2026-10-29",
+      "cambios": [
+        "Si abres un enlace de AstroKit a un apartado que tu versión aún no tiene, la app te avisa, se actualiza y te lleva directamente a él"
+      ]
+    },
+    {
       "version": "astrokit-v17",
       "fecha": "2026-10-29",
       "cambios": [
