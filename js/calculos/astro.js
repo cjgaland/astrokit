@@ -397,3 +397,21 @@ export function mejorMomentoPlaneta(nombre, desde) {
   }
   return null;
 }
+
+/* ---------- Utilidades para las Efemérides ---------- */
+
+/** Posición heliocéntrica eclíptica J2000 de la Tierra (UA): la necesitan los cometas */
+export function posicionTierra(fecha) {
+  return heliocentrica('tierra', (diaJuliano(fecha) - 2451545.0) / 36525);
+}
+
+/** Distancia Tierra–Luna en km, a partir de la paralaje: d = radio terrestre ÷ sen(paralaje) */
+export function distanciaLuna(fecha) {
+  return 6378.14 / Math.sin(posicionLuna(fecha).paralaje * RAD);
+}
+
+/** Distancia angular entre dos puntos del cielo (ra, dec en grados) */
+export function separacion(ra1, dec1, ra2, dec2) {
+  const c = sin(dec1) * sin(dec2) + cos(dec1) * cos(dec2) * cos(ra1 - ra2);
+  return Math.acos(Math.max(-1, Math.min(1, c))) * DEG;
+}

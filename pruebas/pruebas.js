@@ -18,6 +18,8 @@ import { pdfConImagen } from '../js/pdf.js';
 import { ordenarEquipos, selectorMiEquipo, NINGUNO } from '../js/equipo.js';
 import { progreso, mover } from '../js/modulos/checklist.js';
 import { integracionMin, dimensionesMiniatura, mezclarSesiones, totalesPorObjeto } from '../js/modulos/cuaderno.js';
+import * as E from '../js/calculos/eclipses.js';
+import * as F from '../js/calculos/efemerides.js';
 
 const grupos = [];
 function grupo(nombre) { grupos.push({ nombre, pruebas: [] }); }
@@ -408,6 +410,116 @@ prueba('Máxima elongación vespertina de Venus: 15-ago-2026 (±2 días)', () =>
   const m = A.mejorMomentoPlaneta('venus', U(2026, 2, 1));
   igual(m.tipo, 'máxima elongación vespertina');
   cierto(minutos(m.fecha, U(2026, 7, 15)) <= 1440 * 2, m.fecha.toISOString());
+});
+
+/* ---------- Efemérides ---------- */
+const { eclipses: eclipsesSol } = await fetch('../data/eclipses.json').then((r) => r.json());
+const efem = await fetch('../data/efemerides.json').then((r) => r.json());
+const mundoDatos = await fetch('../data/mundo.json').then((r) => r.json());
+const ciudadesDatos = await fetch('../data/ciudades.json').then((r) => r.json());
+const eclipse = (f) => eclipsesSol.find((e) => e.fecha === f);
+const hms = (f, h, m, s) => { const [a, mo, d] = f.split('-').map(Number); return U(a, mo - 1, d, h, m, s); };
+
+grupo('Eclipses de Sol: nuestros cálculos frente a la NASA (F. Espenak)');
+prueba('Datos: 24 eclipses de 2025 a 2035, con sus elementos besselianos', () => {
+  igual(eclipsesSol.length, 24);
+  for (const e of eclipsesSol) cierto(e.x.length === 4 && e.y.length === 4 && e.mu.length >= 2 && e.tanf1 > 0, e.id);
+});
+for (const [f, h, m, s, dur] of [['2026-08-12', 17, 45, 51, 138], ['2027-08-02', 10, 6, 34, 383], ['2028-01-26', 15, 7, 43, 627]]) {
+  prueba(`${f}: en el punto de la máxima, duración ${dur} s (±3 s) y hora ±40 s`, () => {
+    const ec = eclipse(f), c = E.circunstanciasLocales(ec, ec.maxima.lat, ec.maxima.lon);
+    igual(c.tipo, ec.tipo);
+    cerca(c.duracion, dur, 3);
+    cierto(minutos(c.maximo, hms(f, h, m, s)) <= 40 / 60, c.maximo.toISOString());
+  });
+}
+prueba('2027-08-02: anchura de la franja en la máxima ≈ 257,7 km (±2 %)', () => {
+  const ec = eclipse('2027-08-02');
+  cerca(E.anchuraFranja(ec, E.horasDesdeT0(ec, hms('2027-08-02', 10, 6, 34))), 257.7, 5.2);
+});
+prueba('La línea central pasa a menos de 25 km del punto de la máxima publicado', () => {
+  for (const f of ['2026-08-12', '2027-08-02', '2028-01-26', '2030-11-25']) {
+    const ec = eclipse(f);
+    cierto(E.puntoCentralMasCercano(E.franja(ec), ec.maxima.lat, ec.maxima.lon).distancia < 25, f);
+  }
+});
+prueba('12-ago-2026: total en León y en Valencia; en Madrid, parcial (99,9 %)', () => {
+  const ec = eclipse('2026-08-12');
+  igual(E.circunstanciasLocales(ec, 42.60, -5.57).tipo, 'total');
+  igual(E.circunstanciasLocales(ec, 39.47, -0.38).tipo, 'total');
+  igual(E.circunstanciasLocales(ec, 40.42, -3.70).tipo, 'parcial');
+});
+prueba('2-ago-2027: total en Tarifa (≈ 4 min 39 s) y parcial en Córdoba (≈ 96 %)', () => {
+  const ec = eclipse('2027-08-02');
+  const t = E.circunstanciasLocales(ec, 36.01, -5.60), c = E.circunstanciasLocales(ec, 37.89, -4.77);
+  igual(t.tipo, 'total'); cerca(t.duracion, 279, 15);
+  igual(c.tipo, 'parcial'); cerca(c.oscurecimiento, 0.966, 0.02);
+});
+prueba('26-ene-2028: anular desde Córdoba, al atardecer', () => {
+  const c = E.circunstanciasLocales(eclipse('2028-01-26'), 37.89, -4.77);
+  igual(c.tipo, 'anular'); cierto(c.altura > 0 && c.altura < 15, `${c.altura}°`);
+});
+prueba('Oscurecimiento: magnitud 0,5 con Luna y Sol iguales ≈ 39 % del área', () => {
+  cerca(E.oscurecimiento(1, 1), 0.391, 0.002);
+  igual(E.oscurecimiento(0, 1.05), 1);
+});
+
+grupo('Eclipses de Luna (Meeus, cap. 54) frente a la NASA');
+for (const [fecha, h, m, mag, tipo] of [[[2025, 2, 14], 6, 58.7, 1.178, 'total'], [[2025, 8, 7], 18, 11.8, 1.362, 'total'],
+  [[2026, 2, 3], 11, 33.7, 1.151, 'total'], [[2026, 7, 28], 4, 12.9, 0.930, 'parcial']]) {
+  prueba(`${fecha[2]}-${fecha[1] + 1}-${fecha[0]}: ${tipo}, máximo ±3 min y magnitud umbral ${mag} (±0,02)`, () => {
+    const l = F.eclipsesLuna(U(fecha[0], fecha[1], fecha[2] - 1), U(fecha[0], fecha[1], fecha[2] + 1));
+    igual(l.length, 1); igual(l[0].tipo, tipo);
+    cierto(minutos(l[0].maximo, U(fecha[0], fecha[1], fecha[2], h, Math.floor(m), Math.round((m % 1) * 60))) <= 3, l[0].maximo.toISOString());
+    cerca(l[0].magUmbral, mag, 0.02);
+  });
+}
+
+grupo('Lluvias de meteoros, estaciones y cometas');
+prueba('13 lluvias con radiante, THZ e índice de población', () => {
+  igual(efem.lluvias.length, 13);
+  for (const l of efem.lluvias) cierto(l.thz > 0 && l.r >= 2 && l.dec >= -90 && l.dec <= 90 && l.actividad.length === 2, l.id);
+});
+prueba('Perseidas 2026: máximo el 12–13 de agosto; Gemínidas: 13–14 de diciembre', () => {
+  const per = F.fechaLongitudSolar(140.0, 2026), gem = F.fechaLongitudSolar(262.2, 2026);
+  cierto(per >= U(2026, 7, 12, 6) && per <= U(2026, 7, 13, 18), per.toISOString());
+  cierto(gem >= U(2026, 11, 13, 12) && gem <= U(2026, 11, 14, 23), gem.toISOString());
+});
+prueba('Perseidas 2026 con Luna nueva: «buen año» y más meteoros cuanto más oscuro el cielo', () => {
+  const n = F.nocheDeLluvia(efem.lluvias.find((l) => l.codigo === 'PER'), F.fechaLongitudSolar(140.0, 2026), { lat: 37.89, lon: -4.77 });
+  igual(n.calidad, 'buena');
+  cierto(n.tasas[4] < n.tasas[5] && n.tasas[5] < n.tasas[6], JSON.stringify(n.tasas));
+});
+prueba('Equinoccios y solsticios de 2025 a menos de 40 min de los oficiales', () => {
+  const s = F.calcularSucesos({ desde: U(2025, 0, 1), hasta: U(2025, 11, 31), lugar: { lat: 37.89, lon: -4.77 } }).filter((x) => x.tipo === 'estacion');
+  const oficiales = [U(2025, 2, 20, 9, 1), U(2025, 5, 21, 2, 42), U(2025, 8, 22, 18, 19), U(2025, 11, 21, 15, 3)];
+  igual(s.length, 4);
+  s.forEach((x, i) => cierto(minutos(x.fecha, oficiales[i]) <= 40, `${x.titulo}: ${x.fecha.toISOString()}`));
+});
+prueba('Cometas: posición y brillo como el JPL Horizons (±0,05° y ±0,1 mag)', () => {
+  for (const [id, f, ra, dec, mag] of [['cometa-2p', U(2027, 1, 1), 327.2358, -7.4149, 13.0], ['cometa-c2025y1', U(2027, 5, 1), 250.9876, -0.3714, 12.37], ['cometa-45p', U(2027, 7, 20), 111.1690, 19.1691, 8.49]]) {
+    const p = F.posicionCometa(efem.cometas.find((c) => c.id === id), f);
+    cerca(p.ra, ra, 0.05); cerca(p.dec, dec, 0.05); cerca(p.magnitud, mag, 0.1);
+  }
+});
+prueba('Cometa en el perihelio: distancia al Sol = q', () => {
+  for (const c of efem.cometas) cerca(F.posicionCometa(c, new Date((c.tp - 2440587.5) * 86400000)).r, c.q, 1e-4);
+});
+prueba('Calendario .ics: un VEVENT por suceso, con hora UTC y aviso', () => {
+  const s = F.calcularSucesos({ desde: U(2026, 11, 1), hasta: U(2026, 11, 31), lugar: { lat: 37.89, lon: -4.77 }, ...efem, eclipses: eclipsesSol });
+  const ics = F.generarICS(s);
+  cierto(ics.startsWith('BEGIN:VCALENDAR') && ics.trim().endsWith('END:VCALENDAR'));
+  igual((ics.match(/BEGIN:VEVENT/g) || []).length, s.length);
+  cierto(/DTSTART:\d{8}T\d{6}Z/.test(ics) && ics.includes('TRIGGER:-P1D'));
+});
+prueba('Datos del globo: tierra, fronteras y ciudades (Córdoba, Tarifa)', () => {
+  cierto(mundoDatos.tierra.length > 500 && mundoDatos.fronteras.length > 200);
+  const todas = [...ciudadesDatos.espana, ...ciudadesDatos.mundo].map((c) => c[0]);
+  cierto(todas.includes('Córdoba') && todas.includes('Tarifa'));
+});
+prueba('Glosario: los términos nuevos de las efemérides existen', () => {
+  for (const id of ['efemerides', 'radiante', 'tasa-horaria-cenital-thz', 'eclipse-de-sol', 'franja-de-totalidad', 'saros', 'delta-t'])
+    cierto(glosario.terminos.some((t) => t.id === id), id);
 });
 
 /* ---------- Ejecutar y pintar ---------- */

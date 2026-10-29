@@ -15,6 +15,9 @@
      · Planetas: su próxima oposición (exteriores) o máxima elongación
        (Mercurio y Venus).
      · La Luna: sus próximas fases; los cuartos son los mejores para los cráteres.
+     · Lluvias de meteoros y cometas (data/efemerides.json): sus próximos
+       máximos o su perihelio y mejor momento. Su ficha es la misma que en
+       Cielo · Efemérides (fichaLluvia / fichaCometa de efemerides.js).
    ========================================================================== */
 
 import { cargarJSON, escaparHTML, icono, pestanas, normalizar, resaltar } from '../util.js';
@@ -22,6 +25,7 @@ import { leer, guardar } from '../almacen.js';
 import * as A from '../calculos/astro.js';
 import * as O from '../calculos/optica.js';
 import { miEquipo } from '../equipo.js';
+import * as F from '../calculos/efemerides.js';
 
 const TIPOS = [
   { id: 'todos', texto: 'Todos' },
@@ -29,6 +33,8 @@ const TIPOS = [
   { id: 'nebulosa', texto: 'Nebulosas' },
   { id: 'cumulo', texto: 'Cúmulos' },
   { id: 'sistema', texto: 'Sistema Solar' },
+  { id: 'lluvia', texto: 'Meteoros' },
+  { id: 'cometa', texto: 'Cometas' },
 ];
 const ORDENES = [
   { id: 'fecha', texto: 'Próxima mejor fecha' },
@@ -39,8 +45,9 @@ const NOMBRE_TIPO = {
   'galaxia': 'Galaxia', 'nebulosa-emision': 'Nebulosa de emisión', 'nebulosa-reflexion': 'Nebulosa de reflexión',
   'nebulosa-planetaria': 'Nebulosa planetaria', 'remanente': 'Remanente de supernova', 'cumulo-abierto': 'Cúmulo abierto',
   'cumulo-globular': 'Cúmulo globular', 'planeta': 'Planeta', 'luna': 'Satélite',
+  'lluvia': 'Lluvia de meteoros', 'cometa': 'Cometa',
 };
-const COLOR_TIPO = (t) => t === 'planeta' || t === 'luna' ? 'b3' : t.startsWith('galaxia') ? 'b1' : t.startsWith('cumulo') ? 'b4'
+const COLOR_TIPO = (t) => t === 'lluvia' ? 'b6' : t === 'cometa' ? 'b7' : t === 'planeta' || t === 'luna' ? 'b3' : t.startsWith('galaxia') ? 'b1' : t.startsWith('cumulo') ? 'b4'
   : ['nebulosa-emision', 'remanente', 'nebulosa-planetaria'].includes(t) ? 'b5' : 'b2';
 const PLANETAS = {
   mercurio: { nombre: 'Mercurio', consejo: 'Siempre cerca del Sol: búscalo en el crepúsculo, en sus máximas elongaciones.' },
@@ -76,6 +83,7 @@ const aTexto = (f) => `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2,
 const duracion = (min) => { const h = Math.floor(min / 60), m = Math.round(min % 60); return h ? `${h} h${m ? ` ${String(m).padStart(2, '0')}` : ''}` : `${m} min`; };
 const grados = (x, d = 0) => x.toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d }) + '°';
 const esSolar = (o) => o.tipo === 'planeta' || o.tipo === 'luna';
+const esEfemeride = (o) => o.tipo === 'lluvia' || o.tipo === 'cometa';
 
 /* ==========================================================================
    Montaje
@@ -84,12 +92,16 @@ export async function montar(contenedor, parametro) {
   raiz = contenedor;
   const C = await import('./cielo.js');
   lugar = C.lugarActivo();
-  const { objetos } = await cargarJSON('data/objetos.json');
+  const [{ objetos }, ef] = await Promise.all([cargarJSON('data/objetos.json'), cargarJSON('data/efemerides.json')]);
   catalogo = [
     ...objetos.filter((o) => o.ar !== undefined),
     ...Object.entries(PLANETAS).map(([id, p]) => ({ id, nombre: p.nombre, catalogo: 'Planeta', tipo: 'planeta', consejo: p.consejo, constelacion: '—' })),
     { id: 'luna-cielo', nombre: 'La Luna', catalogo: 'Satélite', tipo: 'luna', constelacion: '—',
       consejo: 'Los cuartos creciente y menguante son los mejores: la luz rasante del terminador marca el relieve de los cráteres.' },
+    ...ef.lluvias.map((l) => ({ ...l, catalogo: `Lluvia ${l.codigo}`, tipo: 'lluvia', datos: l })),
+    ...ef.cometas.map((c) => ({ id: c.id, nombre: c.nombre, catalogo: 'Cometa', tipo: 'cometa', constelacion: '—',
+      // Su brillo máximo previsto (el de hoy puede ser absurdo si está lejos del Sol)
+      mag: Math.round((F.mejorMomentoCometa(c).mejor?.magnitud ?? 99) * 10) / 10, datos: c })),
   ];
   raiz.addEventListener('click', alHacerClic);
   raiz.addEventListener('input', alEscribir);
@@ -147,6 +159,19 @@ async function prepararTemporadas(C) {
 
 /** Las mejores fechas de un objeto: hasta `max` noches de Luna nueva con más horas útiles, en orden cronológico */
 function mejoresFechas(o, max = 3) {
+  if (o.tipo === 'lluvia') {
+    const hoy = new Date(), picos = [];
+    for (let anio = hoy.getFullYear(); picos.length < max; anio++) {
+      const pico = F.fechaLongitudSolar(o.lambda, anio);
+      if (pico > hoy) picos.push({ fecha: pico, texto: 'máximo' });
+    }
+    return picos;
+  }
+  if (o.tipo === 'cometa') {
+    const { perihelio, mejor } = F.mejorMomentoCometa(o.datos);
+    return [{ fecha: perihelio, texto: 'perihelio' }, ...(mejor ? [{ fecha: mejor.fecha, texto: `mejor momento · mag ${mejor.magnitud.toFixed(1)}` }] : [])]
+      .filter((f) => f.fecha > new Date()).sort((a, b) => a.fecha - b.fecha).slice(0, max);
+  }
   if (!temporadas) return null;
   if (o.tipo === 'planeta') {
     const m = planetas[o.id];
@@ -215,8 +240,8 @@ function pintarLista() {
       <header class="modulo__cabecera">
         <span class="etiqueta">Biblioteca · ${catalogo.length} objetos</span>
         <h1 class="titular">Objetos <em>celestes</em>.</h1>
-        <p class="entradilla">Galaxias, nebulosas, cúmulos, planetas y la Luna, con sus mejores fechas para
-          observarlos desde ${escaparHTML(lugar.nombre)}.</p>
+        <p class="entradilla">Galaxias, nebulosas, cúmulos, planetas, la Luna, lluvias de meteoros y cometas,
+          con sus mejores fechas para observarlos desde ${escaparHTML(lugar.nombre)}.</p>
       </header>
 
       <div class="buscador">
@@ -238,12 +263,16 @@ function pintarLista() {
 
 function filtrar() {
   const palabras = normalizar(estado.consulta).split(/\s+/).filter(Boolean);
-  const pasaTipo = (o) => estado.tipo === 'todos' || (estado.tipo === 'sistema' ? esSolar(o) : !esSolar(o) && o.tipo.startsWith(estado.tipo));
+  const pasaTipo = (o) => estado.tipo === 'todos'
+    || (estado.tipo === 'sistema' ? esSolar(o)
+      : estado.tipo === 'lluvia' || estado.tipo === 'cometa' ? o.tipo === estado.tipo
+      : !esSolar(o) && !esEfemeride(o) && o.tipo.startsWith(estado.tipo));
   let lista = catalogo.filter((o) => pasaTipo(o) && palabras.every((p) =>
     normalizar([o.nombre, o.catalogo, o.constelacion, NOMBRE_TIPO[o.tipo]].join(' ')).includes(p)));
   const proxima = (o) => mejoresFechas(o, 1)?.[0]?.fecha?.getTime() ?? Infinity;
   if (estado.orden === 'fecha' && temporadas) lista = lista.slice().sort((a, b) => proxima(a) - proxima(b));
-  if (estado.orden === 'brillo') lista = lista.slice().sort((a, b) => (a.mag ?? -30) - (b.mag ?? -30));
+  const brillo = (o) => o.mag ?? (o.tipo === 'lluvia' ? 99 : -30);
+  if (estado.orden === 'brillo') lista = lista.slice().sort((a, b) => brillo(a) - brillo(b));
   return { lista, palabras };
 }
 
@@ -263,13 +292,14 @@ function pintarResultados() {
         const fechas = mejoresFechas(o);
         const fechasHtml = fechas === null ? '<span class="nota">…</span>'
           : fechas.length ? fechas.map((f) => `<span class="fecha-chip cifra">${fechaCorta(f.fecha)}</span>`).join('')
+          : esEfemeride(o) ? '<span class="nota">Ya pasó su mejor momento</span>'
           : `<span class="nota">Bajo desde aquí · mejor en ${mesMedianoche(o)}</span>`;
         return `
         <li class="tarjeta" style="--color: var(--${COLOR_TIPO(o.tipo)})">
           <a class="tarjeta__enlace" href="#objetos/${o.id}">
             <span class="tarjeta__bloque cifra">${resaltar(o.catalogo, palabras)}${o.constelacion !== '—' ? ` · ${resaltar(o.constelacion, palabras)}` : ''}</span>
             <span class="tarjeta__nombre">${resaltar(o.nombre, palabras)}</span>
-            <span class="tarjeta__alias">${NOMBRE_TIPO[o.tipo]}${o.mag !== undefined ? ` · mag ${o.mag.toLocaleString('es-ES')}` : ''}${o.ancho ? ` · ${o.ancho}′×${o.alto}′` : ''}</span>
+            <span class="tarjeta__alias">${NOMBRE_TIPO[o.tipo]}${o.mag !== undefined ? ` · ${o.tipo === 'cometa' ? 'llega a mag' : 'mag'} ${o.mag.toLocaleString('es-ES')}` : ''}${o.ancho ? ` · ${o.ancho}′×${o.alto}′` : ''}</span>
             <span class="objeto-fechas"><span class="etiqueta">Mejor</span>${fechasHtml}</span>
           </a>
         </li>`;
@@ -282,6 +312,19 @@ function pintarResultados() {
    ========================================================================== */
 async function pintarFicha(o) {
   vista = o.id;
+  if (esEfemeride(o)) {
+    const ef = await import('./efemerides.js');
+    if (vista !== o.id) return;
+    const contenido = o.tipo === 'lluvia' ? ef.fichaLluvia(o.datos, lugar) : ef.fichaCometa(o.datos);
+    raiz.innerHTML = `
+      <article class="ficha entrada" style="--color: var(--${contenido.color})">
+        ${pestanas('biblioteca', 'objetos')}
+        <nav class="ficha__migas"><a href="#objetos" class="ficha__volver">${icono('atras')}Objetos celestes</a>
+          <a class="ficha__bloque cifra" href="#efemerides">Ver en Efemérides ›</a></nav>
+        ${contenido.html}
+      </article>`;
+    return;
+  }
   const equipo = await miEquipo();
   if (vista !== o.id) return;
   const fechas = mejoresFechas(o, 4);

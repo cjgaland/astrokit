@@ -21,11 +21,11 @@ import { listaEquipos, idMiEquipo, elegirMiEquipo, selectorMiEquipo } from '../e
 // Las seis secciones, con la frase que las presenta en la portada
 const SECCIONES = [
   { id: 'glosario', nombre: 'Biblioteca', icono: 'glosario', num: 1,
-    texto: 'Glosario de 155 términos y Objetos celestes: galaxias, nebulosas, cúmulos y planetas con sus mejores fechas.' },
+    texto: 'Glosario de 175 términos y Objetos celestes: galaxias, nebulosas, cúmulos, planetas, lluvias y cometas con sus mejores fechas.' },
   { id: 'optica', nombre: 'Óptica', icono: 'optica', num: 2,
     texto: 'Campo, escala de placa y luz recogida de cada telescopio; simulador de encuadre y cuánto tiempo necesitas.' },
   { id: 'cielo', nombre: 'Cielo', icono: 'cielo', num: 3,
-    texto: 'Planificador de la noche y Mapa celeste interactivo del día y la hora que elijas, exportable a PNG y PDF.' },
+    texto: 'Planificador de la noche, Mapa celeste interactivo y Efemérides: eclipses con globo 3D, lluvias de meteoros, cometas…' },
   { id: 'checklist', nombre: 'Checklist', icono: 'checklist', num: 4,
     texto: 'Lo que no puede faltar antes de salir al campo, para marcar con guantes.' },
   { id: 'cuaderno', nombre: 'Cuaderno', icono: 'cuaderno', num: 5,
@@ -73,7 +73,7 @@ function pintar() {
         <p class="portada__lema">Tu cuaderno de campo para la astrofotografía</p>
         <p class="portada__descripcion">Para aprender astrofotografía y para salir a hacerla: glosario,
           objetos celestes con sus mejores fechas, calculadora óptica, planificador de la noche,
-          mapa celeste, checklist y cuaderno de sesiones. En el bolsillo,
+          mapa celeste, efemérides con eclipses en 3D, checklist y cuaderno de sesiones. En el bolsillo,
           sin cobertura y con modo noche en rojo.</p>
         <a class="boton-principal portada__entrar" href="#glosario" aria-label="Entrar en AstroKit (abre el Glosario)">Entrar${icono('sig')}</a>
       </header>
@@ -159,11 +159,31 @@ async function pintarEstaNoche() {
               <span class="esta-noche__objeto">${escaparHTML(x.o.nombre)}</span>
               <span class="esta-noche__meta cifra">${escaparHTML(x.o.catalogo)} · ${Math.round(x.altMax)}° · ${duracion(x.util)}</span>
             </a></li>`).join('')}
-        </ul>` : '<p class="nota">Ningún objeto a buena altura con noche cerrada: prueba a mirar el Sistema Solar.</p>'}`;
+        </ul>` : '<p class="nota">Ningún objeto a buena altura con noche cerrada: prueba a mirar el Sistema Solar.</p>'}
+      <div id="proximo-suceso"></div>`;
+    pintarProximoSuceso(n.lugar);
   } catch (e) {
     console.warn('Resumen de la noche:', e);
     caja.innerHTML = '<span class="etiqueta">Esta noche</span><p class="nota">No se pudo calcular el cielo de hoy.</p>';
   }
+}
+
+/** Debajo de «Esta noche»: el próximo suceso destacado de las Efemérides (en 30 días) */
+async function pintarProximoSuceso(sitio) {
+  const ef = await import('./efemerides.js');
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  const hasta = new Date(hoy.getTime() + 30 * 86400000);
+  const s = (await ef.sucesosEntre(hoy, hasta, sitio)).find((x) => x.importancia >= 2 && x.fecha >= new Date(Date.now() - 6 * 3600000));
+  const caja = raiz?.querySelector('#proximo-suceso');
+  if (!caja || !s) return;
+  const dias = Math.round((new Date(s.fecha).setHours(0, 0, 0, 0) - hoy) / 86400000);
+  const cuando = dias <= 0 ? 'hoy' : dias === 1 ? 'mañana' : `en ${dias} días`;
+  caja.innerHTML = `
+    <a class="proximo-suceso" href="${ef.enlaceSuceso(s).href}">
+      <span class="etiqueta">Próximo suceso · ${cuando}</span>
+      <span class="proximo-suceso__titulo">${escaparHTML(s.titulo)}</span>
+      <span class="proximo-suceso__fecha cifra">${s.fecha.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })} · ${s.fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</span>
+    </a>`;
 }
 
 /* ---------- «Mi equipo» ---------- */

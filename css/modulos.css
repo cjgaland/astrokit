@@ -1045,6 +1045,85 @@ mark {
 .ley--abierto { border-radius: 50%; border-style: dotted; }
 .ley--globular { border-radius: 50%; background: linear-gradient(transparent 45%, #3fb3a5 45% 55%, transparent 55%), linear-gradient(90deg, transparent 45%, #3fb3a5 45% 55%, transparent 55%); }
 .ley--planeta { border-radius: 50%; border: 0; background: #e8d08f; }
+.ley--radiante { border: 0; width: auto; height: auto; font-style: normal; color: #f2a33a; line-height: 1; }
+.ley--cometa { border: 0; width: 16px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #3fb3a5, transparent); }
+:root[data-noche="si"] .ley--radiante { color: var(--acento); }
+:root[data-noche="si"] .ley--cometa { background: linear-gradient(90deg, var(--acento), transparent); }
 :root[data-noche="si"] .ley--planeta { background: var(--acento); }
 .mapa__exportar { display: flex; gap: 8px; }
 .ficha-objeto__datos { grid-template-columns: minmax(110px, 38%) minmax(0, 1fr); }
+
+/* ==========================================================================
+   EFEMÉRIDES
+   ========================================================================== */
+.efemerides__controles { display: grid; gap: 12px; }
+.efemerides__controles .filtros { margin: 0; flex-wrap: wrap; overflow: visible; }
+.efemerides__opciones { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.efemerides__opciones .interruptor { grid-column: auto; }
+.efemerides__opciones select { max-width: 100%; min-width: 0; }
+.ef-mes { margin-top: 26px; }
+.ef-mes__titulo { font-family: var(--f-titular); font-weight: 400; font-size: 28px; text-transform: capitalize; margin-bottom: 8px;
+  border-bottom: 1px solid var(--filete); padding-bottom: 4px; }
+.ef-mes__titulo .cifra { font-size: 15px; color: var(--tinta-3); }
+.ef-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ef-suceso { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; padding: 12px 14px;
+  background: var(--superficie); border: 1px solid var(--borde); border-left: 3px solid var(--color); border-radius: var(--radio); }
+.ef-suceso--imp3 { background: color-mix(in srgb, var(--color) 10%, var(--superficie)); border-color: color-mix(in srgb, var(--color) 40%, var(--borde)); }
+.ef-suceso__fecha { display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+.ef-suceso__fecha b { font-size: 26px; font-weight: 500; color: var(--color); }
+.ef-suceso__fecha small { font-size: 12px; color: var(--tinta-3); text-transform: uppercase; }
+.ef-suceso .etiqueta { color: var(--color); }
+.ef-suceso__titulo { font-family: var(--f-titular); font-weight: 400; font-size: 21px; line-height: 1.2; margin: 2px 0; }
+.ef-suceso__texto { color: var(--tinta-2); font-size: 14px; line-height: 1.45; }
+.ef-suceso__acciones { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 6px; font-size: 14px; }
+.enlace-flecha { color: var(--acento); }
+.enlace-boton { display: inline-flex; align-items: center; gap: 4px; padding: 0; border: 0; background: none; color: var(--tinta-2); font: inherit; cursor: pointer; }
+.app .enlace-boton svg { width: 14px; height: 14px; }
+.capa--nota { background: var(--superficie); border: 1px solid var(--borde); }
+.capa--nota .etiqueta { color: var(--color); }
+.capa--aviso { background: color-mix(in srgb, #c0392b 10%, var(--superficie)); border: 1px solid color-mix(in srgb, #c0392b 45%, var(--borde)); margin: 16px 0; }
+.capa--aviso .etiqueta { color: #c0392b; }
+:root[data-noche="si"] .capa--aviso { background: var(--superficie); border-color: var(--tinta-3); }
+:root[data-noche="si"] .capa--aviso .etiqueta { color: var(--tinta); }
+.calidad { font-weight: 600; }
+.calidad--buena { color: #3f8f4a; } .calidad--regular { color: #c28a1e; } .calidad--mala { color: #c0392b; }
+:root[data-noche="si"] .calidad { color: var(--tinta); }
+.tabla-desplazable { overflow-x: auto; max-width: 100%; }
+.tabla-datos { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tabla-datos th, .tabla-datos td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--borde); white-space: nowrap; }
+.tabla-datos th:first-child, .tabla-datos td:first-child { text-align: left; }
+.tabla-datos th { color: var(--tinta-3); font-weight: 400; }
+.tabla-datos tr.es-hoy td { color: var(--acento); font-weight: 600; }
+
+/* Eclipses y globo */
+.eclipse__aqui { margin-top: 18px; }
+.eclipse__resumen { font-size: 18px; margin-bottom: 8px; }
+.eclipse__globo-caja { margin: 18px 0; }
+.globo { position: relative; border-radius: var(--radio-g); overflow: hidden; background: #060a14; touch-action: none; }
+:root[data-noche="si"] .globo { background: #000; }
+.globo__lienzo { display: block; width: 100%; cursor: grab; touch-action: none; }
+.globo__lienzo:active { cursor: grabbing; }
+.eclipse__info { min-height: 3em; margin: 10px 0 6px; font-size: 14px; color: var(--tinta-2); }
+.eclipse__botones { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.eclipse__leyenda { margin-top: 4px; }
+.ley-zona { display: inline-block; width: 16px; height: 10px; border-radius: 2px; }
+.ley-zona--total { background: rgba(20,10,45,0.92); border: 1px solid #c9a4ff; }
+.ley-zona--anular { background: rgba(150,40,10,0.85); }
+.ley-zona--parcial { background: linear-gradient(90deg, rgba(255,200,60,0.35), rgba(255,110,60,0.85)); }
+.ley-zona--le { background: rgba(190,40,30,0.75); } .ley-zona--lm { background: rgba(240,120,50,0.55); } .ley-zona--lp { background: rgba(255,190,90,0.35); }
+.ley-linea { display: inline-block; width: 18px; border-top: 2px dashed #f2d27a; }
+:root[data-noche="si"] .ley-zona, :root[data-noche="si"] .ley-linea { filter: grayscale(1) sepia(1) hue-rotate(-50deg) saturate(6); }
+
+.temporada__sucesos { list-style: none; margin: 8px 0 0; padding: 8px 0 0; border-top: 1px dashed var(--borde); display: grid; gap: 4px; font-size: 14px; }
+.temporada__sucesos a { color: var(--tinta-2); }
+.temporada__sucesos a:hover { color: var(--acento); }
+.temporada__sucesos .cifra { color: var(--acento); }
+
+.proximo-suceso { display: grid; gap: 2px; margin-top: 12px; padding: 10px 12px; border-radius: var(--radio);
+  background: color-mix(in srgb, var(--b8) 12%, var(--superficie)); border: 1px solid color-mix(in srgb, var(--b8) 40%, var(--borde)); color: var(--tinta); }
+.proximo-suceso .etiqueta { color: var(--b8); }
+.proximo-suceso__titulo { font-family: var(--f-titular); font-size: 20px; }
+.proximo-suceso__fecha { font-size: 13px; color: var(--tinta-2); }
+:root[data-noche="si"] .proximo-suceso { background: var(--superficie); border-color: var(--tinta-3); }
+:root[data-noche="si"] .proximo-suceso .etiqueta { color: var(--tinta); }
+.proximo-suceso, .proximo-suceso * { text-decoration: none; }

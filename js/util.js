@@ -111,7 +111,7 @@ export function icono(nombre, clase = '') {
 /* ---------- Pestañas de una sección (Biblioteca, Cielo) ---------- */
 const PESTANAS = {
   biblioteca: [{ id: 'glosario', texto: 'Glosario' }, { id: 'objetos', texto: 'Objetos celestes' }],
-  cielo: [{ id: 'cielo', texto: 'Planificador' }, { id: 'mapa', texto: 'Mapa celeste' }],
+  cielo: [{ id: 'cielo', texto: 'Planificador' }, { id: 'mapa', texto: 'Mapa celeste' }, { id: 'efemerides', texto: 'Efemérides' }],
 };
 /** HTML de la barra de pestañas de una sección, con la activa marcada */
 export function pestanas(seccion, activa) {

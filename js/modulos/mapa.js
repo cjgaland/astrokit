@@ -22,6 +22,7 @@ import { leer, guardar } from '../almacen.js';
 import * as A from '../calculos/astro.js';
 import { proyectar } from '../calculos/proyeccion.js';
 import { pdfConImagen } from '../pdf.js';
+import * as F from '../calculos/efemerides.js';
 
 const RAD = Math.PI / 180;
 const NOMBRE_PLANETA = { mercurio: 'Mercurio', venus: 'Venus', marte: 'Marte', jupiter: 'Júpiter', saturno: 'Saturno', urano: 'Urano', neptuno: 'Neptuno' };
@@ -53,7 +54,7 @@ let estrellasVisibles = 0;                       // cuántas se dibujaron sobre 
 const decimal = (v) => v.toLocaleString('es-ES', { maximumFractionDigits: 1 });   // 4,5
 
 let raiz = null, lienzo = null, ctx = null, globo = null;
-let datos = null, objetos = [], lugar = null;
+let datos = null, objetos = [], lugar = null, lluvias = [], cometas = [];
 let elementos = [];                              // lo dibujado que se puede señalar: { x, y, r, info }
 let reloj = null, observador = null, observadorTema = null, pendiente = false;
 const punteros = new Map();                      // para arrastrar y pellizcar
@@ -88,9 +89,9 @@ export async function montar(contenedor, parametro) {
   raiz = contenedor;
   const C = await import('./cielo.js');
   lugar = C.lugarActivo();
-  [datos, { objetos }] = await Promise.all([cargarJSON('data/cielo.json'), cargarJSON('data/objetos.json')]);
+  [datos, { objetos }, { lluvias, cometas }] = await Promise.all([cargarJSON('data/cielo.json'), cargarJSON('data/objetos.json'), cargarJSON('data/efemerides.json')]);
   objetos = objetos.filter((o) => o.ar !== undefined);
-  estado.resaltado = parametro || null;
+  leerParametro(parametro);
   estado.zoom = 1; estado.panX = 0; estado.panY = 0;
   pintarEsqueleto();
   prepararLienzo();
@@ -99,8 +100,22 @@ export async function montar(contenedor, parametro) {
 }
 
 function actualizar(parametro) {
-  estado.resaltado = parametro || null;
-  redibujar();
+  if (leerParametro(parametro)) sincronizarControles(); else redibujar();
+}
+
+/**
+ * El parámetro de la ruta: «m31» resalta un objeto; «@2026-12-14T03:00» pone
+ * esa fecha y hora (lo usan las Efemérides); «lluvia-gem@2026-12-14T03:00», las dos cosas.
+ * Devuelve true si cambió la fecha.
+ */
+function leerParametro(parametro) {
+  const [id, cuando] = (parametro || '').split('@');
+  estado.resaltado = id || null;
+  if (!cuando) return false;
+  const f = new Date(cuando);
+  if (Number.isNaN(f.getTime())) return false;
+  estado.fecha = f;
+  return true;
 }
 
 function desmontar() {
@@ -164,6 +179,7 @@ function pintarEsqueleto() {
           <span><i class="ley ley--galaxia"></i>Galaxia</span><span><i class="ley ley--nebulosa"></i>Nebulosa</span>
           <span><i class="ley ley--abierto"></i>Cúmulo abierto</span><span><i class="ley ley--globular"></i>Cúmulo globular</span>
           <span><i class="ley ley--planeta"></i>Planeta</span>
+          <span><i class="ley ley--radiante">✳</i>Radiante de meteoros</span><span><i class="ley ley--cometa"></i>Cometa</span>
         </div>
         <div class="mapa__exportar">
           <button class="boton-sec" type="button" data-accion="png">${icono('abajo')}PNG</button>
@@ -213,8 +229,15 @@ function escena(fecha) {
   const sol = A.posicionSol(fecha);
   const luna = A.posicionLuna(fecha);
   const planetas = Object.keys(NOMBRE_PLANETA).map((id) => ({ id, ...A.posicionPlaneta(id, fecha) }));
+  // Radiantes de las lluvias activas ese día y cometas a menos de ~13 meses de su perihelio
+  const activas = lluvias.filter((l) => F.lluviaActiva(l, fecha)).map((l) => ({ ...l, ...altaz(l.ar, l.dec) }));
+  const jd = A.diaJuliano(fecha);
+  const visibles = cometas.filter((c) => Math.abs(jd - c.tp) < 400).map((c) => {
+    const p = F.posicionCometa(c, fecha);
+    return { cometa: c, ...p, ...altaz(p.ra, p.dec) };
+  });
   return { altaz, sol: { ...sol, ...altaz(sol.ra, sol.dec) }, luna: { ...luna, ...altaz(luna.ra, luna.dec), fase: A.faseLunar(fecha) },
-    planetas: planetas.map((p) => ({ ...p, ...altaz(p.ra, p.dec) })) };
+    planetas: planetas.map((p) => ({ ...p, ...altaz(p.ra, p.dec) })), lluvias: activas, cometas: visibles };
 }
 
 /* ==========================================================================
@@ -341,6 +364,36 @@ function dibujar(c, ancho, alto, zoom, panX, panY, fecha, interactivo) {
     }
   }
 
+  // Radiantes de las lluvias de meteoros activas: una estrellita de rayos
+  if (estado.capas.objetos) {
+    for (const l of e.lluvias) {
+      if (l.alt < 0) continue;
+      const p = aPantalla(l.alt, l.az);
+      const r = 7 * crecer;
+      c.strokeStyle = P.resalte; c.lineWidth = 1.4;
+      c.beginPath();
+      for (let k = 0; k < 8; k++) { const a = (k * Math.PI) / 4; c.moveTo(p.x + Math.cos(a) * r * 0.35, p.y + Math.sin(a) * r * 0.35); c.lineTo(p.x + Math.cos(a) * r, p.y + Math.sin(a) * r); }
+      c.stroke();
+      if (estado.capas.nombres) { c.fillStyle = P.resalte; c.font = `${tamTexto - 1}px "IBM Plex Mono", ui-monospace, monospace`; c.fillText(l.codigo, p.x + r + 3, p.y + 4); }
+      lista.push({ x: p.x, y: p.y, r: r + 2, info: { tipo: 'lluvia', lluvia: l, alt: l.alt, az: l.az } });
+    }
+  }
+  // Cometas: núcleo y cola, que apunta siempre en sentido contrario al Sol
+  const sp = aPantalla(e.sol.alt, e.sol.az);
+  for (const k of e.cometas) {
+    if (k.alt < 0) continue;
+    const p = aPantalla(k.alt, k.az);
+    const dx = p.x - sp.x, dy = p.y - sp.y, d = Math.hypot(dx, dy) || 1;
+    const largo = 20 * crecer;
+    const grad = c.createLinearGradient(p.x, p.y, p.x + (dx / d) * largo, p.y + (dy / d) * largo);
+    grad.addColorStop(0, P.objeto); grad.addColorStop(1, 'rgba(0,0,0,0)');
+    c.strokeStyle = grad; c.lineWidth = 3 * crecer;
+    c.beginPath(); c.moveTo(p.x, p.y); c.lineTo(p.x + (dx / d) * largo, p.y + (dy / d) * largo); c.stroke();
+    c.fillStyle = P.objeto; c.beginPath(); c.arc(p.x, p.y, 2.6 * crecer, 0, 2 * Math.PI); c.fill();
+    if (estado.capas.nombres) { c.font = `${tamTexto - 1}px "Space Grotesk", system-ui, sans-serif`; c.fillText(k.cometa.corto, p.x + 6, p.y - 6); }
+    lista.push({ x: p.x, y: p.y, r: 6, info: { tipo: 'cometa', cometa: k, alt: k.alt, az: k.az } });
+  }
+
   // Planetas, Luna y Sol
   for (const pl of e.planetas) {
     if (pl.alt < 0) continue;
@@ -394,7 +447,18 @@ function posicionResaltado(e) {
   const pl = e.planetas.find((p) => p.id === id);
   if (pl) return pl;
   const o = objetos.find((x) => x.id === id);
-  return o ? e.altaz(o.ar * 15, o.dec) : null;
+  if (o) return e.altaz(o.ar * 15, o.dec);
+  const l = lluvias.find((x) => x.id === id);
+  if (l) return { ...e.altaz(l.ar, l.dec), ra: l.ar };
+  const c = cometas.find((x) => x.id === id);
+  if (c) { const q = F.posicionCometa(c, fechaActual()); return { ...e.altaz(q.ra, q.dec), ra: q.ra }; }
+  return null;
+}
+/** Nombre de lo resaltado (objeto, planeta, Luna, radiante o cometa) */
+function nombreResaltado(id) {
+  return NOMBRE_PLANETA[id] || (id === 'luna-cielo' ? 'La Luna' : objetos.find((o) => o.id === id)?.nombre
+    || (lluvias.find((l) => l.id === id) ? `El radiante de las ${lluvias.find((l) => l.id === id).nombre}` : null)
+    || (cometas.find((c) => c.id === id) ? `El cometa ${cometas.find((c) => c.id === id).corto}` : null));
 }
 
 /** Símbolos clásicos de los atlas: galaxia elipse, nebulosa cuadrado, cúmulo abierto círculo punteado, globular círculo con cruz */
@@ -430,7 +494,7 @@ function pintarEstado() {
   let aviso = '';
   if (estado.resaltado) {
     const pos = posicionResaltado(e);
-    const nombre = NOMBRE_PLANETA[estado.resaltado] || (estado.resaltado === 'luna-cielo' ? 'La Luna' : objetos.find((o) => o.id === estado.resaltado)?.nombre);
+    const nombre = nombreResaltado(estado.resaltado);
     if (pos && nombre) {
       if (pos.alt > 0) aviso = ` · ${nombre}: ${Math.round(pos.alt)}° de altura, rodeado en naranja.`;
       else {
@@ -464,6 +528,16 @@ function textoInfo(i) {
         <span>${pos}</span><a href="#objetos/${p.id}">Ver la ficha ›</a>`;
     }
     case 'luna': return `<strong>La Luna</strong><span>${escaparHTML(i.luna.fase.nombre)} · ${Math.round(i.luna.fase.iluminada * 100)} % iluminada</span><span>${pos}</span><a href="#objetos/luna-cielo">Ver la ficha ›</a>`;
+    case 'lluvia': {
+      const l = i.lluvia;
+      return `<strong>Radiante de las ${escaparHTML(l.nombre)}</strong><span>Lluvia de meteoros activa · THZ ${l.thz}</span>
+        <span>${pos}</span><a href="#objetos/${l.id}">Ver la ficha ›</a>`;
+    }
+    case 'cometa': {
+      const k = i.cometa;
+      return `<strong>${escaparHTML(k.cometa.nombre)}</strong><span>Cometa · magnitud ≈ ${num(k.magnitud)} · ${num(k.distancia, 2)} UA</span>
+        <span>${pos}</span><a href="#objetos/${k.cometa.id}">Ver la ficha ›</a>`;
+    }
     case 'sol': return `<strong>El Sol</strong><span>Nunca lo mires ni lo fotografíes sin filtro solar.</span><span>${pos}</span>`;
     default: return '';
   }

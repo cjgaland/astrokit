@@ -619,7 +619,9 @@ function detalleObjeto(x, filtro) {
 /* ==========================================================================
    Vista «Temporada»: para los próximos 6 meses, las Lunas nuevas y los cinco
    objetos con más tiempo útil en la noche de cada Luna nueva (la mejor noche
-   del mes para cielo profundo). Se calcula al pulsar y se guarda en memoria.
+   del mes para cielo profundo), y los sucesos destacados de cada mes (de las
+   Efemérides: eclipses, lluvias, oposiciones…). Se calcula al pulsar y se
+   guarda en memoria.
    ========================================================================== */
 let temporadaCache = null;
 
@@ -658,15 +660,23 @@ function pintarTemporada() {
       }
       temporadaCache = { clave, meses };
       pintarTemporadaLista(meses);
+      // Los sucesos destacados del mismo periodo (Efemérides), cuando estén calculados
+      const inicio = mediodiaElegido(), fin = new Date(meses.at(-1).nueva.getTime() + 31 * 86400000);
+      import('./efemerides.js').then((ef) => ef.sucesosEntre(inicio, fin, lugar)).then((todos) => {
+        if (temporadaCache?.clave !== clave) return;
+        temporadaCache.sucesos = todos.filter((x) => x.importancia >= 2);
+        if (estado.temporada) pintarTemporadaLista(meses, temporadaCache.sucesos);
+      });
     }, 30);
   } else {
-    pintarTemporadaLista(temporadaCache.meses);
+    pintarTemporadaLista(temporadaCache.meses, temporadaCache.sucesos);
   }
 }
 
-function pintarTemporadaLista(meses) {
+function pintarTemporadaLista(meses, sucesos = null) {
   const caja = raiz.querySelector('#temporada');
   const fecha = (f) => f.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' });
+  const delMes = (m) => (sucesos || []).filter((x) => x.fecha.getMonth() === m.nueva.getMonth() && x.fecha.getFullYear() === m.nueva.getFullYear());
   caja.innerHTML = `
     <p class="nota">Para cada uno de los próximos meses: la noche de Luna nueva (la mejor para cielo profundo) y los cinco objetos con más tiempo útil esa noche desde ${escaparHTML(lugarActivo().nombre)}.</p>
     <ol class="temporada">
@@ -688,6 +698,11 @@ function pintarTemporadaLista(meses) {
                 <span class="temporada__dato cifra">${Math.round(x.altMax)}° · ${hora(x.culmina)} · ${duracion(x.util)}</span>
               </li>`).join('')}
           </ul>
+          ${sucesos === null ? '' : delMes(m).length ? `
+          <ul class="temporada__sucesos">
+            ${delMes(m).map((x) => `<li><a href="#efemerides${x.ref && (x.tipo.startsWith('eclipse') || x.tipo === 'lluvia' || x.tipo === 'cometa') ? '/' + x.ref : ''}">
+              <span class="cifra">${fecha(x.fecha)}</span> · ${escaparHTML(x.titulo)}</a></li>`).join('')}
+          </ul>` : ''}
         </li>`).join('')}
     </ol>`;
 }

@@ -33,11 +33,13 @@ const MODULOS = [
     cargar: () => import('./modulos/objetos.js') },
   { id: 'optica', nombre: 'Óptica', icono: 'optica',
     cargar: () => import('./modulos/optica.js') },
-  // «Cielo» agrupa dos pestañas: Planificador y Mapa celeste (grupo: 'cielo')
+  // «Cielo» agrupa tres pestañas: Planificador, Mapa celeste y Efemérides (grupo: 'cielo')
   { id: 'cielo', nombre: 'Cielo', titulo: 'Planificador', icono: 'cielo',
     cargar: () => import('./modulos/cielo.js') },
   { id: 'mapa', nombre: 'Mapa celeste', icono: 'cielo', enNav: false, grupo: 'cielo',
     cargar: () => import('./modulos/mapa.js') },
+  { id: 'efemerides', nombre: 'Efemérides', icono: 'cielo', enNav: false, grupo: 'cielo',
+    cargar: () => import('./modulos/efemerides.js') },
   { id: 'checklist', nombre: 'Checklist', icono: 'checklist',
     cargar: () => import('./modulos/checklist.js') },
   { id: 'cuaderno', nombre: 'Cuaderno', icono: 'cuaderno',

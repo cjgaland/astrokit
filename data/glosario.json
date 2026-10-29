@@ -143,7 +143,9 @@
       "cuentaEtiqueta": "La cuenta",
       "relacionados": [
         "brillo-superficial",
-        "sqm-sky-quality-meter-y-mag-arcsec"
+        "sqm-sky-quality-meter-y-mag-arcsec",
+        "cometa",
+        "oposicion"
       ]
     },
     {
@@ -240,7 +242,8 @@
       "relacionados": [
         "meridiano",
         "masa-de-aire-y-la-regla-de-los-30",
-        "cenit-horizonte-altitud-y-acimut"
+        "cenit-horizonte-altitud-y-acimut",
+        "efemerides"
       ]
     },
     {
@@ -264,7 +267,9 @@
       "relacionados": [
         "fase-lunar-y-luna-nueva",
         "coordenadas-ascension-recta-ar-y-declinacion-dec",
-        "via-lactea"
+        "via-lactea",
+        "equinoccio-y-solsticio",
+        "conjuncion"
       ]
     },
     {
@@ -280,7 +285,8 @@
         "contaminacion-luminica",
         "filtro-de-banda-dual",
         "ecliptica",
-        "filtro-de-banda-estrecha"
+        "filtro-de-banda-estrecha",
+        "eclipse-de-luna"
       ]
     },
     {
@@ -305,6 +311,436 @@
         "galaxia",
         "nebulosa",
         "ecliptica"
+      ]
+    },
+    {
+      "id": "efemerides",
+      "bloque": 1,
+      "termino": "Efemérides",
+      "alias": "",
+      "definicion": "Tabla de dónde estará cada astro (AR, Dec, altura, magnitud, distancia…) y qué sucesos ocurrirán (fases de la Luna, oposiciones, eclipses) para fechas y horas concretas. La palabra viene del griego *ephemeros*, \"de un día\". Se calculan con modelos del movimiento del Sistema Solar, así que se pueden publicar con años de antelación.",
+      "analogia": "son el horario de trenes del cielo: no te dicen cómo es el tren, sino a qué hora pasa por tu estación.",
+      "regla": "mira siempre en qué hora vienen dadas: muchas efemérides usan UTC (tiempo universal), y en España la hora oficial es UTC+1 en invierno y UTC+2 en verano.",
+      "reglaEtiqueta": "Regla práctica",
+      "equipo": "el GoTo del Seestar y del Draco usa efemérides internas para apuntar a la Luna y a los planetas, que se mueven entre las estrellas; por eso necesitan la hora y el lugar bien puestos. AstroKit calcula las suyas en el propio dispositivo (Planificador).",
+      "relacionados": [
+        "coordenadas-ascension-recta-ar-y-declinacion-dec",
+        "cenit-horizonte-altitud-y-acimut",
+        "culminacion",
+        "fase-lunar-y-luna-nueva",
+        "noche-astronomica",
+        "delta-t"
+      ]
+    },
+    {
+      "id": "lluvia-de-meteoros",
+      "bloque": 1,
+      "termino": "Lluvia de meteoros",
+      "alias": "estrellas fugaces",
+      "definicion": "Cuando la Tierra atraviesa el rastro de polvo que dejó un cometa (o, más raramente, un asteroide), esos granos, del tamaño de un grano de arena a un guisante, entran en la atmósfera a 11–72 km/s y se queman a unos 80–110 km de altura. Lo que vemos es la estela luminosa (el **meteoro**); la partícula es el **meteoroide**, y si algo llega al suelo se llama **meteorito**. No son estrellas: son polvo.",
+      "analogia": "es el parabrisas de un coche que cruza una nube de mosquitos: la nube (el rastro del cometa) está fija y la Tierra la atraviesa cada año por las mismas fechas.",
+      "regla": "la Luna llena apaga las lluvias débiles: mira su fase antes de elegir la noche. Lo mejor es un cielo oscuro, sin prismáticos ni telescopio, tumbado mirando a unos 40°–60° del radiante.",
+      "reglaEtiqueta": "Regla práctica",
+      "equipo": "el campo del S50 Pro (2,45° × 1,38° ≈ 3,4 grados cuadrados) cubre del orden de 1 parte entre 6.000 del cielo visible, así que cazará un meteoro solo de higos a brevas; y si cae uno en una sub, el apilado lo descarta como píxel anómalo. Para meteoros, mejor una cámara fija con gran angular.",
+      "lista": [
+        {
+          "nombre": "Cuadrántidas",
+          "texto": "a primeros de enero; cuerpo origen, el asteroide 2003 EH1. THZ ≈ 80 (algunos años más de 100), pero el máximo dura solo unas horas."
+        },
+        {
+          "nombre": "Líridas",
+          "texto": "a finales de abril; cometa Thatcher. THZ ≈ 18."
+        },
+        {
+          "nombre": "Eta Acuáridas",
+          "texto": "a primeros de mayo; polvo del cometa Halley. THZ ≈ 50, aunque desde España el radiante sale tarde y bajo, antes del amanecer."
+        },
+        {
+          "nombre": "Perseidas",
+          "texto": "a mediados de agosto; cometa Swift-Tuttle. THZ ≈ 100. Las clásicas \"Lágrimas de San Lorenzo\"."
+        },
+        {
+          "nombre": "Oriónidas",
+          "texto": "a finales de octubre; también polvo del Halley. THZ ≈ 20."
+        },
+        {
+          "nombre": "Leónidas",
+          "texto": "a mediados de noviembre; cometa Tempel-Tuttle. THZ ≈ 15, con tormentas ocasionales."
+        },
+        {
+          "nombre": "Gemínidas",
+          "texto": "a mediados de diciembre; asteroide (3200) Faetón. THZ ≈ 150: suele ser la mejor del año."
+        }
+      ],
+      "relacionados": [
+        "radiante",
+        "tasa-horaria-cenital-thz",
+        "cometa",
+        "fase-lunar-y-luna-nueva",
+        "escala-de-bortle",
+        "rechazo-de-pixeles"
+      ]
+    },
+    {
+      "id": "radiante",
+      "bloque": 1,
+      "termino": "Radiante",
+      "alias": "",
+      "definicion": "Punto del cielo del que parecen salir todos los meteoros de una misma lluvia. Da nombre a la lluvia: las Perseidas salen de Perseo, las Gemínidas de Géminis, las Leónidas de Leo. Los meteoros que no apuntan a ese punto son **esporádicos**, sin relación con la lluvia.",
+      "analogia": "son las vías del tren que parecen converger en un punto del horizonte, o los copos de nieve que, de noche en autopista, parecen salir de un punto delante del coche. Las trayectorias reales son paralelas; el radiante es un efecto de **perspectiva**.",
+      "regla": "los meteoros más largos y vistosos suelen verse a unos 40°–60° del radiante; los que salen cerca de él parecen cortos, porque vienen de frente hacia ti. Y cuanto más alto esté el radiante, más meteoros verás.",
+      "reglaEtiqueta": "Regla práctica",
+      "relacionados": [
+        "lluvia-de-meteoros",
+        "tasa-horaria-cenital-thz",
+        "cenit-horizonte-altitud-y-acimut",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec",
+        "campo-de-vision"
+      ]
+    },
+    {
+      "id": "tasa-horaria-cenital-thz",
+      "bloque": 1,
+      "termino": "Tasa horaria cenital (THZ)",
+      "alias": "THZ, ZHR (*Zenithal Hourly Rate*)",
+      "definicion": "Número de meteoros por hora que vería un observador en condiciones ideales: radiante en el cenit y cielo tan oscuro que se ve hasta la magnitud límite 6,5. Es una cifra de referencia para comparar lluvias, no lo que verás tú. La tasa real (HR) siempre es menor.",
+      "analogia": "es como la ficha técnica de un coche: \"0 a 100 en 5 s\" en pista perfecta. En tu calle de siempre, con tráfico, será otra cosa.",
+      "cuenta": "HR = THZ · sen(h) · r^(LM − 6,5), con h la altura del radiante, LM la magnitud límite de tu cielo y r el índice de población (≈ 2–3: cuántas veces más meteoros hay por cada magnitud más débil). Ejemplo: Perseidas (THZ 100) con el radiante a 50°, desde una ciudad con LM 4 y r = 2,2: HR ≈ 100 · 0,77 · 2,2^(−2,5) ≈ 100 · 0,77 · 0,14 ≈ **11 por hora**. Con un cielo de LM 6,5 serían unos 77.",
+      "cuentaEtiqueta": "La cuenta",
+      "relacionados": [
+        "lluvia-de-meteoros",
+        "radiante",
+        "magnitud-aparente",
+        "escala-de-bortle",
+        "sqm-sky-quality-meter-y-mag-arcsec",
+        "cenit-horizonte-altitud-y-acimut"
+      ]
+    },
+    {
+      "id": "cometa",
+      "bloque": 1,
+      "termino": "Cometa",
+      "alias": "",
+      "definicion": "Cuerpo helado del Sistema Solar que, al acercarse al Sol, se calienta y suelta gas y polvo. Tiene el **núcleo** (de unos pocos km, una \"bola de nieve sucia\"), la **coma** (nube de gas y polvo que lo envuelve, mucho mayor que el núcleo) y dos colas: la de **polvo**, amarillenta y curvada, y la de **iones**, azulada y recta. Ambas apuntan lejos del Sol, no hacia atrás en su trayectoria: la de iones la empuja el viento solar y la de polvo la presión de la luz.",
+      "analogia": "es un cubito de hielo sucio puesto cerca de una estufa: cuanto más se acerca, más vapor suelta; y el \"humo\" siempre se aleja de la estufa (el Sol).",
+      "cuenta": "m = M₁ + 5·log Δ + K₁·log r, con Δ la distancia a la Tierra y r la distancia al Sol (ambas en UA), M₁ la magnitud del cometa a 1 UA de ambos y K₁ (≈ 10) lo que se aviva al acercarse al Sol. El término 5·log Δ es la ley del cuadrado inverso de la luz que llega a la Tierra. Un asteroide inerte tendría K₁ = 5; un cometa tiene K₁ ≈ 10 porque se calienta, suelta gas y brilla mucho más al acercarse. Cuidado: es magnitud *total*, repartida por la coma, así que un cometa \"de magnitud 6\" puede ser muy difícil de ver.",
+      "cuentaEtiqueta": "La cuenta",
+      "regla": "los cometas son impredecibles: lo que da la predicción es una órbita; el brillo real puede quedarse corto. Los cometas tenues, con su coma extensa, se fotografían como los objetos de cielo profundo: poca Luna y cielo oscuro.",
+      "reglaEtiqueta": "Regla práctica",
+      "equipo": "un cometa se mueve entre las estrellas (cada hora, un poco): si apilas alineando las estrellas, el cometa sale desenfocado en trazo, y si alineas el cometa, las estrellas dejan una raya. Siril puede registrar sobre el cometa.",
+      "relacionados": [
+        "lluvia-de-meteoros",
+        "perihelio-y-afelio",
+        "magnitud-aparente",
+        "brillo-superficial",
+        "ecliptica",
+        "efemerides"
+      ]
+    },
+    {
+      "id": "perihelio-y-afelio",
+      "bloque": 1,
+      "termino": "Perihelio y afelio",
+      "alias": "",
+      "definicion": "Los puntos de una órbita más cercano (**perihelio**) y más lejano (**afelio**) al Sol. La órbita de la Tierra es casi circular (excentricidad 0,0167): el perihelio llega a primeros de enero y el afelio a primeros de julio. **No son las estaciones:** estas dependen de la inclinación del eje (23,44°), y en enero, con la Tierra más cerca, es invierno en el hemisferio norte.",
+      "analogia": "acercar la mano a una estufa importa menos que hacia dónde la inclinas: lo que decide las estaciones es la inclinación del eje de la Tierra, no los ≈ 5 millones de km de diferencia entre perihelio y afelio.",
+      "cuenta": "con a = 1 UA y e = 0,0167: perihelio = a(1 − e) = 0,983 UA ≈ 147,1 millones de km; afelio = a(1 + e) = 1,017 UA ≈ 152,1 millones de km. La luz solar cae como 1/d², así que en enero llega ≈ 7 % más energía que en julio, y el Sol mide 32,7′ frente a 31,6′. Por la 2ª ley de Kepler, la Tierra va más deprisa en enero: el invierno boreal dura unos 4–5 días menos que el verano.",
+      "cuentaEtiqueta": "La cuenta",
+      "relacionados": [
+        "cometa",
+        "ecliptica",
+        "equinoccio-y-solsticio",
+        "eclipse-de-sol",
+        "superluna",
+        "efemerides"
+      ]
+    },
+    {
+      "id": "conjuncion",
+      "bloque": 1,
+      "termino": "Conjunción",
+      "alias": "",
+      "definicion": "Momento en que dos astros tienen la misma longitud eclíptica (o la misma ascensión recta) vistos desde la Tierra, es decir, pasan uno junto al otro en el cielo. Es un acercamiento **aparente**: pueden estar a cientos de millones de km uno de otro, solo alineados con nuestra línea de visión. La Luna, que avanza unos 13° al día entre las estrellas, se encuentra con cada planeta una vez al mes.",
+      "analogia": "dos coches en autopistas distintas, uno a 20 km del otro, que desde tu ventana del tren se ven un momento uno encima del otro.",
+      "equipo": "en el S50 Pro (2,45° × 1,38°) caben dos astros separados hasta ~2° en horizontal. En una conjunción con la Luna, esta deslumbra: hay que ajustar la exposición al astro más débil o hacer dos tomas.",
+      "relacionados": [
+        "oposicion",
+        "elongacion",
+        "ocultacion",
+        "ecliptica",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec",
+        "campo-de-vision"
+      ]
+    },
+    {
+      "id": "oposicion",
+      "bloque": 1,
+      "termino": "Oposición",
+      "alias": "",
+      "definicion": "Situación de un planeta exterior (Marte, Júpiter, Saturno…) cuando está justo en el lado del cielo opuesto al Sol: sale al ponerse el Sol, culmina a medianoche y se pone al salir el Sol, así que se ve toda la noche. Además es el momento en que está **más cerca de la Tierra**, por tanto más brillante y de mayor tamaño aparente.",
+      "analogia": "en una carrera, la Tierra (pista interior, más rápida) adelanta a Marte (pista exterior, más lenta): en el instante del adelantamiento los dos van en línea con el Sol y la distancia entre ambos es la mínima.",
+      "cuenta": "el intervalo entre oposiciones es el periodo sinódico: Marte cada ≈ 780 días (unos 26 meses), Júpiter ≈ 399 días, Saturno ≈ 378 días. Como la órbita de Marte es bastante excéntrica, su distancia en oposición varía entre unos 56 y 100 millones de km, y su disco entre ≈ 14″ y 25″.",
+      "cuentaEtiqueta": "La cuenta",
+      "equipo": "la mejor ocasión para fotografiar planetas: el Omni XLT 127 (1250 mm) aprovecha el máximo tamaño de Júpiter y Saturno en oposición. Con el S50 Pro, que no está pensado para planetas, se verán apenas unos píxeles.",
+      "relacionados": [
+        "conjuncion",
+        "elongacion",
+        "ecliptica",
+        "magnitud-aparente",
+        "tamano-angular-grado-minuto-y-segundo-de-arco",
+        "efemerides"
+      ]
+    },
+    {
+      "id": "elongacion",
+      "bloque": 1,
+      "termino": "Elongación",
+      "alias": "",
+      "definicion": "Ángulo entre un astro y el Sol visto desde la Tierra. Mercurio y Venus, más cerca del Sol que nosotros, nunca se alejan mucho de él: su **máxima elongación** es de ≈ 18–28° para Mercurio (según su órbita, que es muy excéntrica) y ≈ 45–47° para Venus. En elongación **oriental** se ven después del anochecer (vespertinos, \"lucero de la tarde\"); en la **occidental**, antes del amanecer (matutinos, \"lucero del alba\").",
+      "analogia": "es un perro con correa atado al Sol: da vueltas alrededor, pero jamás se aleja más de lo que le permite la correa.",
+      "regla": "Mercurio y Venus se ven siempre cerca del horizonte, en el crepúsculo, con mucha atmósfera de por medio: una elongación grande no garantiza una buena imagen si el planeta queda bajo. Los planetas exteriores, en cambio, pueden estar a cualquier elongación, hasta 180° (oposición).",
+      "reglaEtiqueta": "Regla práctica",
+      "relacionados": [
+        "conjuncion",
+        "oposicion",
+        "ecliptica",
+        "noche-astronomica",
+        "masa-de-aire-y-la-regla-de-los-30",
+        "efemerides"
+      ]
+    },
+    {
+      "id": "ocultacion",
+      "bloque": 1,
+      "termino": "Ocultación",
+      "alias": "",
+      "definicion": "Un astro más cercano tapa a otro más lejano. La más frecuente es la de la **Luna** sobre una estrella o un planeta: como la Luna avanza hacia el este unos 0,5° por hora (casi su propio diámetro), la estrella desaparece por el borde oriental de la Luna y reaparece por el occidental al cabo de, como mucho, algo más de una hora. Con la Luna creciente el borde que \"se come\" la estrella es el oscuro, así que desaparece de golpe, sin atmósfera que la desvanezca.",
+      "analogia": "es una farola lejana que tapas un instante con el dedo: el dedo va rápido, la farola se apaga y reaparece.",
+      "regla": "a diferencia de una conjunción, una ocultación no se ve igual desde todas partes: por el paralaje de la Luna (hasta ~1°), a unos pocos cientos de km de distancia la estrella puede pasar rozando el borde o tapada del todo. Consulta las ocultaciones para tu lugar.",
+      "reglaEtiqueta": "Regla práctica",
+      "relacionados": [
+        "conjuncion",
+        "fase-lunar-y-luna-nueva",
+        "ecliptica",
+        "tamano-angular-grado-minuto-y-segundo-de-arco",
+        "eclipse-de-sol",
+        "superluna"
+      ]
+    },
+    {
+      "id": "superluna",
+      "bloque": 1,
+      "termino": "Superluna",
+      "alias": "perigeo y apogeo",
+      "definicion": "Luna llena (o nueva) cercana al **perigeo**, el punto de su órbita más próximo a la Tierra. La órbita lunar es una elipse: el perigeo está a ≈ 357.000 km en los casos más extremos y el apogeo a ≈ 406.000 km. \"Superluna\" es un término periodístico, no astronómico, y no hay un valor oficial de corte. Su efecto es real pero sutil, y a ojo es difícil de notar.",
+      "analogia": "una moneda de 1 € a 4 m y a 3,5 m: es la misma moneda, pero es posible que no notes la diferencia sin compararlas lado a lado.",
+      "cuenta": "el tamaño angular es inversamente proporcional a la distancia: 406.000 / 357.000 ≈ 1,14, es decir, **≈ 14 % más grande** (de ≈ 29,4′ a ≈ 33,5′). El brillo depende de la superficie visible, que crece con el cuadrado: 1,14² ≈ 1,29, así que ≈ **30 % más brillante** que una llena en el apogeo.",
+      "cuentaEtiqueta": "La cuenta",
+      "regla": "la \"ilusión lunar\" (la Luna parece enorme cerca del horizonte) es un efecto de percepción, sin relación con la superluna: si la mides con la mano o con una foto, mide lo mismo. Un perigeo cercano a un eclipse solar total alarga la totalidad.",
+      "reglaEtiqueta": "Dato curioso",
+      "equipo": "el S50 Pro (campo 2,45° × 1,38°) la abarca entera: ocupa algo más de un tercio del lado corto del campo (0,5°/1,38°).",
+      "relacionados": [
+        "fase-lunar-y-luna-nueva",
+        "tamano-angular-grado-minuto-y-segundo-de-arco",
+        "magnitud-aparente",
+        "eclipse-de-sol",
+        "perihelio-y-afelio",
+        "eclipse-de-luna"
+      ]
+    },
+    {
+      "id": "equinoccio-y-solsticio",
+      "bloque": 1,
+      "termino": "Equinoccio y solsticio",
+      "alias": "",
+      "definicion": "**Equinoccios** (hacia el 20–21 de marzo y el 22–23 de septiembre): el Sol cruza el ecuador celeste y sale casi exactamente por el este y se pone por el oeste; el día y la noche duran casi lo mismo. **Solsticios** (hacia el 21 de junio y el 21 de diciembre): el Sol alcanza su declinación extrema, +23,44° en junio y −23,44° en diciembre, y marca el día más largo y el más corto del año en el hemisferio norte. Las estaciones astronómicas empiezan en cada uno de estos cuatro instantes.",
+      "analogia": "el Sol sube y baja por una escalera de ±23,44°: los solsticios son los dos extremos de la escalera; los equinoccios, el descansillo central por el que pasa dos veces al año.",
+      "cuenta": "la altura del Sol al mediodía es 90° − |φ − δ|. En Córdoba (φ ≈ 37,9°): equinoccio (δ = 0°) 52,1°; solsticio de junio (δ = +23,44°) ≈ 75,5°; solsticio de diciembre (δ = −23,44°) ≈ 28,7°. Esa diferencia de ≈ 47° (el doble de la inclinación del eje) es la que explica el verano y el invierno.",
+      "cuentaEtiqueta": "La cuenta",
+      "equipo": "el punto del equinoccio de marzo es el origen de la ascensión recta (0h): de ahí cuentan las coordenadas AR de las que se alimentan el GoTo y el plate solving.",
+      "relacionados": [
+        "ecliptica",
+        "coordenadas-ascension-recta-ar-y-declinacion-dec",
+        "perihelio-y-afelio",
+        "latitud",
+        "noche-astronomica",
+        "cenit-horizonte-altitud-y-acimut"
+      ]
+    },
+    {
+      "id": "eclipse-de-sol",
+      "bloque": 1,
+      "termino": "Eclipse de Sol",
+      "alias": "",
+      "definicion": "La Luna se interpone entre el Sol y la Tierra y proyecta su sombra sobre nuestra superficie. Solo ocurre en **Luna nueva**, y no todos los meses porque la órbita lunar está inclinada ≈ 5,1° respecto a la eclíptica. Cuatro tipos según lo que se ve desde el lugar:",
+      "analogia": "¿por qué hay eclipses totales tan justos? Casualidad pura: el Sol es ≈ 400 veces mayor que la Luna y está ≈ 400 veces más lejos, así que ambos miden casi lo mismo en el cielo (≈ 0,5°).",
+      "cuenta": "Sol: diámetro ≈ 1.392.000 km a 149.600.000 km; Luna: ≈ 3.474 km a 384.400 km. Cocientes: 1.392.000 / 3.474 ≈ 401 y 149.600.000 / 384.400 ≈ 389. Casi iguales, y por eso la Luna a veces tapa justo el Sol (según esté cerca o lejos de la Tierra: perigeo o apogeo).",
+      "cuentaEtiqueta": "La cuenta",
+      "regla": "**NUNCA mires ni fotografíes el Sol sin filtro solar homologado**: ni a ojo, ni con prismáticos, ni con telescopio, ni con ninguna cámara. Gafas con norma **ISO 12312-2**; para el telescopio, un filtro solar de apertura colocado **delante**, bien sujeto. Solo durante la totalidad (con el Sol tapado por completo) se puede mirar sin filtro; en cuanto reaparezca el primer destello, filtro puesto. En el eclipse parcial o anular el filtro va siempre.",
+      "reglaEtiqueta": "Seguridad",
+      "equipo": "el S50 Pro trae filtro solar magnético y el Draco estándar lo lleva interno y automático (el Draco SHO lo trae externo, magnético): colócalo antes de apuntar y comprueba que no tiene arañazos ni agujeros. El Sol (0,5°) cabe de sobra en el campo del S50 Pro (2,45° × 1,38°) y del Draco (1,66° × 1,24°). Con el Omni XLT 127 (1250 mm) usa un filtro de apertura delante del tubo, que cubra toda la apertura.",
+      "lista": [
+        {
+          "nombre": "Total",
+          "texto": "la Luna tapa por completo el disco del Sol. Dura como máximo unos 7,5 minutos y es el único momento en que se ve la corona solar. Solo se ve desde la franja de totalidad."
+        },
+        {
+          "nombre": "Anular",
+          "texto": "la Luna está lejos (cerca del apogeo) y parece más pequeña que el Sol: queda un anillo brillante. No es seguro mirarlo sin filtro en ningún momento."
+        },
+        {
+          "nombre": "Híbrido",
+          "texto": "cambia de anular a total y de nuevo a anular a lo largo del recorrido, por la curvatura de la Tierra."
+        },
+        {
+          "nombre": "Parcial",
+          "texto": "la Luna solo tapa una parte del Sol. Se ve fuera de la franja, a ambos lados."
+        }
+      ],
+      "relacionados": [
+        "eclipse-de-luna",
+        "umbra-y-penumbra",
+        "magnitud-de-un-eclipse",
+        "franja-de-totalidad",
+        "filtro-solar",
+        "saros"
+      ]
+    },
+    {
+      "id": "eclipse-de-luna",
+      "bloque": 1,
+      "termino": "Eclipse de Luna",
+      "alias": "",
+      "definicion": "La Luna entra en la sombra de la Tierra. Solo ocurre en **Luna llena**. Se ve desde todo el hemisferio de la Tierra donde la Luna está sobre el horizonte, y es **seguro mirarlo** (es solo la Luna). Hay tres tipos: **penumbral** (entra en la penumbra; un tenue oscurecimiento casi imperceptible a ojo), **parcial** (una parte entra en la umbra) y **total** (toda la Luna dentro de la umbra, durante hasta ≈ 1 h 45 min).",
+      "analogia": "en la totalidad la Luna no desaparece, se pone roja porque recibe la luz de **todos los amaneceres y atardeceres de la Tierra a la vez**: el aire de la Tierra dobla la luz rojiza del Sol hacia la sombra, mientras filtra el azul (el mismo efecto que enrojece el Sol al ponerse).",
+      "cuenta": "la umbra terrestre a la distancia de la Luna mide ≈ 9.200 km, unas 2,7 lunas de ancho. Con la Luna moviéndose a ≈ 1 km/s respecto a ella, la totalidad central dura ≈ (9.200 − 3.474) / 1 ≈ 5.700 s ≈ 95 min; es un orden de magnitud: en los eclipses más centrales, con la Luna lenta cerca del apogeo, la totalidad real llega a ≈ 1 h 45 min. Es mucho más larga que la de un eclipse de Sol (que dura minutos) porque la sombra de la Tierra es enorme comparada con la de la Luna.",
+      "cuentaEtiqueta": "La cuenta",
+      "regla": "el color depende del polvo y las nubes de la atmósfera terrestre (tras una gran erupción volcánica, más oscura). La **escala de Danjon (L)** lo mide: L0 muy oscuro, casi invisible; L1 gris o marrón oscuro; L2 rojo oxidado con el centro más oscuro; L3 rojo ladrillo con borde claro; L4 naranja-cobre brillante con borde azulado.",
+      "reglaEtiqueta": "Escala de Danjon",
+      "equipo": "la Luna cabe de sobra en el campo del S50 Pro. Durante la totalidad es varias magnitudes más débil que la llena (cada 5 magnitudes son ×100), así que hay que subir la exposición; y como el brillo cambia mucho en poco tiempo, conviene tomar varias exposiciones distintas.",
+      "relacionados": [
+        "eclipse-de-sol",
+        "umbra-y-penumbra",
+        "magnitud-de-un-eclipse",
+        "fase-lunar-y-luna-nueva",
+        "superluna",
+        "saros"
+      ]
+    },
+    {
+      "id": "umbra-y-penumbra",
+      "bloque": 1,
+      "termino": "Umbra y penumbra",
+      "alias": "",
+      "definicion": "Cuando una fuente de luz **extensa** (como el Sol) ilumina un objeto, su sombra tiene dos zonas: la **umbra**, donde la fuente queda tapada por completo, y la **penumbra**, donde solo queda tapada una parte. Más allá del vértice del cono de la umbra aparece la **antumbra**, desde donde el objeto ya parece más pequeño que la fuente y se ve un anillo (eclipse anular). Las manchas solares usan los mismos nombres: umbra oscura central y penumbra más clara alrededor.",
+      "analogia": "la sombra de tu mano bajo una bombilla grande tiene un núcleo oscuro con un borde borroso; con una fuente puntual (una linterna LED), el borde sería nítido y sin penumbra. El Sol no es un punto: es un disco de 0,5°.",
+      "cuenta": "el cono de la umbra de la Luna mide de media ≈ 375.000 km de longitud, casi la distancia Tierra-Luna (384.400 km): su punta apenas toca la Tierra, y por eso la sombra total es tan pequeña (unos pocos cientos de km como mucho), mientras que la penumbra cubre miles de km y es desde donde se ve un eclipse parcial.",
+      "cuentaEtiqueta": "La cuenta",
+      "relacionados": [
+        "eclipse-de-sol",
+        "eclipse-de-luna",
+        "magnitud-de-un-eclipse",
+        "franja-de-totalidad",
+        "elementos-besselianos",
+        "tamano-angular-grado-minuto-y-segundo-de-arco"
+      ]
+    },
+    {
+      "id": "magnitud-de-un-eclipse",
+      "bloque": 1,
+      "termino": "Magnitud de un eclipse",
+      "alias": "",
+      "definicion": "Fracción del **diámetro** del Sol que cubre la Luna. Vale 0 antes del contacto, 1 cuando justo se tapa el Sol por completo, y es mayor que 1 en un eclipse total (la Luna sobrepasa el disco solar). No se debe confundir con el **oscurecimiento** (*obscuration*), que es la fracción del **área** del disco solar tapada: son números distintos. En eclipses de Luna se usa la magnitud umbral: la fracción del diámetro lunar dentro de la umbra.",
+      "analogia": "si tapas parcialmente una moneda con otra, la magnitud mide cuánto de la anchura has cubierto y el oscurecimiento cuánto de la superficie; no son lo mismo.",
+      "cuenta": "para dos discos iguales, el área común es la de un solape de dos círculos. Magnitud 0,5 (la Luna tapa la mitad del diámetro): oscurecimiento ≈ 39 %. Magnitud 0,9: ≈ 87 %. Magnitud 0,99: ≈ 98,7 %. Tapar la mitad de la anchura no es tapar la mitad de la superficie.",
+      "cuentaEtiqueta": "La cuenta",
+      "regla": "con el 90 % del área tapada el día aún parece casi normal: la oscuridad se nota de verdad solo en los últimos puntos porcentuales, y la corona solo aparece al 100 %.",
+      "reglaEtiqueta": "Regla práctica",
+      "relacionados": [
+        "eclipse-de-sol",
+        "umbra-y-penumbra",
+        "franja-de-totalidad",
+        "magnitud-aparente",
+        "tamano-angular-grado-minuto-y-segundo-de-arco",
+        "eclipse-de-luna"
+      ]
+    },
+    {
+      "id": "franja-de-totalidad",
+      "bloque": 1,
+      "termino": "Franja de totalidad",
+      "alias": "camino de la sombra, línea central",
+      "definicion": "Recorrido que sigue la umbra de la Luna sobre la superficie de la Tierra durante un eclipse total, una cinta que cruza el globo de oeste a este. Su anchura va de unas decenas de km a unos 250 km (el máximo teórico ronda los 270 km). Solo dentro de ella se ve la totalidad; la duración es máxima en la **línea central** y cae a cero en los bordes. Fuera, aunque sea por pocos km, solo se ve un eclipse parcial: **el 99 % no es el 100 %** (sin corona y con el día aún luminoso).",
+      "analogia": "es la sombra de una nube que cruza el campo, pero en una nube de 150 km: la sombra pasa en minutos y justo al lado se queda todo iluminado.",
+      "cuenta": "la umbra va a más de 1.700 km/h (≈ 0,5 km/s) sobre el suelo, y más rápido en los extremos de la franja. La duración en la línea central es aproximadamente (anchura de la umbra) / (velocidad). Ejemplo: 150 km a ≈ 0,7 km/s (≈ 2.500 km/h) → 150 / 0,7 ≈ 214 s ≈ 3,6 min.",
+      "cuentaEtiqueta": "La cuenta",
+      "regla": "el viaje compensa: colócate cerca de la línea central, no del borde, para ganar segundos de totalidad y un margen de seguridad si hay nubes o te equivocas de unos km. Lleva un plan B de carretera.",
+      "reglaEtiqueta": "Consejo",
+      "relacionados": [
+        "eclipse-de-sol",
+        "umbra-y-penumbra",
+        "magnitud-de-un-eclipse",
+        "elementos-besselianos",
+        "delta-t",
+        "saros"
+      ]
+    },
+    {
+      "id": "elementos-besselianos",
+      "bloque": 1,
+      "termino": "Elementos besselianos",
+      "alias": "plano fundamental",
+      "definicion": "El método con el que se calculan los eclipses (lo ideó Friedrich Bessel). Se imagina un **plano fundamental**: perpendicular al eje de la sombra (la recta Sol-Luna) y que pasa por el centro de la Tierra. Se calcula dónde corta ese plano el eje de la sombra y qué tamaño tiene la sombra sobre él, todo en unidades de radio terrestre. Los elementos son: **x, y** (coordenadas del eje de la sombra en el plano), **d** (declinación del eje), **μ** (ángulo horario del eje respecto a Greenwich), **l₁ y l₂** (radios de la penumbra y de la umbra en el plano) y **tan f₁, tan f₂** (los semiángulos de los conos). Se dan como polinomios en el tiempo. AstroKit dibuja las franjas con los elementos besselianos publicados por la NASA (Fred Espenak).",
+      "analogia": "es proyectar la sombra de la Luna sobre una pantalla de cine que pasa por el centro de la Tierra, y luego mirar, para cada punto de la Tierra, si cae dentro del círculo de sombra.",
+      "cuenta": "si (ξ, η, ζ) son las coordenadas de un observador en ese sistema, está dentro de la sombra total cuando (ξ − x)² + (η − y)² < L₂², con L₂ = l₂ − ζ·tan f₂. Cuando l₂ < 0 la umbra llega al suelo (eclipse total); cuando l₂ > 0 solo llega la antumbra (anular). Los elementos van referidos al tiempo dinámico (TD), por eso hay que conocer ΔT para saber el instante en tiempo universal.",
+      "cuentaEtiqueta": "La cuenta",
+      "relacionados": [
+        "franja-de-totalidad",
+        "delta-t",
+        "eclipse-de-sol",
+        "umbra-y-penumbra",
+        "efemerides",
+        "saros"
+      ]
+    },
+    {
+      "id": "saros",
+      "bloque": 1,
+      "termino": "Saros",
+      "alias": "",
+      "definicion": "Ciclo de **223 lunaciones (meses sinódicos)** = 6.585,32 días ≈ **18 años, 11 días y 8 horas** (10 días si en esos 18 años hay 5 bisiestos), tras el cual la Luna, el Sol y los nodos de la órbita lunar vuelven casi a la misma configuración, y los eclipses se repiten con un aspecto muy parecido. El 0,32 de día sobrante hace que la Tierra gire ≈ 116° más: el siguiente eclipse de la serie cae desplazado unos **120° de longitud hacia el oeste**. Tres saros (≈ 54 años y un mes, un *exeligmos*) devuelven el eclipse casi al mismo lugar. Cada serie dura unos 12–13 siglos y reúne unos 70–80 eclipses.",
+      "analogia": "es como tres engranajes de distinto tamaño marcados con la misma señal: tras muchas vueltas, vuelven a alinearse las tres señales casi a la vez.",
+      "cuenta": "223 meses sinódicos × 29,5306 d = 6.585,32 d. Lo bonito es que casi coincide con 242 meses dracónicos (nodo a nodo: 242 × 27,2122 = 6.585,36 d) y 239 anomalísticos (perigeo a perigeo: 239 × 27,5546 = 6.585,54 d). Misma fase, mismo nodo y misma distancia a la vez. Desplazamiento: 0,32 d × 360° ≈ 116° de giro terrestre ≈ 120° hacia el oeste.",
+      "cuentaEtiqueta": "La cuenta",
+      "regla": "los antiguos babilonios ya conocían este ciclo y predecían eclipses con él, sin saber ni por qué funcionaba. No sirve para saber si el eclipse será visible en tu ciudad: para eso, los elementos besselianos.",
+      "reglaEtiqueta": "Dato curioso",
+      "relacionados": [
+        "eclipse-de-sol",
+        "eclipse-de-luna",
+        "fase-lunar-y-luna-nueva",
+        "franja-de-totalidad",
+        "delta-t",
+        "elementos-besselianos"
+      ]
+    },
+    {
+      "id": "delta-t",
+      "bloque": 1,
+      "termino": "Delta T",
+      "alias": "ΔT",
+      "definicion": "Diferencia entre el **tiempo dinámico** (TD o TT, uniforme, el de los relojes atómicos y las leyes del movimiento) y el **tiempo universal** (UT, ligado al giro real de la Tierra). La Tierra no gira uniformemente: las mareas la frenan (el día se alarga ≈ 1,8 ms por siglo, con altibajos), de modo que los \"relojes de la rotación\" se retrasan respecto a los uniformes. Hacia 2026, ΔT ≈ 69 s.",
+      "analogia": "es un reloj de pared que se retrasa un poquito cada siglo. Para ver cuándo pasó un tren hace 2.000 años hay que corregir el retraso acumulado.",
+      "cuenta": "ΔT = 32,184 s + (TAI − UTC) − (UT1 − UTC). Con TAI − UTC = 37 s (desde 2017) y |UT1 − UTC| < 0,9 s: ΔT ≈ 69 s. En un eclipse, la Tierra gira 15″ de longitud por segundo, ≈ 0,46 km en el ecuador (≈ 0,37 km a la latitud de Córdoba). Un error de 1 s en ΔT desplaza la franja ≈ 0,4 km; ignorar los 69 s la movería ≈ 32 km: el tiempo exacto de la sombra y el lugar donde cae el eclipse son lo mismo.",
+      "cuentaEtiqueta": "La cuenta",
+      "regla": "ΔT del pasado se deduce de eclipses antiguos: hace 2.000 años era de ≈ 3 horas, lo que equivale a ≈ 45° de longitud. El futuro lejano no se puede predecir con exactitud, así que la precisión de las franjas baja cuanto más lejos del presente.",
+      "reglaEtiqueta": "Dato curioso",
+      "relacionados": [
+        "elementos-besselianos",
+        "franja-de-totalidad",
+        "efemerides",
+        "rotacion-terrestre-y-seguimiento-sidereo",
+        "saros",
+        "eclipse-de-sol"
       ]
     },
     {
@@ -1542,7 +1978,8 @@
       "equipo": "el S50 Pro trae uno magnético; el Draco estándar lo lleva interno y automático; el Draco SHO lo trae externo, magnético. **Nunca apuntes al Sol sin él.**",
       "relacionados": [
         "halfa-solar",
-        "lucky-imaging"
+        "lucky-imaging",
+        "eclipse-de-sol"
       ]
     },
     {

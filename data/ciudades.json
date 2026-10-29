@@ -1,0 +1,28 @@
+{
+  "_nota": "Ciudades de referencia del globo de eclipses: [nombre, latitud, longitud (este +)], redondeadas a 0,01°. «espana» se muestran al acercarse; «mundo», siempre.",
+  "espana": [
+    ["A Coruña", 43.37, -8.40], ["Lugo", 43.01, -7.56], ["Ourense", 42.34, -7.86], ["Pontevedra", 42.43, -8.65], ["Vigo", 42.24, -8.72],
+    ["Oviedo", 43.36, -5.85], ["Santander", 43.46, -3.80], ["Bilbao", 43.26, -2.93], ["San Sebastián", 43.32, -1.98], ["Vitoria", 42.85, -2.67],
+    ["Pamplona", 42.82, -1.64], ["Logroño", 42.47, -2.45], ["Burgos", 42.34, -3.70], ["León", 42.60, -5.57], ["Palencia", 42.01, -4.53],
+    ["Valladolid", 41.65, -4.72], ["Zamora", 41.50, -5.75], ["Salamanca", 40.97, -5.66], ["Soria", 41.76, -2.47], ["Segovia", 40.95, -4.12],
+    ["Ávila", 40.66, -4.70], ["Huesca", 42.14, -0.41], ["Zaragoza", 41.65, -0.89], ["Teruel", 40.34, -1.11], ["Lleida", 41.62, 0.62],
+    ["Girona", 41.98, 2.82], ["Barcelona", 41.39, 2.17], ["Tarragona", 41.12, 1.25], ["Madrid", 40.42, -3.70], ["Guadalajara", 40.63, -3.17],
+    ["Cuenca", 40.07, -2.14], ["Toledo", 39.86, -4.03], ["Ciudad Real", 38.99, -3.93], ["Albacete", 38.99, -1.86], ["Cáceres", 39.47, -6.37],
+    ["Badajoz", 38.88, -6.97], ["Castellón", 39.99, -0.05], ["Valencia", 39.47, -0.38], ["Alicante", 38.35, -0.48], ["Murcia", 37.99, -1.13],
+    ["Palma", 39.57, 2.65], ["Ibiza", 38.91, 1.43], ["Mahón", 39.89, 4.27], ["Huelva", 37.26, -6.95], ["Sevilla", 37.39, -5.98],
+    ["Córdoba", 37.88, -4.78], ["Jaén", 37.77, -3.79], ["Granada", 37.18, -3.60], ["Almería", 36.84, -2.46], ["Málaga", 36.72, -4.42],
+    ["Cádiz", 36.53, -6.29], ["Jerez", 36.69, -6.14], ["Tarifa", 36.01, -5.60], ["Ronda", 36.74, -5.17], ["Ceuta", 35.89, -5.32],
+    ["Melilla", 35.29, -2.94], ["Las Palmas", 28.12, -15.43], ["Santa Cruz de Tenerife", 28.47, -16.25], ["Lisboa", 38.72, -9.14],
+    ["Oporto", 41.15, -8.61], ["Faro", 37.02, -7.93], ["Tánger", 35.77, -5.80], ["Rabat", 34.02, -6.84], ["Andorra la Vella", 42.51, 1.52]
+  ],
+  "mundo": [
+    ["Reikiavik", 64.15, -21.94], ["Londres", 51.51, -0.13], ["París", 48.86, 2.35], ["Roma", 41.90, 12.50], ["Berlín", 52.52, 13.40],
+    ["Moscú", 55.76, 37.62], ["Atenas", 37.98, 23.73], ["Estambul", 41.01, 28.98], ["Argel", 36.75, 3.06], ["Túnez", 36.81, 10.18],
+    ["Trípoli", 32.89, 13.19], ["El Cairo", 30.04, 31.24], ["Luxor", 25.69, 32.64], ["Yeda", 21.49, 39.19], ["Nueva Delhi", 28.61, 77.21],
+    ["Pekín", 39.90, 116.40], ["Tokio", 35.68, 139.69], ["Sídney", -33.87, 151.21], ["Perth", -31.95, 115.86], ["Darwin", -12.46, 130.84],
+    ["Auckland", -36.85, 174.76], ["Ciudad del Cabo", -33.92, 18.42], ["Nairobi", -1.29, 36.82], ["Dakar", 14.69, -17.44],
+    ["Nueva York", 40.71, -74.01], ["Ciudad de México", 19.43, -99.13], ["Anchorage", 61.22, -149.90], ["Nuuk", 64.18, -51.72],
+    ["Bogotá", 4.71, -74.07], ["Lima", -12.05, -77.04], ["Santiago de Chile", -33.45, -70.67], ["Buenos Aires", -34.60, -58.38],
+    ["Río de Janeiro", -22.91, -43.17], ["Honolulu", 21.31, -157.86]
+  ]
+}
