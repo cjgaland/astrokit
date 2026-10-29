@@ -16,7 +16,7 @@
 
 import { leer, guardar } from './almacen.js';
 import { icono } from './util.js';
-import { iniciarActualizaciones } from './actualizaciones.js';
+import { iniciarActualizaciones, avisarEnlaceDesconocido } from './actualizaciones.js';
 
 /* ---------- 1. Lista de módulos ----------
    `cargar` importa el código del módulo solo cuando hace falta (import()
@@ -74,7 +74,13 @@ async function enrutar() {
   // "#glosario/apertura" → id = "glosario", parametro = "apertura"
   const [id, ...resto] = decodeURIComponent(location.hash.slice(1)).split('/');
   const modulo = MODULOS.find((m) => m.id === id);
-  if (!modulo) { location.replace('#' + MODULO_INICIAL); return; }
+  if (!modulo) {
+    // Una ruta desconocida suele ser un enlace de una versión más nueva (p. ej. una
+    // sección que esta copia aún no tiene): se guarda para volver a ella tras actualizar
+    if (id) avisarEnlaceDesconocido(location.hash);
+    location.replace('#' + MODULO_INICIAL);
+    return;
+  }
   const parametro = resto.join('/') || null;
 
   // Marcar el enlace activo en la navegación
@@ -186,5 +192,11 @@ aplicarTema(leer('tema', 'auto'));
 aplicarNoche(leer('noche', false));
 aplicarBrillo(leer('brilloNoche', 0));
 window.addEventListener('hashchange', enrutar);
+// ¿Veníamos de un enlace que la versión anterior no entendía? Tras actualizar, se abre
+try {
+  const pendiente = sessionStorage.getItem('astrokit:rutaPendiente');
+  sessionStorage.removeItem('astrokit:rutaPendiente');
+  if (pendiente && MODULOS.some((m) => m.id === decodeURIComponent(pendiente.slice(1)).split('/')[0])) location.replace(pendiente);
+} catch { /* sin sessionStorage: no pasa nada */ }
 enrutar();
 iniciarActualizaciones();

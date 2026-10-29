@@ -136,6 +136,38 @@ async function mostrarNovedadesSiToca() {
   } catch { /* sin novedades: no pasa nada */ }
 }
 
+/**
+ * Se ha abierto un enlace a una sección que esta versión no tiene. Se avisa,
+ * se busca la actualización en el momento y se guarda la ruta para abrirla
+ * después de actualizar (app.js la lee al arrancar).
+ */
+export async function avisarEnlaceDesconocido(ruta) {
+  try { sessionStorage.setItem('astrokit:rutaPendiente', ruta); } catch { /* sin sessionStorage */ }
+  if (document.getElementById('aviso-enlace')) return;
+  const caja = document.createElement('div');
+  caja.id = 'aviso-enlace';
+  caja.className = 'aviso-actualizacion';
+  caja.setAttribute('role', 'status');
+  caja.innerHTML = `
+    <span class="aviso-actualizacion__icono">${icono('azar')}</span>
+    <span class="aviso-actualizacion__texto"><strong data-titulo>Ese enlace parece de una versión más nueva de AstroKit.</strong>
+      <span data-estado>Buscando la actualización…</span></span>
+    <button type="button" class="boton-icono" aria-label="Cerrar">${icono('cerrar')}</button>`;
+  caja.querySelector('button').addEventListener('click', () => caja.remove());
+  (document.querySelector('.app') || document.body).appendChild(caja);
+  // Al arrancar, el service worker aún se está registrando: se espera a que lo esté (máx. 5 s)
+  for (let i = 0; i < 50 && !registro; i++) await new Promise((r) => setTimeout(r, 100));
+  const hay = await buscarActualizacion();
+  const estado = caja.querySelector('[data-estado]');
+  if (hay) { caja.remove(); return; }                 // ya sale el aviso «Actualizar»: al pulsarlo se abrirá el enlace
+  if (navigator.onLine) {
+    caja.querySelector('[data-titulo]').textContent = 'No encuentro ese apartado.';
+    estado.textContent = 'Tienes la última versión: puede que el enlace esté mal escrito.';
+  } else {
+    estado.textContent = 'Sin conexión: conéctate y vuelve a abrir el enlace para actualizar.';
+  }
+}
+
 function mostrarNovedades(version, cambios) {
   const caja = document.createElement('div');
   caja.className = 'aviso-actualizacion aviso-actualizacion--novedades';
