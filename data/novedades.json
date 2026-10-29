@@ -2,6 +2,15 @@
   "_nota": "Qué cambia en cada versión. La app lo enseña una vez, justo después de actualizar. publicar_astrokit.sh añade aquí la entrada nueva (con el texto que le pases) cada vez que publica una versión.",
   "versiones": [
     {
+      "version": "astrokit-v13",
+      "fecha": "2026-10-29",
+      "cambios": [
+        "Mi equipo incluye ahora el Seestar S50 y el Celestron Omni XLT 127",
+        "Nueva pestaña Objetos celestes (en Biblioteca): busca galaxias, nebulosas, cúmulos y planetas y mira sus mejores fechas",
+        "Nuevo Mapa celeste (en Cielo): el cielo de cualquier día y hora, con zoom, información al tocar y exportación a PNG y PDF"
+      ]
+    },
+    {
       "version": "astrokit-v12",
       "fecha": "2026-10-28",
       "cambios": [

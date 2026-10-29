@@ -26,7 +26,7 @@
      solo si detecta cambios en AstroKit y nadie la ha subido a mano.
    ========================================================================== */
 
-const VERSION = 'astrokit-v12';
+const VERSION = 'astrokit-v13';
 
 // Archivos que forman la app (rutas relativas a esta carpeta)
 const ARCHIVOS = [
