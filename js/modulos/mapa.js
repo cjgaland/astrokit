@@ -2,7 +2,7 @@
    modulos/mapa.js — Cielo · Mapa celeste (#mapa, #mapa/<id de objeto>)
    --------------------------------------------------------------------------
    El cielo visible desde tu lugar en una fecha y hora (por defecto, ahora):
-   estrellas hasta magnitud 5, las 88 constelaciones con sus nombres, los
+   estrellas hasta la magnitud que elijas (2 a 6), las 88 constelaciones con sus nombres, los
    objetos del catálogo, los planetas, la Luna y el Sol si está sobre el
    horizonte.
 
@@ -38,7 +38,19 @@ const estado = {
   capas: { ...{ lineas: true, nombres: true, objetos: true, cuadricula: true }, ...leer('mapa:capas', {}) },
   zoom: 1, panX: 0, panY: 0,                     // vista: escala y desplazamiento en píxeles CSS
   resaltado: null,                               // id de objeto destacado (#mapa/m31)
+  magLimite: leer('mapa:magnitud', 5),           // estrellas hasta esta magnitud (deslizador)
 };
+
+/* Cielos típicos para el deslizador de magnitud. La magnitud límite es la de
+   la estrella más débil que se ve a simple vista: cada magnitud es ×2,5 menos
+   luz y, a la vez, unas 3 veces más estrellas (5 → 1.627; 6 → 5.044). */
+const CIELOS = [
+  { mag: 4, nombre: 'Ciudad', ayuda: 'Lo que se ve desde una ciudad como Córdoba' },
+  { mag: 5, nombre: 'Afueras', ayuda: 'Pueblo o afueras de una ciudad' },
+  { mag: 6, nombre: 'Campo oscuro', ayuda: 'Todo lo que alcanza el ojo en un buen cielo' },
+];
+let estrellasVisibles = 0;                       // cuántas se dibujaron sobre el horizonte
+const decimal = (v) => v.toLocaleString('es-ES', { maximumFractionDigits: 1 });   // 4,5
 
 let raiz = null, lienzo = null, ctx = null, globo = null;
 let datos = null, objetos = [], lugar = null;
@@ -125,6 +137,16 @@ function pintarEsqueleto() {
           ${[['lineas', 'Constelaciones'], ['nombres', 'Nombres'], ['objetos', 'Objetos'], ['cuadricula', 'Cuadrícula']]
             .map(([id, t]) => `<button class="chip chip--estado" type="button" data-capa="${id}" aria-pressed="${estado.capas[id]}">${t}</button>`).join('')}
         </div>
+        <div class="mapa__magnitud">
+          <label class="mapa__deslizador">
+            <span class="etiqueta">Estrellas hasta magnitud</span>
+            <input type="range" id="mapa-mag" min="2" max="6" step="0.5" value="${estado.magLimite}" aria-describedby="mapa-mag-valor">
+            <output class="cifra" id="mapa-mag-valor"></output>
+          </label>
+          <div class="filtros" role="group" aria-label="Cielos típicos">
+            ${CIELOS.map((k) => `<button class="chip" type="button" data-cielo="${k.mag}" title="${k.ayuda}" aria-pressed="${estado.magLimite === k.mag}">${k.nombre} · ${k.mag}</button>`).join('')}
+          </div>
+        </div>
       </div>
 
       <div class="mapa__marco" id="mapa-marco">
@@ -154,6 +176,7 @@ function pintarEsqueleto() {
     </section>`;
   raiz.addEventListener('click', alHacerClic);
   raiz.addEventListener('change', alCambiar);
+  raiz.addEventListener('input', alMoverMagnitud);
 }
 
 function prepararLienzo() {
@@ -216,6 +239,7 @@ function redibujar() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     elementos = dibujar(ctx, ancho, alto, estado.zoom, estado.panX, estado.panY, fechaActual(), true);
     pintarEstado();
+    pintarMagnitud();
   });
 }
 
@@ -266,22 +290,30 @@ function dibujar(c, ancho, alto, zoom, panX, panY, fecha, interactivo) {
     }
   }
 
-  // Estrellas (las brillantes van al final de la lista para quedar encima)
+  // Estrellas (las brillantes van al final de la lista para quedar encima).
+  // Solo hasta la magnitud del deslizador; las más débiles de 4 se dibujan
+  // además algo transparentes, para que el ojo note que apenas se ven.
+  let visibles = 0;
   for (let i = datos.estrellas.length - 1; i >= 0; i--) {
     const [ra, dec, mag, bv, nombre] = datos.estrellas[i];
+    if (mag > estado.magLimite) continue;
     const h = e.altaz(ra, dec);
     if (h.alt < 0) continue;
+    visibles++;
     const p = aPantalla(h.alt, h.az);
     if (p.x < -10 || p.y < -10 || p.x > ancho + 10 || p.y > alto + 10) continue;
     const r = Math.max(0.55, (2.9 - 0.48 * mag)) * crecer;
     c.fillStyle = P.estrella(bv);
+    c.globalAlpha = mag > 4 ? Math.max(0.45, 1 - (mag - 4) * 0.28) : 1;
     c.beginPath(); c.arc(p.x, p.y, r, 0, 2 * Math.PI); c.fill();
+    c.globalAlpha = 1;
     if (nombre || mag < 3) lista.push({ x: p.x, y: p.y, r, info: { tipo: 'estrella', nombre: nombre || null, mag, alt: h.alt, az: h.az } });
     if (nombre && estado.capas.nombres && (mag < 1.1 || holgado)) {
       c.fillStyle = P.textoSuave; c.font = `${tamTexto - 1}px "Space Grotesk", system-ui, sans-serif`;
       c.fillText(nombre, p.x + r + 3, p.y - r - 1);
     }
   }
+  if (interactivo) estrellasVisibles = visibles;
 
   // Nombres de las constelaciones
   if (estado.capas.nombres) {
@@ -561,7 +593,7 @@ function lienzoExportacion() {
   c.fillStyle = P.borde; c.font = '400 72px "Instrument Serif", Georgia, serif';
   c.fillText('Mapa celeste', 60, 95);
   c.fillStyle = P.texto; c.font = '400 32px "Space Grotesk", system-ui, sans-serif';
-  c.fillText(`${lugar.nombre} · ${f.toLocaleString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`, 62, 145);
+  c.fillText(`${lugar.nombre} · ${f.toLocaleString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })} · estrellas hasta mag ${decimal(estado.magLimite)}`, 62, 145);
   c.fillStyle = P.textoSuave; c.font = '400 26px "IBM Plex Mono", ui-monospace, monospace';
   c.fillText('AstroKit · cjgaland.github.io/astrokit · estrellas: d3-celestial (BSD)', 60, can.height - 36);
   return can;
@@ -598,6 +630,7 @@ async function exportar(formato) {
 function alHacerClic(e) {
   const b = e.target.closest('button');
   if (!b) return;
+  if (b.dataset.cielo) { elegirMagnitud(Number(b.dataset.cielo)); raiz.querySelector('#mapa-mag').value = b.dataset.cielo; return; }
   if (b.dataset.capa) {
     estado.capas[b.dataset.capa] = !estado.capas[b.dataset.capa];
     b.setAttribute('aria-pressed', String(estado.capas[b.dataset.capa]));
@@ -624,6 +657,23 @@ function alCambiar(e) {
   const [a, m, d] = fecha.split('-').map(Number), [h, mi] = hora.split(':').map(Number);
   estado.fecha = new Date(a, m - 1, d, h, mi);
   redibujar();
+}
+
+/** Deslizador de magnitud: redibuja en vivo mientras se mueve */
+function alMoverMagnitud(e) {
+  if (e.target.id === 'mapa-mag') elegirMagnitud(Number(e.target.value));
+}
+function elegirMagnitud(m) {
+  estado.magLimite = m;
+  guardar('mapa:magnitud', m);
+  raiz.querySelectorAll('[data-cielo]').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.cielo) === m)));
+  ocultarGlobo();
+  redibujar();
+}
+/** Cifra junto al deslizador: la magnitud y cuántas estrellas hay ahora sobre el horizonte */
+function pintarMagnitud() {
+  const salida = raiz.querySelector('#mapa-mag-valor');
+  if (salida) salida.textContent = `${decimal(estado.magLimite)} · ${estrellasVisibles.toLocaleString('es-ES')} estrellas sobre el horizonte`;
 }
 
 function sincronizarControles() {

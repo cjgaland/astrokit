@@ -355,9 +355,15 @@ prueba('Proyección: ida y vuelta devuelve la misma altura y acimut', () => {
 });
 const cielo = await fetch('../data/cielo.json').then((r) => r.json());
 const { objetos: objetosCat } = await fetch('../data/objetos.json').then((r) => r.json());
-prueba('Datos del cielo: más de 1.500 estrellas y las 88 constelaciones (Serpiente en dos partes)', () => {
-  cierto(cielo.estrellas.length > 1500, `${cielo.estrellas.length} estrellas`);
+prueba('Datos del cielo: 5.044 estrellas hasta magnitud 6 y las 88 constelaciones (Serpiente en dos partes)', () => {
+  igual(cielo.estrellas.length, 5044);
+  igual(Math.max(...cielo.estrellas.map((e) => e[2])) <= 6, true);
   igual(new Set(cielo.constelaciones.map((c) => c.id)).size, 88);
+});
+prueba('Deslizador de magnitud: unas 3 veces más estrellas por cada magnitud (4 → 519, 5 → 1.627, 6 → 5.044)', () => {
+  const hasta = (m) => cielo.estrellas.filter((e) => e[2] <= m).length;
+  igual(hasta(4), 519); igual(hasta(5), 1627); igual(hasta(6), 5044);
+  cerca(hasta(6) / hasta(5), 3, 0.3);
 });
 prueba('Datos del cielo: Sirio, Vega y la Polar están donde deben', () => {
   const buscar = (n) => cielo.estrellas.find((e) => e[4] === n);

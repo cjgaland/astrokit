@@ -1002,6 +1002,11 @@ mark {
   background: var(--fondo); color: var(--tinta); border: 1px solid var(--borde); border-radius: var(--radio);
 }
 .mapa__capas { margin: 0; }
+.mapa__magnitud { display: grid; gap: 8px; padding-top: 10px; border-top: 1px dashed var(--borde); }
+.mapa__magnitud .filtros { margin: 0; flex-wrap: wrap; overflow: visible; }
+.mapa__deslizador { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.mapa__deslizador input { flex: 1 1 140px; min-width: 120px; }
+.mapa__deslizador output { color: var(--acento); font-size: 14px; }
 .mapa__marco {
   position: relative; border-radius: var(--radio-g); overflow: hidden;
   border: 1px solid var(--borde); background: #070b16; box-shadow: var(--sombra);

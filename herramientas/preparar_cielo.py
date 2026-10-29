@@ -10,8 +10,9 @@ Uso (con los tres archivos descargados en una carpeta):
     python3 herramientas/preparar_cielo.py /ruta/a/la/carpeta
 
 Qué hace:
-  · Se queda con las estrellas hasta magnitud 5,0 (unas 1.600: lo que se ve
-    desde un cielo suburbano) y redondea las cifras para que pese poco.
+  · Se queda con las estrellas hasta magnitud 6,0 (5.044: todo lo que ve el ojo
+    desde un campo oscuro; el mapa filtra después con su deslizador de magnitud)
+    y redondea las cifras para que pese poco.
   · Convierte la ascensión recta de la convención de d3 (−180…180) a 0…360.
   · Añade los nombres propios en español de las estrellas más conocidas y
     COMPRUEBA cada uno contra su magnitud real (si un número HIP estuviera mal,
@@ -24,7 +25,7 @@ from pathlib import Path
 
 ORIGEN = Path(sys.argv[1])
 DESTINO = Path(__file__).resolve().parent.parent / 'data' / 'cielo.json'
-MAG_LIMITE = 5.0
+MAG_LIMITE = 6.0
 
 # Nombres propios: HIP → (nombre, magnitud aproximada esperada). Tolerancia ±0,35 mag.
 NOMBRES = {
