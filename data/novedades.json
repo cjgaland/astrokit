@@ -2,6 +2,13 @@
   "_nota": "Qué cambia en cada versión. La app lo enseña una vez, justo después de actualizar. publicar_astrokit.sh añade aquí la entrada nueva (con el texto que le pases) cada vez que publica una versión.",
   "versiones": [
     {
+      "version": "astrokit-v16",
+      "fecha": "2026-10-29",
+      "cambios": [
+        "Mapa celeste: la ventanita de información aparece al pasar el ratón por un astro y desaparece al retirarlo; haz clic en el objeto para abrir su ficha"
+      ]
+    },
+    {
       "version": "astrokit-v15",
       "fecha": "2026-10-29",
       "cambios": [
