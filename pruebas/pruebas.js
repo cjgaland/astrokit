@@ -383,6 +383,15 @@ prueba('PDF: cabecera, final y tabla xref apuntando a su sitio', () => {
 });
 
 /* ---------- Mejores momentos de los planetas ---------- */
+grupo('La Luna fuera de la ventana de la noche');
+prueba('Córdoba, 29-oct-2026: sale 20:52 y la puesta del día siguiente se encuentra igualmente', () => {
+  const noche29 = A.sucesosNoche(new Date('2026-10-29T12:00'), 37.89, -4.77).luna;
+  const noche30 = A.sucesosNoche(new Date('2026-10-30T12:00'), 37.89, -4.77).luna;
+  igual(noche29.sePone, null);                               // dentro de la ventana no se pone…
+  cerca(noche29.sePoneDespues.getTime(), noche30.sePone.getTime(), 60000); // …y es la misma puesta de la noche siguiente
+  igual(noche30.sePoneDespues, undefined);                   // en una noche normal no se busca nada más
+});
+
 grupo('Objetos celestes: mejores momentos de los planetas');
 prueba('Próxima oposición de Júpiter desde jun-2025: 10-ene-2026 (±1 día)', () => {
   const m = A.mejorMomentoPlaneta('jupiter', U(2025, 5, 1));

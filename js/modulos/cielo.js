@@ -412,11 +412,17 @@ function pintarLuna() {
     <p class="lectura__texto">${consejoLuna(fase)}</p>`;
 }
 
-/** Salida y puesta de la Luna en orden cronológico (a veces se pone antes de salir) */
+/**
+ * Salida y puesta de la Luna en orden cronológico (a veces se pone antes de salir).
+ * Si una de las dos cae después del mediodía siguiente (fuera de «esta noche»),
+ * se muestra igualmente con la marca «ya de día».
+ */
 function salidaPuestaLuna(l) {
+  const momento = (t, despues, nunca) => t ? `${hora(t)} · ${fechaCorta(t)}`
+    : despues ? `${hora(despues)} · ${fechaCorta(despues)} <small class="nota">(ya de día)</small>` : nunca;
   const filas = [
-    { t: l.sale, html: `<dt>Sale</dt><dd>${l.sale ? `${hora(l.sale)} · ${fechaCorta(l.sale)}` : 'no sale en estas 24 h'}</dd>` },
-    { t: l.sePone, html: `<dt>Se pone</dt><dd>${l.sePone ? `${hora(l.sePone)} · ${fechaCorta(l.sePone)}` : 'no se pone en estas 24 h'}</dd>` },
+    { t: l.sale || l.saleDespues, html: `<dt>Sale</dt><dd>${momento(l.sale, l.saleDespues, 'no sale en estas 48 h')}</dd>` },
+    { t: l.sePone || l.sePoneDespues, html: `<dt>Se pone</dt><dd>${momento(l.sePone, l.sePoneDespues, 'no se pone en estas 48 h')}</dd>` },
   ];
   return filas.sort((a, b) => (a.t?.getTime() ?? Infinity) - (b.t?.getTime() ?? Infinity)).map((f) => f.html).join('');
 }

@@ -261,6 +261,14 @@ export function sucesosNoche(mediodia, lat, lon) {
   const luna = (t) => alturaLuna(t, lat, lon);
   const cl = cruces(luna, mediodia, fin, -0.833);
   r.luna = { sale: primero(cl, 'sube'), sePone: primero(cl, 'baja'), arribaAlEmpezar: luna(mediodia) > -0.833 };
+  // La Luna se retrasa unos 50 min cada día (el «día lunar» dura ~24 h 50 min), así que a veces
+  // su salida o su puesta cae fuera de esta ventana de mediodía a mediodía. En ese caso se busca
+  // el suceso que falta en las 24 h siguientes, para poder decir «se pone mañana a las…».
+  if (!r.luna.sale || !r.luna.sePone) {
+    const despues = cruces(luna, fin, new Date(fin.getTime() + MS_DIA), -0.833);
+    r.luna.saleDespues = r.luna.sale ? null : primero(despues, 'sube');
+    r.luna.sePoneDespues = r.luna.sePone ? null : primero(despues, 'baja');
+  }
   return r;
 }
 
