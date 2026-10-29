@@ -15,7 +15,7 @@
 import * as O from '../calculos/optica.js';
 import { cargarJSON, escaparHTML, icono } from '../util.js';
 import { leer, guardar } from '../almacen.js';
-import { idMiEquipo } from '../equipo.js';
+import { idMiEquipo, ordenarEquipos, NINGUNO } from '../equipo.js';
 
 /* ---------- Estado (se recuerda entre sesiones) ---------- */
 const ESTADO_INICIAL = {
@@ -28,8 +28,6 @@ const ESTADO_INICIAL = {
   snr: { exposicion: 10, tomas: 360, factor: 2 },
 };
 const estado = { ...structuredClone(ESTADO_INICIAL), ...leer('optica', {}) };
-// Si nunca se tocó la calculadora, empieza con «mi equipo» (js/equipo.js)
-if (!leer('optica', null)) estado.equipo = idMiEquipo();
 const guardarEstado = () => guardar('optica', estado);
 
 let equipos = [];
@@ -53,6 +51,11 @@ export async function montar(contenedor) {
     cargarJSON('data/objetos.json'),
   ]);
   objetos = objetos.filter((o) => o.simulador);
+  equipos = ordenarEquipos(equipos);
+  // Cada vez que se abre la calculadora, arranca con «Mi equipo» (js/equipo.js);
+  // con «Ninguno», en «A mano». Aquí se puede cambiar sin tocar «Mi equipo».
+  const mio = idMiEquipo();
+  estado.equipo = mio === NINGUNO || !equipos.some((e) => e.id === mio) ? 'manual' : mio;
 
   pintarEsqueleto();
   raiz.addEventListener('input', alCambiar);
@@ -119,7 +122,8 @@ function pintarEsqueleto() {
       <section class="panel">
         <h2 class="panel__titulo"><span class="panel__num">01</span>Tu equipo</h2>
         <div class="selector-equipo" role="group" aria-label="Equipo">
-          ${equipos.map((e) => `<button class="chip" type="button" data-equipo="${e.id}">${escaparHTML(e.corto)}</button>`).join('')}
+          ${[...equipos].sort((a, b) => a.corto.localeCompare(b.corto, 'es', { sensitivity: 'base' }))   // los botones, por el nombre que se lee
+            .map((e) => `<button class="chip" type="button" data-equipo="${e.id}">${escaparHTML(e.corto)}</button>`).join('')}
           <button class="chip" type="button" data-equipo="manual">A mano</button>
         </div>
         <div class="campos">

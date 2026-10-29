@@ -5,6 +5,7 @@
   "lugar": "Córdoba",
   "inicio": "2026",
   "correo": "cjgaland@gmail.com",
+  "whatsapp": "34649003421",
   "manual": "docs/Manual_de_uso_AstroKit.pdf",
   "web": "https://cjgaland.github.io/astrokit/",
   "tecnologia": "HTML, CSS y JavaScript sin dependencias · PWA con service worker · cálculos astronómicos de Meeus en local · datos guardados solo en el dispositivo",

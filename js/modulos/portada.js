@@ -72,7 +72,8 @@ function pintar() {
         <h1 class="portada__titulo">Astro<em>Kit</em></h1>
         <p class="portada__lema">Tu cuaderno de campo para la astrofotografía</p>
         <p class="portada__descripcion">Para aprender astrofotografía y para salir a hacerla: glosario,
-          calculadora óptica, planificador de la noche, checklist y cuaderno de sesiones. En el bolsillo,
+          objetos celestes con sus mejores fechas, calculadora óptica, planificador de la noche,
+          mapa celeste, checklist y cuaderno de sesiones. En el bolsillo,
           sin cobertura y con modo noche en rojo.</p>
         <a class="boton-principal portada__entrar" href="#glosario" aria-label="Entrar en AstroKit (abre el Glosario)">Entrar${icono('sig')}</a>
       </header>
@@ -169,7 +170,7 @@ async function pintarEstaNoche() {
 async function pintarMiEquipo() {
   const equipos = await listaEquipos();
   const caja = raiz.querySelector('#mi-equipo-portada');
-  if (caja) caja.innerHTML = selectorMiEquipo(equipos) + '<span class="nota">Lo usan la calculadora, el planificador y el cuaderno.</span>';
+  if (caja) caja.innerHTML = selectorMiEquipo(equipos) + '<span class="nota">Se selecciona solo en la calculadora, el planificador, los objetos celestes y el cuaderno.</span>';
 }
 
 function alCambiar(e) {

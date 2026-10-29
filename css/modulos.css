@@ -376,6 +376,7 @@ mark {
   background: var(--fondo); color: var(--tinta);
   border: 1px solid var(--borde); border-radius: var(--radio);
 }
+.comparar select { min-width: 0; max-width: 100%; text-overflow: ellipsis; }   /* nombres largos sin desbordar */
 .boton-sec { display: inline-flex; align-items: center; gap: 8px; }
 .boton-sec:hover { border-color: var(--filete); }
 .app .boton-sec svg { width: 17px; height: 17px; }
@@ -925,10 +926,11 @@ mark {
 .esta-noche__meta { font-size: 11px; color: var(--tinta-3); white-space: nowrap; }
 
 .mi-equipo-portada { max-width: 620px; margin: 14px auto 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; justify-content: center; }
-.mi-equipo { display: flex; align-items: center; gap: 10px; }
+.mi-equipo { display: flex; align-items: center; gap: 10px; max-width: 100%; min-width: 0; }
 .mi-equipo .etiqueta { white-space: nowrap; }
 .mi-equipo select {
   height: 38px; padding: 0 10px; font-size: 15px;
+  min-width: 0; max-width: 100%; text-overflow: ellipsis;   /* nombres largos: que no ensanchen la página */
   background: var(--fondo); color: var(--tinta); border: 1px solid var(--borde); border-radius: var(--radio);
 }
 .info__equipo { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--borde); }

@@ -22,7 +22,7 @@
 import { cargarJSON, escaparHTML, icono } from '../util.js';
 import { leer, guardar } from '../almacen.js';
 import { faseLunar } from '../calculos/astro.js';
-import { idMiEquipo } from '../equipo.js';
+import { idMiEquipo, ordenarEquipos } from '../equipo.js';
 
 /* ==========================================================================
    Funciones puras (se prueban en pruebas/pruebas.html)
@@ -95,7 +95,7 @@ export async function montar(contenedor, parametro) {
   raiz = contenedor;
   sesiones = leer(CLAVE, []);
   const [o, q] = await Promise.all([cargarJSON('data/objetos.json'), cargarJSON('data/equipos.json')]);
-  datosAux = { objetos: o.objetos, equipos: q.equipos };
+  datosAux = { objetos: o.objetos, equipos: ordenarEquipos(q.equipos) };
   raiz.addEventListener('click', alHacerClic);
   raiz.addEventListener('input', alEscribir);
   raiz.addEventListener('change', alCambiar);
@@ -267,7 +267,7 @@ function pintarFormulario(s, repetir = false) {
     fecha: hoy(),
     lugar: repetir ? s.lugar : (leer('cielo:lugares', [])?.find((l) => l.id === leer('cielo:lugar', 'casa'))?.nombre || ''),
     objeto: repetir ? s.objeto : '',
-    equipo: repetir ? s.equipo : (datosAux.equipos.find((q) => q.id === idMiEquipo())?.nombre || datosAux.equipos[0]?.nombre || ''),
+    equipo: repetir ? s.equipo : (datosAux.equipos.find((q) => q.id === idMiEquipo())?.nombre || ''),
     filtro: repetir ? s.filtro : FILTROS[0],
     subs: '', exposicion: repetir ? s.exposicion : 10,
     bortle: repetir ? s.bortle : '', sqm: repetir ? s.sqm : '',

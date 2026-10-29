@@ -298,7 +298,8 @@ async function pintarFicha(o) {
     const altMax = A.alturaMaxima(o.dec, lugar.lat);
     fila(`Altura máx. desde ${escaparHTML(lugar.nombre)}`, altMax > 0 ? grados(altMax) + (altMax < ALTURA_UTIL ? ' · siempre bajo' : '') : 'no sale');
     fila('Temporada', temporadaTexto(o) || (temporadas ? `culmina a medianoche en ${mesMedianoche(o)}` : '…'));
-    // ¿Cómo encaja en mi equipo?
+    // ¿Cómo encaja en mi equipo? (con «Ninguno» no hay recuadro)
+    if (equipo) {
     const fw = O.campoVision(O.tamanoSensor(equipo.resX, equipo.pixel), equipo.focal) * 60;
     const fh = O.campoVision(O.tamanoSensor(equipo.resY, equipo.pixel), equipo.focal) * 60;
     const ocupa = Math.max(o.ancho / fw, o.alto / fh);
@@ -310,16 +311,17 @@ async function pintarFicha(o) {
           : `Ocupa el ${Math.round(ocupa * 100)} % del campo (${Math.round(fw)}′ × ${Math.round(fh)}′)${ocupa < 0.15 ? ': saldrá pequeño.' : '.'}`}
           <a href="#optica">Ver en la calculadora</a></p>
       </aside>`;
+    }
   } else if (o.tipo === 'planeta') {
     const p = A.posicionPlaneta(o.id, new Date());
     fila('Tipo', 'Planeta');
     fila('Ahora', `mag ${p.magnitud.toLocaleString('es-ES', { maximumFractionDigits: 1 })} · ${p.diametro.toLocaleString('es-ES', { maximumFractionDigits: 1 })}″ · a ${Math.round(p.elongacion)}° del Sol`);
     fila('Distancia', `${p.distancia.toLocaleString('es-ES', { maximumFractionDigits: 2 })} UA`);
-    fila(`Tamaño con tu ${escaparHTML(equipo.corto)}`, `≈ ${Math.round(p.diametro / equipo.escala)} px`);
+    if (equipo) fila(`Tamaño con tu ${escaparHTML(equipo.corto)}`, `≈ ${Math.round(p.diametro / equipo.escala)} px`);
   } else {
     const f = A.faseLunar(new Date());
     fila('Ahora', `${f.nombre} · ${Math.round(f.iluminada * 100)} % iluminada`);
-    fila('Tamaño', `≈ 31′ · ocupa ${Math.round(31 / (O.campoVision(O.tamanoSensor(equipo.resY, equipo.pixel), equipo.focal) * 60) * 100)} % del alto del campo de tu ${escaparHTML(equipo.corto)}`);
+    fila('Tamaño', equipo ? `≈ 31′ · ocupa ${Math.round(31 / (O.campoVision(O.tamanoSensor(equipo.resY, equipo.pixel), equipo.focal) * 60) * 100)} % del alto del campo de tu ${escaparHTML(equipo.corto)}` : '≈ 31′ (medio grado)');
   }
 
   const listaFechas = fechas === null ? '<p class="nota">Calculando…</p>'

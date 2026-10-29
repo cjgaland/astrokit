@@ -71,7 +71,7 @@ const CONSEJO_PLANETA = {
   urano: 'Un puntito verdoso: el reto es encontrarlo e identificarlo, no el detalle.',
   neptuno: 'Aún más pequeño y tenue que Urano: un punto azulado entre las estrellas.',
 };
-let equipoRef = { corto: 'S50 Pro', escala: 2.30 };   // «Mi equipo» (js/equipo.js): se carga al montar
+let equipoRef = null;   // «Mi equipo» (js/equipo.js): se carga al montar; null si es «Ninguno»
 const NOMBRE_TIPO = {
   'galaxia': 'Galaxia', 'nebulosa-emision': 'Neb. de emisión', 'nebulosa-reflexion': 'Neb. de reflexión',
   'nebulosa-planetaria': 'Neb. planetaria', 'remanente': 'Remanente', 'cumulo-abierto': 'Cúmulo abierto',
@@ -689,9 +689,8 @@ function pintarTemporadaLista(meses) {
 /** Filas del detalle propias de planetas y Luna */
 function datosSolares(x) {
   const s = x.o.solar;
-  const px = s.diametro / equipoRef.escala;
   const tam = `${s.diametro >= 600 ? Math.round(s.diametro / 60) + '′' : s.diametro.toLocaleString('es-ES', { maximumFractionDigits: 1 }) + '″'}` +
-    ` ≈ ${Math.round(px).toLocaleString('es-ES')} px con el ${equipoRef.corto}`;
+    (equipoRef ? ` ≈ ${Math.round(s.diametro / equipoRef.escala).toLocaleString('es-ES')} px con el ${equipoRef.corto}` : '');
   if (x.o.tipo === 'luna') return `<dt>Tamaño</dt><dd>${tam}</dd>`;
   const minutosLuz = Math.round(s.distancia * 8.317);              // la luz tarda 8,317 min por UA
   return `

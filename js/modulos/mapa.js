@@ -93,6 +93,7 @@ function actualizar(parametro) {
 
 function desmontar() {
   clearInterval(reloj);
+  clearTimeout(temporizadorGlobo);
   observador?.disconnect();
   observadorTema?.disconnect();
 }
@@ -158,6 +159,9 @@ function pintarEsqueleto() {
 function prepararLienzo() {
   lienzo = raiz.querySelector('#mapa-lienzo');
   globo = raiz.querySelector('#mapa-globo');
+  // Si el ratón llega al globo, se queda (para pulsar «Ver la ficha»); al salir de él, se oculta
+  globo.addEventListener('pointerenter', () => { clearTimeout(temporizadorGlobo); temporizadorGlobo = 0; });
+  globo.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') ocultarGlobo(); });
   ctx = lienzo.getContext('2d');
   observador = new ResizeObserver(() => redibujar());
   observador.observe(raiz.querySelector('#mapa-marco'));
@@ -166,7 +170,7 @@ function prepararLienzo() {
   lienzo.addEventListener('pointermove', alMover);
   lienzo.addEventListener('pointerup', alSoltar);
   lienzo.addEventListener('pointercancel', alSoltar);
-  lienzo.addEventListener('pointerleave', () => { if (!punteros.size) ocultarGlobo(); });
+  lienzo.addEventListener('pointerleave', (e) => { if (!punteros.size && !globo.contains(e.relatedTarget)) ocultarGlobo(); });
   lienzo.addEventListener('dblclick', (e) => { const p = puntoLocal(e); acercarEn(p.x, p.y, 2); });
   // El botón Noche cambia un atributo del documento: lo vigilamos para repintar en rojo
   observadorTema = new MutationObserver(redibujar);
@@ -437,13 +441,30 @@ function textoInfo(i) {
   }
 }
 
-function mostrarGlobo(x, y) {
+/**
+ * Muestra la información del elemento más cercano a (x, y) o, si no hay
+ * ninguno, deja el mapa limpio. La zona sensible es pequeña con el ratón
+ * (apunta con precisión) y más generosa con el dedo. Con el ratón no se
+ * oculta al instante: se da un respiro para poder llegar al globo y pulsar
+ * «Ver la ficha».
+ */
+let temporizadorGlobo = 0;
+let ultimoMostrado = null;
+function mostrarGlobo(x, y, conRaton = false) {
+  const holgura = conRaton ? 3 : 6, minimo = conRaton ? 6 : 12;
   let mejor = null, dist = Infinity;
   for (const el of elementos) {
     const d = Math.hypot(el.x - x, el.y - y);
-    if (d <= Math.max(el.r + 6, 12) && d < dist) { dist = d; mejor = el; }
+    if (d <= Math.max(el.r + holgura, minimo) && d < dist) { dist = d; mejor = el; }
   }
-  if (!mejor) { ocultarGlobo(); return; }
+  if (!mejor) {
+    if (!conRaton) { ocultarGlobo(); return; }
+    if (!globo.hidden && !temporizadorGlobo) temporizadorGlobo = setTimeout(ocultarGlobo, 250);
+    return;
+  }
+  clearTimeout(temporizadorGlobo); temporizadorGlobo = 0;
+  if (mejor === ultimoMostrado && !globo.hidden) return;   // ya se está mostrando
+  ultimoMostrado = mejor;
   globo.innerHTML = textoInfo(mejor.info);
   globo.hidden = false;
   const marco = raiz.querySelector('#mapa-marco');
@@ -452,7 +473,11 @@ function mostrarGlobo(x, y) {
   globo.style.left = Math.max(6, gx) + 'px';
   globo.style.top = Math.max(6, gy) + 'px';
 }
-function ocultarGlobo() { if (globo) globo.hidden = true; }
+function ocultarGlobo() {
+  clearTimeout(temporizadorGlobo); temporizadorGlobo = 0;
+  ultimoMostrado = null;
+  if (globo) globo.hidden = true;
+}
 
 /* ==========================================================================
    Zoom y desplazamiento (ratón, rueda y gestos táctiles)
@@ -491,7 +516,7 @@ function alPulsar(e) {
 function alMover(e) {
   const p = puntoLocal(e);
   if (!punteros.has(e.pointerId)) {                 // ratón sin pulsar: información al pasar por encima
-    if (e.pointerType === 'mouse') mostrarGlobo(p.x, p.y);
+    if (e.pointerType === 'mouse') mostrarGlobo(p.x, p.y, true);
     return;
   }
   punteros.set(e.pointerId, p);

@@ -15,6 +15,7 @@ import * as O from '../js/calculos/optica.js';
 import * as A from '../js/calculos/astro.js';
 import { proyectar, desproyectar } from '../js/calculos/proyeccion.js';
 import { pdfConImagen } from '../js/pdf.js';
+import { ordenarEquipos, selectorMiEquipo, NINGUNO } from '../js/equipo.js';
 import { progreso, mover } from '../js/modulos/checklist.js';
 import { integracionMin, dimensionesMiniatura, mezclarSesiones, totalesPorObjeto } from '../js/modulos/cuaderno.js';
 
@@ -317,6 +318,16 @@ prueba('están las webs de planificación y el software de la comparativa', () =
 
 /* ---------- Telescopios de los amigos ---------- */
 grupo('Telescopios añadidos (data/equipos.json)');
+prueba('Mi equipo: «Ninguno» primero y el resto en orden alfabético', () => {
+  const ordenados = ordenarEquipos(equipos).map((e) => e.nombre);
+  igual(ordenados.join('|'), [...ordenados].sort((x, y) => x.localeCompare(y, 'es')).join('|'));
+  igual(ordenados[0].startsWith('Celestron'), true);
+  igual(equipos[0].id, 's50pro');                                  // ordenar no altera el JSON original
+  const valores = [...selectorMiEquipo(equipos, NINGUNO).matchAll(/value="([^"]+)"/g)].map((m) => m[1]);
+  igual(valores[0], NINGUNO);
+  igual(valores.length, equipos.length + 1);
+  igual(/value="ninguno" selected/.test(selectorMiEquipo(equipos, NINGUNO)), true);
+});
 const s50clasico = equipos.find((e) => e.id === 's50');
 const omni127 = equipos.find((e) => e.id === 'omni127');
 prueba('Seestar S50: f/5, 2,39″/px y campo oficial 1,29° × 0,73°', () => {

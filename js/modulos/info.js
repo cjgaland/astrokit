@@ -6,7 +6,7 @@
      02 · Versiones        la versión instalada, buscar actualizaciones y el
                            historial de cambios (data/novedades.json)
      03 · Ayuda            el manual de uso en PDF (verlo o descargarlo) y el
-                           enlace para enviar sugerencias por correo
+                           botones para enviar sugerencias por correo o por WhatsApp
 
    Los textos están en data/info.json; el historial lo mantiene
    publicar_astrokit.sh en data/novedades.json.
@@ -39,6 +39,7 @@ const fechaLarga = (t) => new Date(t + 'T12:00').toLocaleDateString('es-ES', { d
 function pintar() {
   const asunto = encodeURIComponent('Sugerencia para AstroKit');
   const cuerpo = encodeURIComponent('Hola, Carlos:\n\nMi sugerencia para AstroKit es…\n\n(Versión que uso: ' + (raiz.dataset.version || '—') + ')');
+  const telefono = String(info.whatsapp || '').replace(/\D/g, '');   // solo cifras, con prefijo de país (wa.me lo exige así)
 
   raiz.innerHTML = `
     <section class="info entrada">
@@ -107,9 +108,10 @@ function pintar() {
             <h3>Sugerencias</h3>
             <p>¿Echas algo en falta o has visto un error? Escríbeme: cada sugerencia ayuda a mejorar AstroKit.</p>
             <div class="ayuda__botones">
-              <a class="boton-sec" id="enlace-sugerencias" href="mailto:${escaparHTML(info.correo)}?subject=${asunto}&body=${cuerpo}">${icono('sig')}Enviar una sugerencia</a>
+              <a class="boton-sec" data-sugerencia href="mailto:${escaparHTML(info.correo)}?subject=${asunto}&body=${cuerpo}" aria-label="Enviar una sugerencia por correo">${icono('sobre')}Correo</a>
+              ${telefono ? `<a class="boton-sec" data-sugerencia href="https://wa.me/${telefono}?text=${cuerpo}" target="_blank" rel="noopener" aria-label="Enviar una sugerencia por WhatsApp (se abre WhatsApp)">${icono('whatsapp')}WhatsApp</a>` : ''}
             </div>
-            <p class="nota">Se abre tu app de correo con el mensaje dirigido a ${escaparHTML(info.correo)}.</p>
+            <p class="nota">Se abre tu app de correo o WhatsApp con el mensaje ya empezado y la versión que usas anotada.</p>
           </article>
         </div>
       </section>
@@ -125,8 +127,7 @@ async function pintarVersion() {
     ? `Instalada en este dispositivo${novedades.versiones[0]?.fecha && v === novedades.versiones[0].version ? ` · publicada el ${fechaLarga(novedades.versiones[0].fecha)}` : ''}.`
     : 'Versión web sin instalar: abre la app desde su dirección para instalarla.';
   raiz.querySelectorAll('.historial__version').forEach((li) => li.classList.toggle('es-actual', li.dataset.version === v));
-  const enlace = raiz.querySelector('#enlace-sugerencias');
-  if (enlace && v) enlace.href = enlace.href.replace(encodeURIComponent('—'), encodeURIComponent(versionLegible(v)));
+  if (v) raiz.querySelectorAll('[data-sugerencia]').forEach((a) => { a.href = a.href.replace(encodeURIComponent('—'), encodeURIComponent(versionLegible(v))); });
 }
 
 function alCambiar(e) {
