@@ -2,6 +2,16 @@
   "_nota": "Qué cambia en cada versión. La app lo enseña una vez, justo después de actualizar. publicar_astrokit.sh añade aquí la entrada nueva (con el texto que le pases) cada vez que publica una versión.",
   "versiones": [
     {
+      "version": "astrokit-v17",
+      "fecha": "2026-10-29",
+      "cambios": [
+        "Nueva pestaña Efemérides (en Cielo): eclipses, lluvias de meteoros, la Luna, los planetas, los cometas y las estaciones, con aviso en tu calendario",
+        "Eclipses de Sol con un globo 3D: la franja de totalidad y cómo se ve desde cualquier punto de la Tierra",
+        "Lluvias de meteoros: cuántos verás de verdad según la Luna y tu cielo; cometas con su posición y brillo",
+        "Objetos celestes incluye lluvias y cometas, el mapa muestra radiantes y cometas, y el glosario llega a 175 términos"
+      ]
+    },
+    {
       "version": "astrokit-v16",
       "fecha": "2026-10-29",
       "cambios": [
